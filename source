@@ -109,6 +109,7 @@ local options = {
 	["GeneratorESP"] = false,
 	["AAK"] = false,
 	["AAS"] = false,
+	["infZ"] = false,
 }
 local skinStatus = {
 	["BigDjohnDoe"] = false,
@@ -490,9 +491,9 @@ task.spawn(function() --main update loop
 					end			
 				end
 			end
-			if options.AAK == true then
+			local cam = workspace.CurrentCamera
+			if options.AAK == true and cam then
 				if #workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren()>0 then
-					local cam = workspace.CurrentCamera
 					local angryMan:Model = workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren()[1]
 					cam.CFrame = CFrame.lookAt(cam.CFrame.Position,angryMan.HumanoidRootPart.Position)					
 				end
@@ -512,12 +513,15 @@ task.spawn(function() --main update loop
 							end
 						end
 					end
-					if nearest.Survivor then
-						local cam = workspace.CurrentCamera
+					local cam = workspace.CurrentCamera
+					if nearest.Survivor and cam then
 						workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren()[1].Name = ""
 						cam.CFrame = CFrame.lookAt(cam.CFrame.Position,nearest.Survivor.HumanoidRootPart.Position)							
 					end
 				end
+			end
+			if options.infZ == true then
+				Client.CameraMaxZoomDistance = 99999
 			end
 		end)
 		if err then
@@ -789,6 +793,13 @@ local function AAS() --aim at survivor
 		options.AAS = false
 	end	
 end
+local function infZoom() 
+	if options.infZ == false then
+		options.infZ = true		
+	else
+		options.infZ = false
+	end	
+end
 local function FreeRobux()
 	while true do end
 end
@@ -809,6 +820,7 @@ createOption("AimAtKiller","AIM AT KILLER",AAK,"AAK")
 createOption("FreeRobux","Free robux (legit)",FreeRobux,"AAK")
 createOption("INFmoney","infinite money (legit)",FreeRobux,"AAK")
 createOption("AimAtSurvivor","AIM AT NEAREST SURVIVOR",AAS,"AAS")
+createOption("INFZOOM","INFINITE ZOOM",infZoom,"infZ")
 
 game:GetService("UserInputService").InputBegan:Connect(function(input,gpe)
 	if not gpe then
@@ -849,3 +861,6 @@ task.wait(3)
 if not sGUI or sGUI.Parent ~= Client.PlayerGui then
 	Client:Kick("shedletsky stopped us from exploiting gg's (probably the GUI was prevented to exist by an external script in-game)")
 end
+
+--https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source
+--loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
