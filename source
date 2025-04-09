@@ -209,7 +209,7 @@ disableKulkiGUI.MouseButton1Click:Connect(function()
 	sGUI:Destroy()
 end)
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(function(coolkid)
-	if coolkid:IsA("Model") and coolkid.Name == "Shockwave" and canRunUpdateLoop == true and options.MovePredictor == true then
+	if coolkid:IsA("Model") and coolkid.Name:lower() == "shockwave" and canRunUpdateLoop == true and options.MovePredictor == true then
 		--local cl = coolkid:Clone()
 		--print(cl.Root.Size)
 		--cl.Root.Anchored = true
@@ -227,7 +227,22 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		hitbox.Size = Vector3.new(hitbox.Size.X,hitbox.Size.Y,hitbox.Size.Z+1000)
 		hitbox.CFrame = hitbox.CFrame + hitbox.CFrame.LookVector*500
 		hitbox.Parent = workspace
-		task.wait(7.5)
+		task.wait(4.5)
+		hitbox:Destroy()
+	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "swords" and canRunUpdateLoop == true and options.MovePredictor == true then
+		local cl = coolkid:Clone()
+		local hitbox:BasePart = cl:WaitForChild("Core")
+		local ogPos:Vector3 = hitbox.Position
+		hitbox.Transparency = 0
+		hitbox.Material = Enum.Material.Neon
+		hitbox.Color = Color3.fromRGB(255,0,0)
+		hitbox.CanCollide = false
+		hitbox.CanTouch = false
+		hitbox.CanQuery = false
+		hitbox.Size = Vector3.new(hitbox.Size.X,hitbox.Size.Y,hitbox.Size.Z+1000)
+		hitbox.CFrame = hitbox.CFrame + hitbox.CFrame.LookVector*-500
+		hitbox.Parent = workspace
+		task.wait(4.5)
 		hitbox:Destroy()
 	end
 end)
