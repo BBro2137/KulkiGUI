@@ -1,1 +1,1 @@
-dont exploit kids its for educational purposes only.
+dont exploit, its for educational purposes only.
