@@ -516,9 +516,9 @@ Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child:I
 	if options.Easy1x4Popups == true and child.Name == "1x1x1x1Popup" and canRunUpdateLoop == true then
 		print("feeling entaglement")
 		child.BackgroundTransparency = 0.5
+		child.Size = UDim2.new(1,0,1,0)
 		child.Position = UDim2.new(0,0,0,0)
 		child.BackgroundColor3 = Color3.fromRGB(255,0,0)
-		child.Size = UDim2.new(1,0,1,0)
 	end
 end)
 
