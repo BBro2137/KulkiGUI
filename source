@@ -522,12 +522,15 @@ Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child:I
 		child.BackgroundColor3 = Color3.fromRGB(255,0,0)
 	end
 end)
-Client.PlayerGui:WaitForChild("FadeUI").ChildAdded:Connect(function(child:Frame)
-	if options.AssetLoadReplacement == true and child.Name == "Fade" and canRunUpdateLoop == true then
-		child.Visible = false
-		child.BackgroundTransparency = 1
-	end
+task.spawn(function()
+	Client.PlayerGui:WaitForChild("FadeUI").ChildAdded:Connect(function(child:Frame)
+		if options.AssetLoadReplacement == true and child.Name == "Fade" and canRunUpdateLoop == true then
+			child.Visible = false
+			child.BackgroundTransparency = 1
+		end
+	end)	
 end)
+
 task.spawn(function() --main update loop
 	while true do
 		task.wait()
