@@ -1,3 +1,4 @@
+local SavedCommunicator:BindableEvent = nil
 if game:GetService("RunService"):IsStudio() then
 	task.wait(2)
 end
@@ -6,17 +7,28 @@ if game:FindFirstChild("GameNetworkingDebugger") then
 		task.wait(9999999999999)
 		game.Players.LocalPlayer:Kick("yielding ended.")
 	end
-	print("running kulki GUI AGAIN. please dont do this unless necesary ever again (it might drain your fps a lot) if you are gonna do this just press the X in the gui..")
+	if game.Players.LocalPlayer.PlayerGui:FindFirstChild("kulkivsElliot") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator") then
+		game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator"):Fire()
+		task.wait(0.2)
+	end
 	if game.Players.LocalPlayer.PlayerGui:FindFirstChild("kulkivsElliot") then
 		game.Players.LocalPlayer.PlayerGui:FindFirstChild("kulkiIvsElliot"):Destroy()
 	end
+	if game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator") then
+		SavedCommunicator = game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator")
+	end
 else
 	local SavedData = Instance.new("Configuration")
+	local Communicator = Instance.new("BindableEvent")
+	Communicator.Name = "Communicator"
+	SavedCommunicator = Communicator
+	Communicator.Parent = SavedData
 	SavedData.Name = "GameNetworkingDebugger" -- shhhhh, its a disguise.
 	SavedData.Parent = game	
 end
 print("loading kulki GUI......")
 local Client = game.Players.LocalPlayer
+
 local sGUI = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 MainFrame.Parent = sGUI
@@ -27,6 +39,8 @@ local scrTitle = Instance.new("TextLabel")
 local subTitle = Instance.new("TextLabel")
 local UIdrag = Instance.new("UIDragDetector")
 local uiCorner = Instance.new("UICorner")
+
+local canQuit = false
 
 local disableKulkiGUI = Instance.new("TextButton")
 disableKulkiGUI.Parent = MainFrame
@@ -78,20 +92,48 @@ scroll.Name = "scrollCheats"
 local uiList = Instance.new("UIListLayout")
 uiList.Parent = scroll
 local CustomSkinList = scroll:Clone()
+local DebugSroll = scroll:Clone()
 CustomSkinList.Parent = MainFrame
+DebugSroll.Parent = MainFrame
 uiList:Clone().Parent = CustomSkinList
 CustomSkinList.Visible = false
+uiList:Clone().Parent = DebugSroll
+DebugSroll.Visible = false
 local CS = Instance.new("TextButton")
 CS.Text = "Custom Skins"
 CS.Parent = MainFrame
 CS.Size = UDim2.new(0.342, 0,0.148, 0)
 CS.Position = UDim2.new(0.572, 0,0, 0)
 CS.TextScaled = true
-
-CS.MouseButton1Click:Connect(function()
-	CustomSkinList.Visible = not CustomSkinList.Visible
-	scroll.Visible = not scroll.Visible
+local DM = CS:Clone()
+DM.Size = UDim2.new(0.212, 0,0.148, 0)
+DM.Position = UDim2.new(0.359, 0,0, 0)
+DM.Text = "DEBUG MENU"
+DM.Parent = MainFrame
+DM.MouseButton1Click:Connect(function()
+	if CustomSkinList.Visible == false then
+		DebugSroll.Visible = not DebugSroll.Visible
+		scroll.Visible = not scroll.Visible			
+	end
 end)
+CS.MouseButton1Click:Connect(function()
+	if DebugSroll.Visible == false then
+		CustomSkinList.Visible = not CustomSkinList.Visible
+		scroll.Visible = not scroll.Visible 
+	end
+end)
+
+local SNK = Instance.new("TextLabel")
+UIdrag:Clone().Parent = SNK
+SNK.Size = UDim2.new(0.427, 0,0.102, 0)
+SNK.Position = UDim2.new(0, 0,0.28, 0)
+SNK.Text = "brine, you are not a hero...."
+SNK.Visible = false
+SNK.TextXAlignment = Enum.TextXAlignment.Left
+SNK.TextScaled = true
+SNK.TextWrapped = true
+SNK.Parent = sGUI
+
 local canRunUpdateLoop = true
 local options = {
 	["NoBlur"] = false,
@@ -110,10 +152,19 @@ local options = {
 	["AAK"] = false,
 	["AAS"] = false,
 	["infZ"] = false,
+	["SNK"] = false,
+	["SIOC"] = false,
+	["ShowChat"] = false,
+	["Easy1x4Popups"] = false,
+}
+local DEBUGoptions = {
+	["IngameCHILDADDED"] = false,
+	["IngameDESCENDANTADDED"] = false,
 }
 local skinStatus = {
 	["BigDjohnDoe"] = false,
-	["GyatCoolkid"] = false
+	["GyatCoolkid"] = false,
+	["NaziChance"] = false,
 }
 local PLRESP:{Highlight} = {}
 local PLRESPDISPLAYS:{BillboardGui} = {}
@@ -141,6 +192,24 @@ local function createOption(name,text,connectTo,realName:string)
 	btt.Parent = scroll
 	table.insert(optionButtons,btt)
 end
+local function createDebugOption(name,text,connectTo,realName:string)
+	local btt = Instance.new("TextButton")
+	btt.Name =  name
+	btt.Text = text
+	btt.TextScaled = true
+	btt.Size = UDim2.new(1, 0,0.0085, 0)
+	btt.BackgroundColor3 = Color3.fromRGB(115, 115, 115)
+	btt.MouseButton1Click:Connect(function()
+		connectTo()
+		local set = " ON"
+		if DEBUGoptions[realName] == false then
+			set = " OFF"
+		end
+		btt.Text = text .. set
+	end)
+	btt.Parent = DebugSroll
+	table.insert(optionButtons,btt)
+end
 local function createCustomSkin(name,text,realName:string)
 	local btt = Instance.new("TextButton")
 	btt.Name =  "OPT" .. name
@@ -157,10 +226,12 @@ local function createCustomSkin(name,text,realName:string)
 		btt.Text = text .. set
 	end)
 	btt.Parent = CustomSkinList
+	table.insert(optionButtons,btt)
 end
 
 createCustomSkin("BDJD","BIG D JOHN DOE","BigDjohnDoe")
 createCustomSkin("GCK","GYATT COOLKID","GyatCoolkid")
+createCustomSkin("NC","NAZI CHANCE","NaziChance")
 
 game.Lighting.DescendantAdded:Connect(function(c00lkidd)
 	if c00lkidd:IsA("BlurEffect") and options.NoBlur == true then
@@ -200,14 +271,25 @@ local function spawnGenDataDisplay(gen:Model)
 	bil.Parent = gen
 	table.insert(GENDISPLAYS,bil)
 end
-
-disableKulkiGUI.MouseButton1Click:Connect(function()
+local function FULLSTOP()
+	canQuit = true
 	for i,opt in options do
 		opt = false
 	end
 	canRunUpdateLoop = false
 	sGUI:Destroy()
+	SNK:Destroy()
+end
+
+disableKulkiGUI.MouseButton1Click:Connect(function()
+	FULLSTOP()
 end)
+if SavedCommunicator then
+	SavedCommunicator.Event:Connect(function()
+		FULLSTOP()
+	end)	
+end
+
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(function(coolkid)
 	if coolkid:IsA("Model") and coolkid.Name:lower() == "shockwave" and canRunUpdateLoop == true and options.MovePredictor == true then
 		--local cl = coolkid:Clone()
@@ -231,7 +313,7 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		hitbox:Destroy()
 	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "swords" and canRunUpdateLoop == true and options.MovePredictor == true then
 		local cl = coolkid:Clone()
-		local hitbox:BasePart = cl:WaitForChild("Core")
+		local hitbox:BasePart = cl:FindFirstChild("Core")
 		local ogPos:Vector3 = hitbox.Position
 		hitbox.Transparency = 0
 		hitbox.Material = Enum.Material.Neon
@@ -245,6 +327,24 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		task.wait(4.5)
 		hitbox:Destroy()
 	end
+	
+	if DEBUGoptions.IngameCHILDADDED == true and canRunUpdateLoop == true then
+		print(coolkid.Name .. "   " .. coolkid:GetFullName())
+		if #coolkid:GetDescendants()>0 then
+			for i,d in coolkid:GetDescendants() do
+				print(d.Name)
+				print(d.ClassName)
+			end			
+		end
+	end
+end)
+workspace:FindFirstChild("Map"):FindFirstChild("Ingame").DescendantAdded:Connect(function(coolkid)
+	if canRunUpdateLoop == true then
+		if DEBUGoptions.IngameDESCENDANTADDED == true then
+			print(coolkid.Name .. "   " .. coolkid:GetFullName())
+		end	
+	end
+
 end)
 workspace:FindFirstChild("Players"):FindFirstChild("Killers").ChildAdded:Connect(function(killer)
 	if killer.Name == "JohnDoe" and skinStatus.BigDjohnDoe == true and canRunUpdateLoop == true then
@@ -343,6 +443,85 @@ workspace:FindFirstChild("Players"):FindFirstChild("Killers").ChildAdded:Connect
 		killer:WaitForChild("HumanoidRootPart").Anchored = false
 	end
 end)
+workspace:FindFirstChild("Players"):FindFirstChild("Survivors").ChildAdded:Connect(function(survivor)
+	if survivor.Name:lower() == "chance" and skinStatus.NaziChance == true and canRunUpdateLoop == true then
+		survivor:WaitForChild("HumanoidRootPart").Anchored = true
+		task.wait(0.5)
+		local D25 = Instance.new("Model")
+		D25.Name = "D" .. tostring(math.random(-20,-5)) .. "ez"
+		local connect = Instance.new("Weld")
+		local Mid = Instance.new("Part")
+		Mid.CanCollide =false
+		Mid.CanTouch = false
+		Mid.CanQuery = false
+		Mid.Size = Vector3.new(2,10,2)
+		local SideMid = Mid:Clone()
+		local short1 = Instance.new("Part")
+		short1.CanCollide =  false
+		short1.CanTouch = false
+		short1.CanQuery = false
+		short1.Size = Vector3.new(2,5,2)
+		local short2 = short1:Clone()
+		local short3 = short1:Clone()
+		local short4 = short1:Clone()
+		
+		local midSideW = Instance.new("Weld")
+		local MidShortDown = Instance.new("Weld")
+		local MidShortLeft = Instance.new("Weld")
+		local MidShortRight = Instance.new("Weld")
+		local MidShortUp = Instance.new("Weld")
+		
+		connect.Parent = D25
+		Mid.Parent = D25
+		short1.Parent = D25
+		short2.Parent = D25
+		short3.Parent = D25
+		short4.Parent = D25
+		SideMid.Parent = D25
+		midSideW.Parent = D25
+		MidShortRight.Parent = D25
+		MidShortUp.Parent = D25
+		MidShortLeft.Parent = D25
+		MidShortDown.Parent = D25
+		
+		midSideW.C1 = CFrame.Angles(math.rad(0),math.rad(0),math.rad(90))
+		midSideW.Part0 = Mid
+		midSideW.Part1 = SideMid
+		connect.Part0 = Mid
+		connect.Part1 = survivor:WaitForChild("HumanoidRootPart")
+		connect.C0 = CFrame.new(0,-1,-2)
+		
+		MidShortDown.Part0 = Mid
+		MidShortDown.Part1 = short3
+		MidShortDown.C1 = CFrame.new(-4,-2.55,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(90))
+		
+		MidShortLeft.Part0 = Mid
+		MidShortLeft.Part1 = short2
+		MidShortLeft.C1 = CFrame.new(4,2.55,0)
+		
+		MidShortRight.Part0 = Mid
+		MidShortRight.Part1 = short4
+		MidShortRight.C1 = CFrame.new(-4,-2.55,0) 
+		
+		MidShortUp.Part0 = Mid
+		MidShortUp.Part1 = short2
+		MidShortUp.C1 = CFrame.new(4,2.6,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(90))
+		
+		D25.Parent = workspace
+		task.wait(1)
+		survivor:WaitForChild("HumanoidRootPart").Anchored = false
+	end
+end)
+Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child:ImageButton)
+	if options.Easy1x4Popups == true and child.Name == "1x1x1x1Popup" and canRunUpdateLoop == true then
+		print("feeling entaglement")
+		child.BackgroundTransparency = 0.5
+		child.Position = UDim2.new(0,0,0,0)
+		child.BackgroundColor3 = Color3.fromRGB(255,0,0)
+		child.Size = UDim2.new(1,0,1,0)
+	end
+end)
+
 task.spawn(function() --main update loop
 	while true do
 		task.wait()
@@ -362,8 +541,12 @@ task.spawn(function() --main update loop
 			for i,display in PLRESPDISPLAYS do
 				if display:FindFirstChildWhichIsA("TextLabel") and display.Parent:FindFirstChildWhichIsA("Humanoid") then
 					local HealthTXT = tostring(math.floor(display.Parent:FindFirstChildWhichIsA("Humanoid").Health*10)/10)
-					local MagnitudeTXT = tostring(math.floor((display.Parent:FindFirstChildWhichIsA("Humanoid").Parent:FindFirstChildWhichIsA("BasePart").Position-Client.Character.PrimaryPart.Position).Magnitude*10)/10)
-					display:FindFirstChildWhichIsA("TextLabel").Text = "HP:" .. HealthTXT .. ", STUDS:" .. MagnitudeTXT
+					if options.SIOC == true then
+						local MagnitudeTXT = tostring(math.floor((display.Parent:FindFirstChildWhichIsA("Humanoid").Parent:FindFirstChildWhichIsA("BasePart").Position-Client.Character.PrimaryPart.Position).Magnitude*10)/10)
+						display:FindFirstChildWhichIsA("TextLabel").Text = "HP:" .. HealthTXT .. ", STUDS:" .. MagnitudeTXT
+					else
+						display:FindFirstChildWhichIsA("TextLabel").Text = "HP:" .. HealthTXT .. "," .. display.Parent.Name
+					end
 				else
 					display:Destroy()
 					table.remove(PLRESPDISPLAYS,i)
@@ -530,13 +713,65 @@ task.spawn(function() --main update loop
 					end
 					local cam = workspace.CurrentCamera
 					if nearest.Survivor and cam then
-						workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren()[1].Name = ""
-						cam.CFrame = CFrame.lookAt(cam.CFrame.Position,nearest.Survivor.HumanoidRootPart.Position)							
+						cam.CFrame = CFrame.lookAt(cam.CFrame.Position,nearest.Survivor.HumanoidRootPart.Position)						
+					end
+				end
+			end
+			if options.SNK == true then
+				local nextKiller = {
+					["Player"] = nil,
+					["Killer"] = nil,
+					["PlayerNAME"] = nil,
+					["Chance"] = 0
+				}
+				local possibleKillers = {}
+				local moreThan1posKiller = false
+				for i,plr in game.Players:GetPlayers() do
+					if plr:FindFirstChild("leaderstats") and plr:FindFirstChild("PlayerData") then
+						if plr.leaderstats.KillerChance.Value > nextKiller.Chance then
+							nextKiller.Player = plr
+							nextKiller.Killer = plr.PlayerData.Equipped.Killer.Value
+							nextKiller.PlayerNAME = plr.DisplayName
+							nextKiller.Chance = plr.leaderstats.KillerChance.Value
+							table.clear(possibleKillers)
+							moreThan1posKiller = false
+						elseif plr.leaderstats.KillerChance.Value == nextKiller.Chance then
+							table.insert(possibleKillers,nextKiller)
+							local posKiller = {
+								["Player"] = plr,
+								["Killer"] = plr.PlayerData.Equipped.Killer.Value,
+								["PlayerNAME"] = plr.DisplayName,
+								["Chance"] = plr.leaderstats.KillerChance.Value
+							}						
+							table.insert(possibleKillers,posKiller)
+							moreThan1posKiller = true
+						end						
+					end
+				end
+				if moreThan1posKiller == false then
+					SNK.Text = nextKiller.PlayerNAME .. ' , ' .. nextKiller.Killer
+				else
+					SNK.Text = ""
+					for i,kira in possibleKillers do
+						if kira ~= nil and kira.Player then
+							if #possibleKillers == i then
+								SNK.Text = SNK.Text .. kira.PlayerNAME .. ' , ' .. kira.Killer
+							else
+								SNK.Text = SNK.Text .. kira.PlayerNAME .. ' , ' .. kira.Killer .. " or "
+							end
+							
+						end
 					end
 				end
 			end
 			if options.infZ == true then
-				Client.CameraMaxZoomDistance = 99999
+				Client.CameraMaxZoomDistance = 9999999
+			end
+			if options.ShowChat == true then
+				game:GetService("TextChatService"):FindFirstChildWhichIsA("ChatWindowConfiguration").Enabled = true
+			end
+			if options.ShowChat == true then
+				game:GetService("TextChatService"):FindFirstChildWhichIsA("ChatWindowConfiguration").Enabled = true
 			end
 		end)
 		if err then
@@ -795,29 +1030,39 @@ local function GeneratorESP()
 	end
 end
 local function AAK() --aim at killer
-	if options.AAK == false then
-		options.AAK = true		
-	else
-		options.AAK = false
-	end	
+	options.AAK = not options.AAK
 end
 local function AAS() --aim at survivor
-	if options.AAS == false then
-		options.AAS = true		
-	else
-		options.AAS = false
-	end	
+	options.AAS = not options.AAS
 end
 local function infZoom() 
-	if options.infZ == false then
-		options.infZ = true		
-	else
-		options.infZ = false
-	end	
+	options.infZ = not options.infZ
 end
-local function FreeRobux()
+local function IGCA() 
+	DEBUGoptions.IngameCHILDADDED = not DEBUGoptions.IngameCHILDADDED
+end
+local function IGDA() 
+	DEBUGoptions.IngameDESCENDANTADDED = not DEBUGoptions.IngameDESCENDANTADDED
+end
+
+local function SNKfunction() --see/show next killer
+	options.SNK = not options.SNK
+	SNK.Visible = not SNK.Visible
+end
+local function SIOC() --studs instead of class
+	options.SIOC = not options.SIOC
+end
+local function ShowChatF()
+	options.ShowChat = not options.ShowChat
+end
+local function E1PU()
+	options.Easy1x4Popups = not options.Easy1x4Popups
+end
+
+local function WTDE()
 	while true do end
 end
+--cheatz hell yea szweg
 createOption("noBlur","NO BLUR",noBlur,"NoBlur")
 createOption("noFog","NO FOG",noFog,"NoFog")
 createOption("fullB","FULLBRIGHT (BEST WITH NOFOG)",FullBright,"FullBright")
@@ -832,10 +1077,20 @@ createOption("XRay","XRAY",XRay,"Xray")
 createOption("MovePredictor","MovePredictor",MovePrediction,"MovePredictor")
 createOption("GeneratorESP","Generator ESP",GeneratorESP,"GeneratorESP")
 createOption("AimAtKiller","AIM AT KILLER",AAK,"AAK")
-createOption("FreeRobux","Free robux (legit)",FreeRobux,"AAK")
-createOption("INFmoney","infinite money (legit)",FreeRobux,"AAK")
+if Client.UserId ~= 2576130087 then
+	createOption("FreeRobux","Free robux",WTDE,"AAK")
+	createOption("INFmoney","infinite money",WTDE,"AAK")	
+end
 createOption("AimAtSurvivor","AIM AT NEAREST SURVIVOR",AAS,"AAS")
 createOption("INFZOOM","INFINITE ZOOM",infZoom,"infZ")
+createOption("NEXTKILLER","SHOW NEXT KILLER",SNKfunction,"SNK")
+createOption("STUDSINSTEAD","STUDS INSTEAD OF CLASS",SIOC,"SIOC")
+createOption("SHOWCHAT","CHAT VISIBLE",ShowChatF,"ShowChat")
+createOption("E1PU","EZ 1x4 POP-UPS",E1PU,"Easy1x4Popups")
+
+--debugs heaven no anti-szweg
+createDebugOption("INGAMECA","Ingame Child Added",IGCA,"IngameCHILDADDED")
+createDebugOption("INGAMEDA","Ingame Descendant Added",IGDA,"IngameDESCENDANTADDED")
 
 game:GetService("UserInputService").InputBegan:Connect(function(input,gpe)
 	if not gpe then
@@ -873,7 +1128,7 @@ end)
 print("loaded kulki GUI!")
 sGUI.Parent = Client.PlayerGui
 task.wait(3)
-if not sGUI or sGUI.Parent ~= Client.PlayerGui then
+if not sGUI or sGUI.Parent ~= Client.PlayerGui and canQuit == false then
 	Client:Kick("shedletsky stopped us from exploiting gg's (probably the GUI was prevented to exist by an external script in-game)")
 end
 
