@@ -156,6 +156,7 @@ local options = {
 	["SIOC"] = false,
 	["ShowChat"] = false,
 	["Easy1x4Popups"] = false,
+	["AssetLoadReplacement"] = false,
 }
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
@@ -521,7 +522,12 @@ Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child:I
 		child.BackgroundColor3 = Color3.fromRGB(255,0,0)
 	end
 end)
-
+Client.PlayerGui:WaitForChild("FadeUI").ChildAdded:Connect(function(child:Frame)
+	if options.AssetLoadReplacement == true and child.Name == "Fade" and canRunUpdateLoop == true then
+		child.Visible = false
+		child.BackgroundTransparency = 1
+	end
+end)
 task.spawn(function() --main update loop
 	while true do
 		task.wait()
@@ -1058,6 +1064,9 @@ end
 local function E1PU()
 	options.Easy1x4Popups = not options.Easy1x4Popups
 end
+local function ALRf()
+	options.AssetLoadReplacement = not options.AssetLoadReplacement
+end
 
 local function WTDE()
 	while true do end
@@ -1087,6 +1096,7 @@ createOption("NEXTKILLER","SHOW NEXT KILLER",SNKfunction,"SNK")
 createOption("STUDSINSTEAD","STUDS INSTEAD OF CLASS",SIOC,"SIOC")
 createOption("SHOWCHAT","CHAT VISIBLE",ShowChatF,"ShowChat")
 createOption("E1PU","EZ 1x4 POP-UPS",E1PU,"Easy1x4Popups")
+createOption("ALR","ASSET LOAD REPLACEMENT",ALRf,"AssetLoadReplacement")
 
 --debugs heaven no anti-szweg
 createDebugOption("INGAMECA","Ingame Child Added",IGCA,"IngameCHILDADDED")
