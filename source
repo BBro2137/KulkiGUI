@@ -1,3 +1,4 @@
+print("loading kulki GUI......")
 local SavedCommunicator:BindableEvent = nil
 if game:GetService("RunService"):IsStudio() then
 	task.wait(2)
@@ -26,7 +27,6 @@ else
 	SavedData.Name = "GameNetworkingDebugger" -- shhhhh, its a disguise.
 	SavedData.Parent = game	
 end
-print("loading kulki GUI......")
 local Client = game.Players.LocalPlayer
 
 local sGUI = Instance.new("ScreenGui")
