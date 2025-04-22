@@ -327,6 +327,20 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		hitbox.Parent = workspace
 		task.wait(4.5)
 		hitbox:Destroy()
+	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "spike" and coolkid:FindFirstChild("Spike") and options.AssetLoadReplacement == true and canRunUpdateLoop == true then
+		local mesh:MeshPart = coolkid:FindFirstChild("Spike")
+		local cloneHitbox = Instance.new("Part")
+		cloneHitbox.Color = mesh.Color
+		cloneHitbox.CanCollide = false
+		cloneHitbox.Anchored = true
+		cloneHitbox.CanTouch = false
+		cloneHitbox.Material = mesh.Material
+		cloneHitbox.Size = Vector3.new(mesh.Size.X,15,mesh.Size.Z)
+		cloneHitbox.CFrame = mesh.CFrame
+		cloneHitbox.Name = "SpikeAssetReplacement"
+		cloneHitbox.Parent = workspace
+		task.wait(14.1)
+		cloneHitbox:Destroy()
 	end
 	
 	if DEBUGoptions.IngameCHILDADDED == true and canRunUpdateLoop == true then
@@ -345,7 +359,6 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").DescendantAdded:Connect
 			print(coolkid.Name .. "   " .. coolkid:GetFullName())
 		end	
 	end
-
 end)
 workspace:FindFirstChild("Players"):FindFirstChild("Killers").ChildAdded:Connect(function(killer)
 	if killer.Name == "JohnDoe" and skinStatus.BigDjohnDoe == true and canRunUpdateLoop == true then
@@ -523,6 +536,11 @@ Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child:I
 	end
 end)
 task.spawn(function()
+	Client.PlayerGui:WaitForChild("RoundTimer"):WaitForChild("Main").Changed:Connect(function(prop)
+		if prop == "Visible" then
+			Client.PlayerGui:WaitForChild("RoundTimer"):WaitForChild("Main").Visible = true
+		end
+	end)
 	Client.PlayerGui:WaitForChild("FadeUI").ChildAdded:Connect(function(child:Frame)
 		if options.AssetLoadReplacement == true and child.Name == "Fade" and canRunUpdateLoop == true then
 			child.Visible = false
