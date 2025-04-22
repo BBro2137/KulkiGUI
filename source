@@ -157,6 +157,7 @@ local options = {
 	["ShowChat"] = false,
 	["Easy1x4Popups"] = false,
 	["AssetLoadReplacement"] = false,
+	["UltraEZ1x4Popups"] = false,
 }
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
@@ -529,18 +530,24 @@ end)
 Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child:ImageButton)
 	if options.Easy1x4Popups == true and child.Name == "1x1x1x1Popup" and canRunUpdateLoop == true then
 		print("feeling entaglement")
-		child.BackgroundTransparency = 0.5
+		child.ImageTransparency = 0.9
+		child.BackgroundTransparency = 0.9
 		child.Size = UDim2.new(1,0,1,0)
-		child.Position = UDim2.new(0,0,0,0)
+		child.Position = UDim2.new(0.5,0,0.5,0)
 		child.BackgroundColor3 = Color3.fromRGB(255,0,0)
+		if options.UltraEZ1x4Popups == true then
+			child.Name = "aaaahhhh"
+			child.Destroying:Connect(function()
+				for i,pop in Client.PlayerGui:WaitForChild("TemporaryUI"):GetChildren() do
+					if pop ~= child and pop.Name == "aaaahhhh" then
+						pop:Destroy()
+					end
+				end
+			end)			
+		end
 	end
 end)
 task.spawn(function()
-	Client.PlayerGui:WaitForChild("RoundTimer"):WaitForChild("Main").Changed:Connect(function(prop)
-		if prop == "Visible" then
-			Client.PlayerGui:WaitForChild("RoundTimer"):WaitForChild("Main").Visible = true
-		end
-	end)
 	Client.PlayerGui:WaitForChild("FadeUI").ChildAdded:Connect(function(child:Frame)
 		if options.AssetLoadReplacement == true and child.Name == "Fade" and canRunUpdateLoop == true then
 			child.Visible = false
@@ -557,6 +564,9 @@ task.spawn(function() --main update loop
 		end
 		local su,err = nil
 		su,err = pcall(function()
+			if options.AssetLoadReplacement == true and Client.PlayerGui:FindFirstChild("RoundTimer"):FindFirstChild("Main") then
+				Client.PlayerGui:WaitForChild("RoundTimer"):WaitForChild("Main").Visible = true
+			end
 			for i,plr in game.Players:GetPlayers() do
 				if plr.Character and plr.Character:FindFirstChildWhichIsA("Humanoid") and plr.Character:FindFirstChildWhichIsA("Humanoid").Health <= 0 and plr.Character:FindFirstChild("FilthyESP77") then
 					plr.Character:FindFirstChild("FilthyESP77"):Destroy()
@@ -1085,6 +1095,9 @@ end
 local function E1PU()
 	options.Easy1x4Popups = not options.Easy1x4Popups
 end
+local function UE1P()
+	options.UltraEZ1x4Popups = not options.UltraEZ1x4Popups
+end
 local function ALRf()
 	options.AssetLoadReplacement = not options.AssetLoadReplacement
 end
@@ -1117,6 +1130,7 @@ createOption("NEXTKILLER","SHOW NEXT KILLER",SNKfunction,"SNK")
 createOption("STUDSINSTEAD","STUDS INSTEAD OF CLASS",SIOC,"SIOC")
 createOption("SHOWCHAT","CHAT VISIBLE",ShowChatF,"ShowChat")
 createOption("E1PU","EZ 1x4 POP-UPS",E1PU,"Easy1x4Popups")
+createOption("UE1P","ULTRA EZ 1x4 POP-UPS (works only if ez 1x4 pop is on)",UE1P,"UltraEZ1x4Popups")
 createOption("ALR","ASSET LOAD REPLACEMENT",ALRf,"AssetLoadReplacement")
 
 --debugs heaven no anti-szweg
