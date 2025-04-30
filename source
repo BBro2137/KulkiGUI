@@ -3,7 +3,7 @@ if game.GameId == 18687417158 then
 	
 
 local RunService = game:GetService("RunService")
-local versionString = " 2.3 (TEST)"
+local versionString = " 2.3"
 local SavedCommunicator = nil
 if RunService:IsStudio() then
 	task.wait(2)
