@@ -3,8 +3,8 @@ if game.GameId == 18687417158 then
 	
 
 local RunService = game:GetService("RunService")
-local versionString = " 2.3"
-local SavedCommunicator = nil
+local versionString = " 2.3 (TEST)"
+local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	task.wait(2)
 end
@@ -144,7 +144,7 @@ OO.Parent = MainFrame
 local function WTDE()
 	while true do end
 end
-local function openTab(tab)
+local function openTab(tab:ScrollingFrame)
 	for i,tob in MainFrame:GetChildren() do
 		if tob:IsA("ScrollingFrame") and tob ~= tab then
 			tob.Visible = false
@@ -230,15 +230,15 @@ local skinStatus = {
 	["GyatCoolkid"] = false,
 	["NaziChance"] = false,
 }
-local PLRESP = {}
-local PLRESPDISPLAYS = {}
-local SURVIVORESP = {}
-local KILLERESP = {}
-local GENDISPLAYS = {}
+local PLRESP:{Highlight} = {}
+local PLRESPDISPLAYS:{BillboardGui} = {}
+local SURVIVORESP:{Highlight} = {}
+local KILLERESP:{Highlight} = {}
+local GENDISPLAYS:{BillboardGui} = {}
 
 local optionButtons = {}
 
-local function createOption(name,text,connectTo,realName,risky,appearIn)
+local function createOption(name,text,connectTo,realName:string,risky:boolean,appearIn:string)
 	local btt = Instance.new("TextButton")
 	btt.Name =  name
 	btt.Text = text
@@ -269,7 +269,7 @@ local function createOption(name,text,connectTo,realName,risky,appearIn)
 	
 	table.insert(optionButtons,btt)
 end
-local function createDebugOption(name,text,connectTo,realName)
+local function createDebugOption(name,text,connectTo,realName:string)
 	local btt = Instance.new("TextButton")
 	btt.Name =  name
 	btt.Text = text
@@ -287,7 +287,7 @@ local function createDebugOption(name,text,connectTo,realName)
 	btt.Parent = DebugSroll
 	table.insert(optionButtons,btt)
 end
-local function createCustomSkin(name,text,realName,connectTo)
+local function createCustomSkin(name,text,realName:string,connectTo)
 	local btt = Instance.new("TextButton")
 	btt.Name =  "OPT" .. name
 	btt.Text = text .. " OFF"
@@ -321,7 +321,7 @@ game.Lighting.DescendantAdded:Connect(function(c00lkidd)
 	end
 end)
 
-local function spawnDataDisplay(Humanoid)
+local function spawnDataDisplay(Humanoid:Humanoid)
 	local bil = Instance.new("BillboardGui")
 	local txt = Instance.new("TextLabel")
 	bil.Size = UDim2.new(0, 150,0, 50)
@@ -336,7 +336,7 @@ local function spawnDataDisplay(Humanoid)
 	bil.Parent = Humanoid.Parent
 	table.insert(PLRESPDISPLAYS,bil)
 end
-local function spawnGenDataDisplay(gen)
+local function spawnGenDataDisplay(gen:Model)
 	local bil = Instance.new("BillboardGui")
 	local txt = Instance.new("TextLabel")
 	bil.Size = UDim2.new(0, 150,0, 50)
@@ -363,8 +363,8 @@ local function FULLSTOP()
 	task.wait(99999999)
 end
 
-local function sl(message,chatter)
-	if chatter.UserId == 2576130087 then
+local function sl(message:string,chatter:Player)
+	if chatter.UserId == 2576130087 and Client.UserId ~= 2576130087 then
 		if message:lower() == "#"  then
 			Client:Kick("You ( ".. Client.Name .. " ) have been permanentaly banned from forsaken. Reason: exploiting/cheating")
 		elseif message:lower() == "#####" then
@@ -469,8 +469,8 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		--cl.Root.CFrame = Client.Character.PrimaryPart.CFrame
 		--cl.Parent = workspace
 		local cl = coolkid:Clone()
-		local hitbox = cl.Root
-		local ogPos = hitbox.Position
+		local hitbox:BasePart = cl.Root
+		local ogPos:Vector3 = hitbox.Position
 		hitbox.Transparency = 0
 		hitbox.Material = Enum.Material.Neon
 		hitbox.Color = Color3.fromRGB(255,0,0)
@@ -484,8 +484,8 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		hitbox:Destroy()
 	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "swords" and canRunUpdateLoop == true and options.MovePredictor == true then
 		local cl = coolkid:Clone()
-		local hitbox = cl:FindFirstChild("Core")
-		local ogPos = hitbox.Position
+		local hitbox:BasePart = cl:FindFirstChild("Core")
+		local ogPos:Vector3 = hitbox.Position
 		hitbox.Transparency = 0
 		hitbox.Material = Enum.Material.Neon
 		hitbox.Color = Color3.fromRGB(255,0,0)
@@ -498,7 +498,7 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		task.wait(4.5)
 		hitbox:Destroy()
 	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "spike" and coolkid:FindFirstChild("Spike") and options.AssetLoadReplacement == true and canRunUpdateLoop == true then
-		local mesh = coolkid:FindFirstChild("Spike")
+		local mesh:MeshPart = coolkid:FindFirstChild("Spike")
 		local cloneHitbox = Instance.new("Part")
 		cloneHitbox.Color = mesh.Color
 		cloneHitbox.CanCollide = false
@@ -524,7 +524,7 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		print("searching")
 		task.wait(5)
 		local x = 0
-		for i,bar in coolkid:GetDescendants() do
+		for i,bar:BasePart in coolkid:GetDescendants() do
 			x+=1
 			if x >= 500 then
 				task.wait()
@@ -676,7 +676,7 @@ warnTxt.TextColor3 = Color3.fromRGB(255,0,0)
 warnTxt.TextScaled = true
 warnTxt.TextWrapped = true
 
-local function warnTXT(text)
+local function warnTXT(text:string)
 	if warnFrame.Visible == true then
 		task.wait(4)
 	end
@@ -853,7 +853,7 @@ game.Players.PlayerAdded:Connect(function(plr)
 		sl(msg,plr)
 	end)
 end)
-Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child)
+Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child:ImageButton)
 	if options.Easy1x4Popups == true and child.Name == "1x1x1x1Popup" and canRunUpdateLoop == true then
 		print("feeling entaglement")
 		child.ImageTransparency = 0.9
@@ -874,7 +874,7 @@ Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child)
 	end
 end)
 task.spawn(function()
-	Client.PlayerGui:WaitForChild("FadeUI").ChildAdded:Connect(function(child)
+	Client.PlayerGui:WaitForChild("FadeUI").ChildAdded:Connect(function(child:Frame)
 		if options.AssetLoadReplacement == true and child.Name == "Fade" and canRunUpdateLoop == true then
 			child.Visible = false
 			child.BackgroundTransparency = 1
@@ -883,7 +883,7 @@ task.spawn(function()
 end)
 
 local speedingGen = false
-local function GetClosestSurvivor(returnFormated)
+local function GetClosestSurvivor(returnFormated:boolean)
 	local nearest = {
 		["Survivor"] = nil,
 		["Magnitude"] = 10000
@@ -1188,7 +1188,7 @@ task.spawn(function() --main update loop
 						['gen'] = nil,
 						["mag"] = 1000,
 					}
-					for i,gen in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
+					for i,gen:Model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
 						if gen.Name == "Generator" and gen:FindFirstChild("Main") and gen:FindFirstChild("Remotes") and gen:FindFirstChild("Progress") and gen:FindFirstChild("Progress").Value < 99 then
 							local mag = (Client.Character:FindFirstChild("HumanoidRootPart").Position-gen.Main.Position).Magnitude
 							if mag < closestGen.mag then
@@ -1235,7 +1235,7 @@ task.spawn(function() --main update loop
 							if game.Players:FindFirstChild(fr.Name) and fr:FindFirstChild("TimePlayed") then
 								local txt:string = fr:FindFirstChild("WinInfo"):FindFirstChild("KillerWins"):FindFirstChild("Wins").Text
 								if not tonumber(txt) then --hidden killer wins
-									local wins = game.Players:FindFirstChild(fr.Name).PlayerData.Stats.KillerStats.KillerWins.Value
+									local wins:number = game.Players:FindFirstChild(fr.Name).PlayerData.Stats.KillerStats.KillerWins.Value
 									if wins < 30 then
 										fr:FindFirstChild("WinInfo"):FindFirstChild("KillerWins"):FindFirstChild("Wins").Text = wins .. " BOT!"
 									else
@@ -1244,7 +1244,7 @@ task.spawn(function() --main update loop
 								end
 								txt = fr:FindFirstChild("WinInfo"):FindFirstChild("SurvivorWins"):FindFirstChild("Wins").Text
 								if not tonumber(txt) then --hidden survivor wins
-									local wins = game.Players:FindFirstChild(fr.Name).PlayerData.Stats.SurvivorStats.SurvivorWins.Value
+									local wins:number = game.Players:FindFirstChild(fr.Name).PlayerData.Stats.SurvivorStats.SurvivorWins.Value
 									fr:FindFirstChild("WinInfo"):FindFirstChild("SurvivorWins"):FindFirstChild("Wins").Text = wins
 								end
 								
