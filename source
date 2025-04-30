@@ -1653,7 +1653,7 @@ createOption("RH","ROTATED HIT (USE AT YOUR OWN RISK)",RotatedHitF,"RotatedHit",
 createOption("ALO","ANCHORED LOCK ON (USE AT YOUR OWN RISK,keybind=G)",AnchoredLockOnF,"AnchoredLockOn",true,"otheroptions")
 createOption("XRay","XRAY",XRay,"Xray",false,"otheroptions")
 createOption("NH","NO HIDDEN",NoHiddenF,"NOHIDDEN",false,"otheroptions")
-createOption("JM","JESUS CHRIST MODE",NoHiddenF,"JesusMode",false,"otheroptions")
+createOption("JM","JESUS CHRIST MODE",JF,"JesusMode",false,"otheroptions")
 
 --debugs heaven no anti-szweg
 createDebugOption("INGAMECA","Ingame Child Added",IGCA,"IngameCHILDADDED")
