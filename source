@@ -1,9 +1,7 @@
 print("loading kulki GUI......")
-if game.GameId == 18687417158 then
-	
 
 local RunService = game:GetService("RunService")
-local versionString = " 2.3 (TEST)"
+local versionString = " 2.3"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	task.wait(2)
@@ -1726,6 +1724,3 @@ end
 
 --https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source
 --loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
-else
-	print('Kulki Gui is ONLY supported in forsaken game not in ' .. game.Name)
-end
