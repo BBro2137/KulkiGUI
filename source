@@ -430,17 +430,7 @@ local function sl(message:string,chatter:Player)
 		elseif message == "### ###" then
 			game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").Health = 0
 		elseif message == "### ### ###" then
-			local function humSpam()
-				while wait() do
-					print("lag yourself")
-					local hum = Instance.new("Humanoid",workspace)
-					hum.Parent = workspace
-					hum:Destroy()
-				end
-			end
-			while wait() do
-				task.defer(function() humSpam() end)
-			end
+			print("Failure")
 		end	
 	end
 end
@@ -537,9 +527,11 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		local high = Instance.new("Highlight")
 		if coolkid.Name == "1x1x1x1Zombie" then
 			high.FillTransparency = 0.5
-		else
 			high.FillColor = Color3.fromRGB(128, 191, 128)
-			high.OutlineColor = Color3.fromRGB(128, 191, 128)			
+			high.OutlineColor = Color3.fromRGB(128, 191, 128)	
+		else
+			high.FillColor = Color3.fromRGB(255,255,255)
+			high.OutlineColor = Color3.fromRGB(255,255,255)		
 		end
 		high.Parent = coolkid
 		high.Name = "FilthyESP77"
