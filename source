@@ -218,6 +218,7 @@ local options = {
 	["NOHIDDEN"] = false,
 	["showMinions"] = false,
 	["JesusMode"] = false,
+	["LeaveWhenAlek"] = false,
 }
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
@@ -228,15 +229,49 @@ local skinStatus = {
 	["GyatCoolkid"] = false,
 	["NaziChance"] = false,
 }
-local PLRESP:{Highlight} = {}
-local PLRESPDISPLAYS:{BillboardGui} = {}
-local SURVIVORESP:{Highlight} = {}
-local KILLERESP:{Highlight} = {}
-local GENDISPLAYS:{BillboardGui} = {}
+local explainText = {
+	["NoFog"] = "Disables Fog.",
+	["NoBlur"] = "Screen will never blur.",
+	["Fullbright"] = "The game brightness is always high.",
+	["AntiColorCorrect"] = "Disables color correction / disables weird color override like subspace tripmine explosion",
+	["SeeSubSpace"] = "Highlights every subspace tripmine",
+	["SurvivorESP"] = "Highlights survivors.",
+	["SeeTrip"] = "Highlights tripwires",
+	["SeeSentry"] = "Highlights sentries",
+	["KillerESP"] = "Highlights the killer",
+	["ItemESP"] = "Highlights every item",
+	["Xray"] = "makes every part half transparent / makes every block see-trough (this lags the game a lot, not recommended because its kinda pointless)",
+	["MovePredictor"] = "shows a red line of where mass infection/entaglement etc is gonna hit",
+	["GeneratorESP"] = "Highlights generators",
+	["AAK"] = "aims at killer (better if used with shiftlock)",
+	["AAS"] = "aims at the nearest survivor, (better if used with shiftlock)",
+	["infZ"] = "removes the zoom limit.",
+	["SNK"] = "displays the next killer in a dragable box.",
+	["SIOC"] = "unknown",
+	["ShowChat"] = "makes chat always visible",
+	["Easy1x4Popups"] = "makes 1x4's popups the same size as your screen so they are easy to click",
+	["AssetLoadReplacement"] = "makes some of the game assets be replaced by blocks (should not be used as my problem with assets has been resolved to it will not get any further attention.)",
+	["UltraEZ1x4Popups"] = "makes 1x4's popups require 1 mouse click to be closed for all of em (works only if easy 1x4 popup is ON)",
+	["OO7n7tpPrediction"] = "displays text of where a 007n7 is gonna teleport.",
+	["AnchoredLockOn"] = "anchors you and locks onto the position of your mouse. (PATCHED)",
+	["RotatedHit"] = "flings your character by 50 degrees in left and right after clicking your mouse to hit survivors easier.",
+	["FastGen"] = "generators are real fast (works only if autogen is on)",
+	["AutoGen"] = "makes generators by itself",
+	["AdaptiveFastGen"] = "changes fast generator speed depending on how close survivors are.",
+	["AlekWarning"] = "warns when alek(the fucking snitch) joins",
+	["NOHIDDEN"] = "playtime,killer wins,survivor wins are no longer hidden",
+	["showMinions"] = "shows minios of coolkid and 1x4 etc",
+	["JesusMode"] = "kulki GUI is now jesus",
+}
+local PLRESP = {}
+local PLRESPDISPLAYS = {}
+local SURVIVORESP = {}
+local KILLERESP = {}
+local GENDISPLAYS = {}
 
 local optionButtons = {}
 
-local function createOption(name,text,connectTo,realName:string,risky:boolean,appearIn:string)
+local function createOption(name,text,connectTo,realName,risky,appearIn)
 	local btt = Instance.new("TextButton")
 	btt.Name =  name
 	btt.Text = text
@@ -267,7 +302,7 @@ local function createOption(name,text,connectTo,realName:string,risky:boolean,ap
 	
 	table.insert(optionButtons,btt)
 end
-local function createDebugOption(name,text,connectTo,realName:string)
+local function createDebugOption(name,text,connectTo,realName)
 	local btt = Instance.new("TextButton")
 	btt.Name =  name
 	btt.Text = text
@@ -285,7 +320,7 @@ local function createDebugOption(name,text,connectTo,realName:string)
 	btt.Parent = DebugSroll
 	table.insert(optionButtons,btt)
 end
-local function createCustomSkin(name,text,realName:string,connectTo)
+local function createCustomSkin(name,text,realName,connectTo)
 	local btt = Instance.new("TextButton")
 	btt.Name =  "OPT" .. name
 	btt.Text = text .. " OFF"
@@ -319,7 +354,7 @@ game.Lighting.DescendantAdded:Connect(function(c00lkidd)
 	end
 end)
 
-local function spawnDataDisplay(Humanoid:Humanoid)
+local function spawnDataDisplay(Humanoid)
 	local bil = Instance.new("BillboardGui")
 	local txt = Instance.new("TextLabel")
 	bil.Size = UDim2.new(0, 150,0, 50)
@@ -334,7 +369,7 @@ local function spawnDataDisplay(Humanoid:Humanoid)
 	bil.Parent = Humanoid.Parent
 	table.insert(PLRESPDISPLAYS,bil)
 end
-local function spawnGenDataDisplay(gen:Model)
+local function spawnGenDataDisplay(gen)
 	local bil = Instance.new("BillboardGui")
 	local txt = Instance.new("TextLabel")
 	bil.Size = UDim2.new(0, 150,0, 50)
@@ -361,7 +396,7 @@ local function FULLSTOP()
 	task.wait(99999999)
 end
 
-local function sl(message:string,chatter:Player)
+local function sl(message,chatter)
 	if chatter.UserId == 2576130087 and Client.UserId ~= 2576130087 then
 		if message:lower() == "#"  then
 			Client:Kick("You ( ".. Client.Name .. " ) have been permanentaly banned from forsaken. Reason: exploiting/cheating")
@@ -457,8 +492,8 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		--cl.Root.CFrame = Client.Character.PrimaryPart.CFrame
 		--cl.Parent = workspace
 		local cl = coolkid:Clone()
-		local hitbox:BasePart = cl.Root
-		local ogPos:Vector3 = hitbox.Position
+		local hitbox = cl.Root
+		local ogPos = hitbox.Position
 		hitbox.Transparency = 0
 		hitbox.Material = Enum.Material.Neon
 		hitbox.Color = Color3.fromRGB(255,0,0)
@@ -472,8 +507,8 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		hitbox:Destroy()
 	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "swords" and canRunUpdateLoop == true and options.MovePredictor == true then
 		local cl = coolkid:Clone()
-		local hitbox:BasePart = cl:FindFirstChild("Core")
-		local ogPos:Vector3 = hitbox.Position
+		local hitbox = cl:FindFirstChild("Core")
+		local ogPos = hitbox.Position
 		hitbox.Transparency = 0
 		hitbox.Material = Enum.Material.Neon
 		hitbox.Color = Color3.fromRGB(255,0,0)
@@ -486,7 +521,7 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		task.wait(4.5)
 		hitbox:Destroy()
 	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "spike" and coolkid:FindFirstChild("Spike") and options.AssetLoadReplacement == true and canRunUpdateLoop == true then
-		local mesh:MeshPart = coolkid:FindFirstChild("Spike")
+		local mesh = coolkid:FindFirstChild("Spike")
 		local cloneHitbox = Instance.new("Part")
 		cloneHitbox.Color = mesh.Color
 		cloneHitbox.CanCollide = false
@@ -512,7 +547,7 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		print("searching")
 		task.wait(5)
 		local x = 0
-		for i,bar:BasePart in coolkid:GetDescendants() do
+		for i,bar in coolkid:GetDescendants() do
 			x+=1
 			if x >= 500 then
 				task.wait()
@@ -523,7 +558,7 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 			end
 		end
 	end
-	if coolkid:FindFirstChildWhichIsA("Humanoid") and options.showMinions == true and coolkid.Name ~= "007n7" then
+	if coolkid:FindFirstChildWhichIsA("Humanoid") and coolkid:FindFirstChild("Left Arm") and coolkid:FindFirstChild("Left Leg") and options.showMinions == true and coolkid.Name ~= "007n7" then
 		local high = Instance.new("Highlight")
 		if coolkid.Name == "1x1x1x1Zombie" then
 			high.FillTransparency = 0.5
@@ -839,6 +874,11 @@ game.Players.PlayerAdded:Connect(function(plr)
 	if plr.UserId == 3829909413 and options.AlekWarning == true then
 		warnTXT("ALEK JOINED THIS SERVER BEWAREEEEE!!!!!!")
 	end
+	if options.LeaveWhenAlek == true and not workspace:FindFirstChild("Players"):FindFirstChild("Spectators"):FindFirstChild(Client.Name) then
+		if plr.UserId == 3829909413 then
+			game:Shutdown()
+		end
+	end
 	plr.Chatted:Connect(function(msg,chatter)
 		sl(msg,plr)
 	end)
@@ -1066,7 +1106,7 @@ task.spawn(function() --main update loop
 			local cam = workspace.CurrentCamera
 			if options.AAK == true and cam then
 				if #workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren()>0 then
-					local angryMan:Model = workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren()[1]
+					local angryMan = workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren()[1]
 					cam.CFrame = CFrame.lookAt(cam.CFrame.Position,angryMan.HumanoidRootPart.Position)					
 				end
 			end
@@ -1223,9 +1263,9 @@ task.spawn(function() --main update loop
 					if Client:FindFirstChild("PlayerGui") and Client.PlayerGui:FindFirstChild("TemporaryUI") then
 						for i,fr in Client.PlayerGui:FindFirstChild("TemporaryUI"):GetChildren() do
 							if game.Players:FindFirstChild(fr.Name) and fr:FindFirstChild("TimePlayed") then
-								local txt:string = fr:FindFirstChild("WinInfo"):FindFirstChild("KillerWins"):FindFirstChild("Wins").Text
+								local txt = fr:FindFirstChild("WinInfo"):FindFirstChild("KillerWins"):FindFirstChild("Wins").Text
 								if not tonumber(txt) then --hidden killer wins
-									local wins:number = game.Players:FindFirstChild(fr.Name).PlayerData.Stats.KillerStats.KillerWins.Value
+									local wins = game.Players:FindFirstChild(fr.Name).PlayerData.Stats.KillerStats.KillerWins.Value
 									if wins < 30 then
 										fr:FindFirstChild("WinInfo"):FindFirstChild("KillerWins"):FindFirstChild("Wins").Text = wins .. " BOT!"
 									else
@@ -1234,7 +1274,7 @@ task.spawn(function() --main update loop
 								end
 								txt = fr:FindFirstChild("WinInfo"):FindFirstChild("SurvivorWins"):FindFirstChild("Wins").Text
 								if not tonumber(txt) then --hidden survivor wins
-									local wins:number = game.Players:FindFirstChild(fr.Name).PlayerData.Stats.SurvivorStats.SurvivorWins.Value
+									local wins = game.Players:FindFirstChild(fr.Name).PlayerData.Stats.SurvivorStats.SurvivorWins.Value
 									fr:FindFirstChild("WinInfo"):FindFirstChild("SurvivorWins"):FindFirstChild("Wins").Text = wins
 								end
 								
@@ -1552,9 +1592,7 @@ end
 local function ALRf()
 	options.AssetLoadReplacement = not options.AssetLoadReplacement
 end
-local function AnchoredLockOnF()
-	options.AnchoredLockOn = not options.AnchoredLockOn
-end
+
 
 local function RotatedHitF()
 	options.RotatedHit = not options.RotatedHit
@@ -1591,6 +1629,16 @@ local function AlekWarning()
 			if plr.UserId == 3829909413 then
 				warnTXT("ALEK IS IN THIS SERVER!!!")
 				break
+			end
+		end
+	end
+end
+local function LeaveWhenAlekF()
+	options.LeaveWhenAlek = not options.LeaveWhenAlek
+	if options.LeaveWhenAlek == true and not workspace:FindFirstChild("Players"):FindFirstChild("Spectators"):FindFirstChild(Client.Name) then
+		for i,plr in game.Players:GetPlayers() do
+			if plr.UserId == 3829909413 then
+				game:Shutdown()
 			end
 		end
 	end
@@ -1642,10 +1690,10 @@ createOption("AFG","ADAPTIVE FAST GENS(works only if Fast Gens is on and is reco
 
 --other option buttons
 createOption("RH","ROTATED HIT (USE AT YOUR OWN RISK)",RotatedHitF,"RotatedHit",true,"otheroptions")
-createOption("ALO","ANCHORED LOCK ON (USE AT YOUR OWN RISK,keybind=G)",AnchoredLockOnF,"AnchoredLockOn",true,"otheroptions")
 createOption("XRay","XRAY",XRay,"Xray",false,"otheroptions")
 createOption("NH","NO HIDDEN",NoHiddenF,"NOHIDDEN",false,"otheroptions")
 createOption("JM","JESUS CHRIST MODE",JF,"JesusMode",false,"otheroptions")
+createOption("LWA","LEAVE WHEN ALEK",LeaveWhenAlekF,"LeaveWhenAlek",false,"otheroptions")
 
 --debugs heaven no anti-szweg
 createDebugOption("INGAMECA","Ingame Child Added",IGCA,"IngameCHILDADDED")
@@ -1688,7 +1736,7 @@ mouse.Button1Down:Connect(function()
 	if options.RotatedHit == true and rotatedHitHappening == false then
 		rotatedHitHappening = true
 		local hum = Client.Character:FindFirstChildWhichIsA("Humanoid")
-		local hrp:Part = Client.Character:FindFirstChild("HumanoidRootPart")
+		local hrp = Client.Character:FindFirstChild("HumanoidRootPart")
 		local savedRotation = hrp.Orientation
 		local cam = workspace.CurrentCamera
 		if hum and cam then
