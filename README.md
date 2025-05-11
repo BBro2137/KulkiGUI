@@ -4,12 +4,11 @@
 
 uh oh roblox new anti cheat :( we are cooked now every executor is detected kulki gui is currently disabled untill bypass for the anti cheat
 
-1. is it safe?
+Q: is it safe? 
+A: depends on what settings you use from this masterpiece (the red ones are risky to be used)
 
-depends on what settings you use from this masterpiece (the red ones are risky to be used)
-3. can i get banned
-  
-  the obvious answer is yes
-4. betrayed 1x big bombogyat?
-  
-  NO AND NEVER STFU
+Q: can i get banned
+A:the obvious answer is yes
+
+Q: betrayed 1x big bombogyat?
+A:NO AND NEVER STFU
