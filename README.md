@@ -1,8 +1,13 @@
 # The *CRAZY* forsaken exploit
 > dont exploit, its for educational purposes only.
 
-**WARNING**
+**WARNING START**
+
+
 uh oh roblox new anti cheat :( we are cooked now every executor is detected kulki gui is currently disabled untill bypass for the anti cheat
+
+**WARNING END**
+
 
 Q: is it safe?
 
