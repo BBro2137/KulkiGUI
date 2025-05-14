@@ -1,1 +1,2 @@
-print("no exploiting for now atleast")
+print("Loading Kulki GUI........")
+warn("could not fetch game modules")
