@@ -277,6 +277,7 @@ local options = {
 	["AutoBlockGuest1337"] = false,
 	["UnUsedValue"] = false,
 	["NoStun"] = false,
+	["InfSprint"] = false,
 }
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
@@ -1448,6 +1449,9 @@ task.spawn(function() --main update loop
 				end
 				Client.Character:FindFirstChild("HumanoidRootPart").Anchored = false
 			end
+			if options.InfSprint == true and Client.Character and Client.Character:FindFirstChild("SpeedMultipliers")  then
+				Client.Character.SpeedMultipliers:FindFirstChild("Sprinting").Value = 1.8
+			end
 		end)
 		if err then
 			warn("OH MY GOOOOOOOD!!!!, WADAFAK!!!!! , " .. tostring(err))
@@ -1921,7 +1925,9 @@ local function TurnIntoDummyF()
 		game.Players.LocalPlayer.PlayerGui.MainUI.PlayerListHolder.Contents.Players:FindFirstChild(game.Players.LocalPlayer.Name).PlayerInfo.Username.Text = "CrazyPlayer123"
 	end
 end
-
+local function INFSPRINTF()
+	options.InfSprint = not options.InfSprint
+end
 
 
 
@@ -1955,7 +1961,7 @@ createOption("O7TPP","007n7 TP PREDICTION",O7TPpredict,"OO7n7tpPrediction")
 createOption("SH","SHOW MINIONS",showMinionsF,"showMinions")
 createOption("ABG","AUTO BLOCK GUEST (bad)",ABGF,"AutoBlockGuest1337")
 createOption("NS","NO STUN",NOSTUNF,"NoStun",true)
-
+createOption("IS","INF SPRINT",INFSPRINTF,"InfSprint",true)
 
 
 --warning config buttons
