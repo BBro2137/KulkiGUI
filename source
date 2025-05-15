@@ -1440,6 +1440,11 @@ task.spawn(function() --main update loop
 					end
 				end)
 			end
+			if options.NoStun == true and Client.Character and Client.Character:FindFirstChild("SpeedMultipliers") then
+				for i,kid in Client.Character.SpeedMultipliers:GetChildren() do
+					kid:Destroy()
+				end
+			end
 		end)
 		if err then
 			warn("OH MY GOOOOOOOD!!!!, WADAFAK!!!!! , " .. tostring(err))
