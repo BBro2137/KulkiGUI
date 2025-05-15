@@ -1442,8 +1442,11 @@ task.spawn(function() --main update loop
 			end
 			if options.NoStun == true and Client.Character and Client.Character:FindFirstChild("SpeedMultipliers") then
 				for i,kid in Client.Character.SpeedMultipliers:GetChildren() do
-					kid:Destroy()
+					if kid.Name ~= "Sprinting" then
+						kid:Destroy()
+					end
 				end
+				Client.Character:FindFirstChild("HumanoidRootPart").Anchored = false
 			end
 		end)
 		if err then
