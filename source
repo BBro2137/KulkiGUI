@@ -1,7 +1,7 @@
 print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
-local versionString = " 2.3"
+local versionString = " 2.4 (END)"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	task.wait(2)
