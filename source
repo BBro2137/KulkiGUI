@@ -211,6 +211,7 @@ local options = {
 	["UnUsedValue"] = false,
 	["NoStun"] = false,
 	["InfSprint"] = false,
+	["WalkspeedNoStop"] = false
 }
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
@@ -1650,9 +1651,9 @@ local function getAllCharsF()
 end
 local function getNoliGuest666()
 	if packed == true and not HasCharacter("NoliRework") and not HasCharacter("Guest666") then
-		GetCharacter("NoliRework",math.random(38543),true)
+		GetCharacter("NoliRework",math.random(0,38543),true)
 		task.wait(1)
-		GetCharacter("Guest666",math.random(35436),true)
+		GetCharacter("Guest666",math.random(0,35436),true)
 	end
 end
 local function TurnIntoDummyF()
@@ -1719,6 +1720,7 @@ createOption("ADAPTIVE FAST GENS(works only if Fast Gens is on and is recomenned
 --createOption("NS","NO STUN",NOSTUNF,"NoStun",true)
 --createOption("IS","INF SPRINT",INFSPRINTF,"InfSprint",true)
 --createOption("UE1P","ULTRA EZ 1x4 POP-UPS (USE AT YOUR OWN RISK,works only if ez 1x4 pop is on)",UE1P,"UltraEZ1x4Popups",true) --make it no 1x popups
+createOption("WALKSPEED OVERRIDE NO STOP","toggle","WalkspeedNoStop","Exploits",nil,true)
 
 --misc
 createOption("X-RAY","toggle","XRay","Misc",nil,true)
@@ -1731,8 +1733,18 @@ createOption("SWITCHLOCKED","SWITCH LOCKED TO UNLOCKED CHARACTERS (needed to get
 createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"otheroptions")]]
 
 PatchLockedCharacters()
-GetCharacter("Noli",7100,true)
-
+GetCharacter("NoliRework",7100,true)
+local hook;
+hook = hookmetamethod(game,"__namecall",function(self,...)
+	local args = {...}
+	local method = getnamecallmethod()
+	print("got event")
+	if options.WalkspeedNoStop ==true and method == "FireServer" and args[1] == Client.Name .. "C00lkiddCollision" then
+		warn("stopped collision :D")
+		return nil
+	end
+	return hook(self,unpack(args))
+end)
 if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
 	FULLSTOP()
 end
