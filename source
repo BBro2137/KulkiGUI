@@ -217,6 +217,7 @@ local options = {
 	["AutoDodge1x"] = false,
 	["DisableFootprint"] = false,
 	["SpikeNoclip"] = false,
+	["DisableTrail"] = false,
 }
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
@@ -1320,6 +1321,13 @@ task.spawn(function() --main update loop
 				for i,foot in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
 					if string.find(foot.Name,"Shadows") and foot:FindFirstChild("Shadow") then
 						foot:Destroy()
+					end
+				end
+			end
+			if options.DisableTrail == true then
+				for i,killer in workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren() do
+					if killer:FindFirstChild("JohnDoeTrail") then
+						killer:FindFirstChild("JohnDoeTrail"):Destroy()
 					end
 				end
 			end
