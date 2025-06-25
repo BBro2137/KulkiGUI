@@ -1794,7 +1794,13 @@ mouse.Button1Up:Connect(function()
 	mouseIsBeingHeld = false
 end)]]
 
-
+for i,tab in MainFrame:GetChildren() do
+	if tab:HasTag("Tab") and tab:IsA("ScrollingFrame") then
+		tab.CanvasSize = UDim2.new(0, 0,50, 0)
+		print(tab.Name)
+		print(tab.CanvasPosition)
+	end
+end
 
 print("loaded kulki GUI!")
 sGUI.Parent = Client.PlayerGui
