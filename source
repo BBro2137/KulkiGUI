@@ -1,4 +1,4 @@
-print("loading kulki GUI 333......")
+print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.0"
@@ -1756,9 +1756,9 @@ createOption("AIM AT SURVIVOR","toggle","AAS","GeneralCheats",nil,true) --aim at
 --createOption("STUDSINSTEAD","STUDS INSTEAD OF CLASS",SIOC,"SIOC") --Studs instead of class
 createOption("EASY 1x4 POP-UPS","toggle","Easy1x4Popups","GeneralCheats",nil,true)
 createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
-createOption("MASS INFECTION AUTO DODGE","toggle","AutoDodge1x","Exploits",nil,true)
-createOption("JOHN DOE SPIKE NO-CLIP","toggle","SpikeNoclip","Exploits",nil,true)
-
+createOption("MASS INFECTION AUTO DODGE","toggle","AutoDodge1x","GeneralCheats",nil,true)
+createOption("JOHN DOE SPIKE NO-CLIP","toggle","SpikeNoclip","GeneralCheats",nil,true)
+createOption("DISABLE JOHN DOES TRAIL","toggle","DisableTrail","GeneralCheats",nil,true)
 
 --warning config buttons
 --createOption("AJW","ALEK JOIN WARNING",AlekWarning,"AlekWarning",false,"WarningConfig")
