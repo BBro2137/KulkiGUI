@@ -1,4 +1,4 @@
-print("loading kulki GUI 2......")
+print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.0"
@@ -519,14 +519,16 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 				local ogPos = hitbox.Position		
 				local parts = workspace:GetPartBoundsInBox(hitbox.CFrame + hitbox.CFrame.LookVector*500,Vector3.new(hitbox.Size.X,hitbox.Size.Y,hitbox.Size.Z+1000))
 				local floor = nil
+				print(parts)
 				for i,part in parts do
 					if part.Parent == Client.Character then
 						floor = Instance.new("Part")
-						floor.Size = Vector3.new(5000,hitbox.Sizy.Y,500)
+						floor.Size = Vector3.new(5000,hitbox.Size.Y,500)
 						floor.Position = Vector3.new(hitbox.Position.X,hitbox.Position.Y+5,hitbox.Position.Z)
 						if floor.Position.Y > Client.Character:FindFirstChild("HumanoidRootPart").Position.Y then
 							Client.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(Client.Character:FindFirstChild("HumanoidRootPart").Position.X,floor.Position.Y+7,Client.Character:FindFirstChild("HumanoidRootPart").Position.Z)
 						end
+						print("SPAWNING FLOOOOOOOOR")
 						floor.Parent = workspace
 						break
 					end
@@ -563,6 +565,7 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 				local hitbox = cl.Core
 				local ogPos = hitbox.Position		
 				local parts = workspace:GetPartBoundsInBox(hitbox.CFrame + hitbox.CFrame.LookVector*500,Vector3.new(hitbox.Size.X,hitbox.Size.Y,hitbox.Size.Z+1000))
+				print(parts)
 				local floor = nil
 				for i,part in parts do
 					if part.Parent == Client.Character then
@@ -1763,7 +1766,7 @@ createOption("SWITCHLOCKED","SWITCH LOCKED TO UNLOCKED CHARACTERS (needed to get
 createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"otheroptions")]]
 
 PatchLockedCharacters()
-GetCharacter("NoliOld",7100,true)
+GetCharacter("NoliRework",7100,true)
 local hook;
 hook = hookmetamethod(game,"__namecall",function(self,...)
 	local args = {...}
