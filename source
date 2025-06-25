@@ -1314,6 +1314,13 @@ task.spawn(function() --main update loop
 			if options.InfSprint == true and Client.Character and Client.Character:FindFirstChild("SpeedMultipliers")  then
 				Client.Character.SpeedMultipliers:FindFirstChild("Sprinting").Value = 1.8
 			end
+			if options.DisableFootprint == true then
+				for i,foot in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
+					if string.find(foot.Name,"Shadows") and foot:FindFirstChild("Shadow") then
+						foot:Destroy()
+					end
+				end
+			end
 		end)
 		if err then
 			warn("OH MY GOOOOOOOD!!!!, WADAFAK!!!!! , " .. tostring(err))
@@ -1739,8 +1746,8 @@ createOption("AIM AT SURVIVOR","toggle","AAS","GeneralCheats",nil,true) --aim at
 --createOption("STUDSINSTEAD","STUDS INSTEAD OF CLASS",SIOC,"SIOC") --Studs instead of class
 createOption("EASY 1x4 POP-UPS","toggle","Easy1x4Popups","GeneralCheats",nil,true)
 createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
-
-
+createOption("MASS INFECTION AUTO DODGE","toggle","AutoDodge1x","Exploits",nil,true)
+createOption("JOHN DOE SPIKE NO-CLIP","toggle","SpikeNoclip","Exploits",nil,true)
 
 
 --warning config buttons
@@ -1758,7 +1765,6 @@ createOption("NO STUN","toggle","NoStun","Exploits",nil,true)
 --createOption("UE1P","ULTRA EZ 1x4 POP-UPS (USE AT YOUR OWN RISK,works only if ez 1x4 pop is on)",UE1P,"UltraEZ1x4Popups",true) --make it no 1x popups
 createOption("WALKSPEED OVERRIDE NO STOP","toggle","WalkspeedNoStop","Exploits",nil,true)
 createOption("WALKSPEED OVERRIDE INSTA HIT","toggle","WalkspeedHit","Exploits",nil,true)
-createOption("MASS INFECTION+ENTAGLEMENT AUTO DODGE","toggle","AutoDodge1x","Exploits",nil,true)
 createOption("DISABLE DIGITAL FOOTPRINT","toggle","DisableFootprint","Exploits",nil,true)
 
 --misc
