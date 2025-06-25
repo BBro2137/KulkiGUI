@@ -1,10 +1,12 @@
 print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
-local versionString = " 2.4 (END)"
+local versionString = "VERSION 3.0"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
-	task.wait(2)
+	repeat wait() until game:IsLoaded()
+	game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	task.wait()
 end
 if game:FindFirstChild("GameNetworkingDebugger") then
 	if game:GetService("RunService"):IsStudio() then
@@ -39,143 +41,111 @@ local UIS =  game:GetService("UserInputService")
 local mouse = Client:GetMouse()
 local mouseIsBeingHeld = false
 
-local sGUI = Instance.new("ScreenGui")
-local MainFrame = Instance.new("Frame")
-MainFrame.Parent = sGUI
-sGUI.Name = "kulkiGUIvsElliot"
-sGUI.ResetOnSpawn = false
-MainFrame.Name = "MainFrame"
-local scrTitle = Instance.new("TextLabel")
-local subTitle = Instance.new("TextLabel")
-local UIdrag = Instance.new("UIDragDetector")
-local uiCorner = Instance.new("UICorner")
+--very cool ui part
 
-local canQuit = false
+local sGUI = Instance.new("ScreenGui")
+sGUI.ResetOnSpawn = false
+local MainFrame = Instance.new("Frame")
+MainFrame.AnchorPoint = Vector2.new(0.5,0.5)
+MainFrame.Parent = sGUI
+MainFrame.Position = UDim2.new(0.5, 0,0.5, 0)
+MainFrame.Size = UDim2.new(0.753, 0,0.688, 0)
+MainFrame.BackgroundTransparency = 0.05
+MainFrame.BorderSizePixel = 0
+MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+local UIdrag = Instance.new("UIDragDetector")
+UIdrag.Parent = MainFrame
+local corner = Instance.new("UICorner") corner.CornerRadius = UDim.new(0.02,0) corner.Parent = MainFrame
+sGUI.Name = "kulkivsElliot"
+
+local FR_tabs = Instance.new("Frame")
+FR_tabs.Parent = MainFrame
+FR_tabs.Position = UDim2.new(0, 0,0.037, 0)
+FR_tabs.Size = UDim2.new(0.189, 0,0.963, 0)
+FR_tabs.BackgroundTransparency = 1
+FR_tabs.Parent = MainFrame
+FR_tabs.BorderSizePixel = 0
+local layout = Instance.new("UIListLayout")
+layout.Wraps = true
+layout.FillDirection = Enum.FillDirection.Horizontal
+layout.Parent = FR_tabs
+local line = Instance.new("Frame")
+line.BorderSizePixel = 0
+line.BackgroundColor3 = Color3.fromRGB(15,15,15)
+line.Size = UDim2.new(0.013, 0,1, 0)
+line.Position = UDim2.new(0.188, 0,0, 0)
+line.Parent = MainFrame
+local FR_options = Instance.new("Frame")
+FR_options.Position = UDim2.new(0.201, 0,0.184, 0)
+FR_options.BackgroundTransparency = 1
+FR_options.Size = UDim2.new(0.797, 0,0.816, 0)
+FR_options:AddTag("Tab")
+layout:Clone().Parent = FR_options
+
+local KGM = Instance.new("TextLabel")
+KGM.Text = "K"
+KGM.TextTransparency = 0.5
+KGM.TextColor3 = Color3.fromRGB(255,255,255)
+KGM.BackgroundColor3 = Color3.fromRGB(0,0,0)
+KGM.BackgroundTransparency = 0.5
+KGM.TextScaled = true
+KGM.Font = Enum.Font.SourceSansItalic
+UIdrag:Clone().Parent = KGM
+KGM.Visible = false
+local hitbox = Instance.new("TextButton")
+hitbox.Size = UDim2.new(0.5, 0,0.5, 0)
+hitbox.Position = UDim2.new(0.257, 0,0.243, 0)
+hitbox.BackgroundTransparency = 1
+hitbox.Text = ""
+hitbox.Parent = KGM
+hitbox.MouseButton2Click:Connect(function()
+	KGM.Visible = false
+	MainFrame.Visible = true
+end)
+KGM.Parent = sGUI
+KGM.Position = UDim2.new(0.465, 0,0.193, 0)
+KGM.Size = UDim2.new(0.071, 0,0.126, 0)
 
 local disableKulkiGUI = Instance.new("TextButton")
-disableKulkiGUI.Parent = MainFrame
+disableKulkiGUI.Size = UDim2.new(0.054, 0,0.105, 0)
+disableKulkiGUI.Position = UDim2.new(0.949, 0,0.01, 0)
 disableKulkiGUI.Text = "X"
-disableKulkiGUI.BackgroundTransparency = 1
-disableKulkiGUI.FontFace.Bold = true
+disableKulkiGUI.BackgroundColor3 = Color3.fromRGB(223, 223, 223)
 disableKulkiGUI.TextColor3 = Color3.fromRGB(255,0,0)
-disableKulkiGUI.Name = "disableKulkiGUI"
-disableKulkiGUI.Size = UDim2.new(0.086, 0,0.148, 0)
-disableKulkiGUI.Position = UDim2.new(0.914, 0,0, 0)
 disableKulkiGUI.TextScaled = true
+local minimizeKulkiGui = disableKulkiGUI:Clone()
+minimizeKulkiGui.Position = UDim2.new(0.856, 0,0.01, 0)
+minimizeKulkiGui.Text = "-"
+minimizeKulkiGui.TextColor3 = Color3.fromRGB(0,0,0)
 
-scrTitle.Name = "SCRIPTTITLE"
-subTitle.Name = "sub"
-scrTitle.Text = "KULKI GUI" .. versionString
-subTitle.Text = "- By BBro also dont cheat guys, its for educational purposes only"
-subTitle.TextScaled = true
-scrTitle.TextScaled = true
+minimizeKulkiGui.Parent = MainFrame
+disableKulkiGUI.Parent = MainFrame
 
-uiCorner.Parent = MainFrame
-subTitle.Parent = MainFrame
-UIdrag.Parent = MainFrame
-scrTitle.Parent = MainFrame
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(0.797, 0,0.129, 0)
+title.Position = UDim2.new(0.201, 0,0.01, 0)
+title.Text = "Kulki GUI"
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.BackgroundTransparency = 1
+title.TextScaled = true
+title.Font = Enum.Font.SourceSans
+title.Parent = MainFrame
+local subtitle = title:Clone()
+subtitle.Text = versionString
+subtitle.Size = UDim2.new(0.799, 0,0.045, 0)
+subtitle.Position = UDim2.new(0.201, 0,0.139, 0)
+subtitle.Parent = MainFrame
+subtitle.Font = Enum.Font.SourceSansBold
 
-scrTitle.Size = UDim2.new(0.413, 0,0.148, 0)
-scrTitle.TextXAlignment = Enum.TextXAlignment.Left
-scrTitle.Position = UDim2.new(0,0,0,0)
-subTitle.Position = UDim2.new(0, 0,0.13, 0)
-subTitle.Size = UDim2.new(0.449, 0,0.053, 0)
-MainFrame.Size = UDim2.new(0.586, 0,0.688, 0)
-MainFrame.Position = UDim2.new(0.207, 0,0.155, 0)
+--actual kulki gui code below
 
-MainFrame.BackgroundTransparency = 0.3
-subTitle.BackgroundTransparency = 1
-scrTitle.BackgroundTransparency = 1
-scrTitle.TextColor3 = Color3.fromRGB(255,0,0)
 
-subTitle.TextTransparency = 0.6
-MainFrame.BackgroundColor3 = Color3.fromRGB(89, 89, 89)
-subTitle.FontFace.Style = Enum.FontStyle.Italic
-scrTitle.FontFace.Style = Enum.FontStyle.Italic
+minimizeKulkiGui.MouseButton1Click:Connect(function()
+	KGM.Visible = true
+	MainFrame.Visible = false
+end)
 
-local console = Instance.new("Frame")
-console.Parent = sGUI
-console.Size = UDim2.new(0.586, 0,0.688, 0)
-console.Position = UDim2.new(0.207, 0,0.155, 0)
-console.ZIndex = -1
-console.Visible = false
-console.Transparency = 0.7
-UIdrag:Clone().Parent = console
-uiCorner:Clone().Parent = console
-local Ctitle = Instance.new("TextLabel")
-Ctitle.Text = "THE COOL CONSOLE"
-Ctitle.Size = UDim2.new(1.002, 0,0.148, 0)
-Ctitle.Position = UDim2.new(0,0,0,0)
-Ctitle.BackgroundTransparency = 1
-Ctitle.TextColor3 = Color3.fromRGB(255,0,0)
-Ctitle.Parent = console
-Ctitle.TextScaled = true
-local input = Instance.new("TextBox")
-input.Size = UDim2.new(1.002, 0,0.155, 0)
-input.Position = UDim2.new(-0.003, 0,0.842, 0)
-input.Parent = console
-input.TextScaled = true
-local output = Instance.new("TextLabel")
-output.Position = UDim2.new(0, 0,0.146, 0)
-output.Size = UDim2.new(0.999, 0,0.155, 0)
-output.BackgroundTransparency = 1
-output.Text = "Nothing, yet."
-output.Parent = console
-output.TextScaled = true
-local function WriteToConsole(write)
-	output.Text = write
-end
-
-local scroll = Instance.new("ScrollingFrame")
-scroll.Parent = MainFrame
-scroll.Size = UDim2.new(1, 0,0.818, 0)
-scroll.Position = UDim2.new(0, 0,0.181, 0)
-scroll.BackgroundTransparency = 1
-scroll.CanvasSize = UDim2.new(0, 0,20, 0)
-scroll.Name = "scrollCheats"
-local uiList = Instance.new("UIListLayout")
-uiList.Parent = scroll
-local CustomSkinList = scroll:Clone()
-local DebugSroll = scroll:Clone()
-CustomSkinList.Parent = MainFrame
-DebugSroll.Parent = MainFrame
-uiList:Clone().Parent = CustomSkinList
-CustomSkinList.Visible = false
-uiList:Clone().Parent = DebugSroll
-DebugSroll.Visible = false
-local WarningScroll = DebugSroll:Clone()
-WarningScroll.Parent = MainFrame
-local GeneratorScroll = WarningScroll:Clone()
-GeneratorScroll.Parent = MainFrame
-local OtherOptionsScroll = WarningScroll:Clone()
-OtherOptionsScroll.Parent = MainFrame
-local CS = Instance.new("TextButton")
-CS.Text = "Custom Skins"
-CS.Parent = MainFrame
-CS.Size = UDim2.new(0.111, 0,0.148, 0)
-CS.Position = UDim2.new(0.803, 0,0, 0)
-CS.TextScaled = true
-local DM = CS:Clone()
-DM.Size = UDim2.new(0.103, 0,0.148, 0)
-DM.Position = UDim2.new(0.7, 0,0, 0)
-DM.Text = "DEBUG MENU"
-DM.Parent = MainFrame
-local WC = DM:Clone()
-WC.Position = UDim2.new(0.596, 0,0, 0)
-WC.Text = "WARNING CONFIG"
-WC.Name = "WC"
-WC.Parent = MainFrame
-local GC = WC:Clone()
-GC.Position = UDim2.new(0.492, 0,0, 0)
-GC.Text = "GENERATOR CONFIG"
-GC.Name = "GC"
-GC.Parent = MainFrame
-local OO = WC:Clone()
-OO.Position = UDim2.new(0.388, 0,0, 0)
-OO.Text = "OTHER OPTIONS"
-OO.Name = "OO"
-OO.Parent = MainFrame
-
+local canQuit = false
 local VIM = game:GetService("VirtualInputManager")
 local function keyPress(key) --key has to be enum!
 	VIM:SendKeyEvent(true,key,false,game)
@@ -195,45 +165,6 @@ end
 local function WTDE()
 	while true do end
 end
-local function openTab(tab)
-	for i,tob in MainFrame:GetChildren() do
-		if tob:IsA("ScrollingFrame") and tob ~= tab then
-			tob.Visible = false
-		end
-	end
-	if tab.Visible == false then
-		scroll.Visible = false
-		tab.Visible = true	
-	else
-		scroll.Visible = true
-		tab.Visible = false			
-	end
-end
-DM.MouseButton1Click:Connect(function()
-	openTab(DebugSroll)
-end)
-CS.MouseButton1Click:Connect(function()
-	openTab(CustomSkinList)
-end)
-WC.MouseButton1Click:Connect(function()
-	openTab(WarningScroll)
-end)
-GC.MouseButton1Click:Connect(function()
-	openTab(GeneratorScroll)
-end)
-OO.MouseButton1Click:Connect(function()
-	openTab(OtherOptionsScroll)
-end)
-local SNK = Instance.new("TextLabel")
-UIdrag:Clone().Parent = SNK
-SNK.Size = UDim2.new(0.427, 0,0.102, 0)
-SNK.Position = UDim2.new(0, 0,0.28, 0)
-SNK.Text = "brine, you are not a hero...."
-SNK.Visible = false
-SNK.TextXAlignment = Enum.TextXAlignment.Left
-SNK.TextScaled = true
-SNK.TextWrapped = true
-SNK.Parent = sGUI
 
 local rotatedHitHappening = false
 local canRunUpdateLoop = true
@@ -243,9 +174,8 @@ local options = {
 	["NoFog"] = false,
 	["FullBright"] = false,
 	["AntiColorCorrect"] = false,
-	["SeeSubSpace"] = false,
+	["TaphTrapESP"] = false,
 	["SurvivorESP"] = false,
-	["SeeTrip"] = false,
 	["SeeSentry"] = false,
 	["KillerESP"] = false,
 	["ItemESP"] = false,
@@ -315,13 +245,66 @@ local explainText = {
 	["AnchoredLockOn"] = "anchors you and locks onto the position of your mouse. (PATCHED)",
 	["RotatedHit"] = "flings your character by 50 degrees in left and right after clicking your mouse to hit survivors easier.",
 	["FastGen"] = "generators are real fast (works only if autogen is on)",
-	["AutoGen"] = "makes generators by itself",
+	["AutoGen"] = "completes generators",
 	["AdaptiveFastGen"] = "changes fast generator speed depending on how close survivors are.",
 	["AlekWarning"] = "warns when alek(the fucking snitch) joins",
 	["NOHIDDEN"] = "playtime,killer wins,survivor wins are no longer hidden",
 	["showMinions"] = "shows minios of coolkid and 1x4 etc",
 	["JesusMode"] = "kulki GUI is now jesus",
 }
+local function createOption(displayed:string,OptionType:string,OptionIndex:string,ForTab:string,default:string,FunctionToggle:boolean,Func)
+	if OptionType:lower() == "toggle" then
+		local btt = Instance.new("TextButton")
+		btt.Size = UDim2.new(1, 0,0.161, 0)
+		if not default then
+			default = "OFF"
+		end
+		btt.Text = displayed .. " (" .. default .. ")"
+		btt.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+		btt.Parent = MainFrame:FindFirstChild(ForTab)
+		btt.TextScaled = true
+		btt.MouseButton1Click:Connect(function()
+			if FunctionToggle == true then
+				options[OptionIndex] = not options[OptionIndex]
+			end
+			local to = " (ON)"
+			if options[OptionIndex] == false then
+				to = " (OFF)"
+			end
+			if Func then
+				Func()
+			end
+			btt.Text = displayed .. to
+		end)
+	end
+end
+local function addTabToUI(layoutOrder:number,Background:Color3,text:string,SetsTo:string)
+	local btt = Instance.new("TextButton")
+	btt.LayoutOrder = layoutOrder
+	btt.Size = UDim2.new(0.496, 0,0.184, 0)
+	btt.BackgroundColor3 = Background
+	btt.Text = text
+	btt.Parent = FR_tabs
+	local tab = FR_options:Clone()
+	tab.Parent = MainFrame
+	tab.Name = SetsTo
+	btt.MouseButton1Click:Connect(function()
+		for i,tob in MainFrame:GetChildren() do
+			if tob:HasTag("Tab") then
+				tob.Visible = false
+			end
+		end
+		tab.Visible = true
+	end)
+	return {["Button"]=btt,["Tab"]=tab}
+end
+if RunService:IsStudio() then
+	addTabToUI(1,Color3.fromRGB(255,255,255),"General Cheats","GeneralCheats")
+	addTabToUI(2,Color3.fromRGB(255,255,255),"Misc","Misc")
+	createOption("TEST 01","toggle","UnUsedValue","GeneralCheats",nil,true)
+	sGUI.Parent = Client.PlayerGui
+	assert(false," rest of kulki gui code cannot run in studio!")
+end
 local HMblur = Instance.new("BlurEffect")
 HMblur.Size = 15
 HMblur.Enabled = false
@@ -371,83 +354,11 @@ local optionButtons = {}
 
 local limiter = nil
 
-local function createOption(name,text,connectTo,realName,risky,appearIn)
-	local btt = Instance.new("TextButton")
-	btt.Name =  name
-	btt.Text = text
-	btt.TextScaled = true
-	btt.Size = UDim2.new(1, 0,0.0085, 0)
-	btt.BackgroundColor3 = Color3.fromRGB(115, 115, 115)
-	if risky == true then
-		btt.BackgroundColor3 = Color3.fromRGB(150,0,0)
-		btt.LayoutOrder = 999
-	end
-	btt.MouseButton1Click:Connect(function()
-		if options.HardMode == false then
-			connectTo()
-			local set = " ON"
-			if options[realName] == false then
-				set = " OFF"
-			end
-			btt.Text = text .. set			
-		end
-	end)
-	if not appearIn or appearIn:lower() == 'main' or appearIn:lower() == "scroll" then
-		btt.Parent = scroll
-	elseif appearIn and appearIn:lower()=="warningconfig" then
-		btt.Parent = WarningScroll
-	elseif appearIn and appearIn:lower()=="generatorconfig" then
-		btt.Parent = GeneratorScroll
-	elseif appearIn and appearIn:lower()=="otheroptions" then
-		btt.Parent = OtherOptionsScroll
-	end
-	
-	table.insert(optionButtons,btt)
-end
-local function createDebugOption(name,text,connectTo,realName)
-	local btt = Instance.new("TextButton")
-	btt.Name =  name
-	btt.Text = text
-	btt.TextScaled = true
-	btt.Size = UDim2.new(1, 0,0.0085, 0)
-	btt.BackgroundColor3 = Color3.fromRGB(115, 115, 115)
-	btt.MouseButton1Click:Connect(function()
-		connectTo()
-		local set = " ON"
-		if DEBUGoptions[realName] == false then
-			set = " OFF"
-		end
-		btt.Text = text .. set
-	end)
-	btt.Parent = DebugSroll
-	table.insert(optionButtons,btt)
-end
-local function createCustomSkin(name,text,realName,connectTo)
-	local btt = Instance.new("TextButton")
-	btt.Name =  "OPT" .. name
-	btt.Text = text .. " OFF"
-	btt.TextScaled = true
-	btt.Size = UDim2.new(1, 0,0.0085, 0)
-	btt.BackgroundColor3 = Color3.fromRGB(115, 115, 115)
-	btt.MouseButton1Click:Connect(function()
-		skinStatus[realName] = not skinStatus[realName]
-		local set = " ON"
-		if skinStatus[realName] == false then
-			set = " OFF"
-		end
-		btt.Text = text .. set
-		if connectTo ~= nil then
-			connectTo()
-		end
-	end)
-	btt.Parent = CustomSkinList
-	table.insert(optionButtons,btt)
-end
 
-createCustomSkin("BDJD","BIG D JOHN DOE","BigDjohnDoe")
+--[[createCustomSkin("BDJD","BIG D JOHN DOE","BigDjohnDoe")
 createCustomSkin("GCK","GYATT COOLKID","GyatCoolkid")
 createCustomSkin("NC","NAZI CHANCE","NaziChance")
-createCustomSkin("WTDE","BIG MELON BETRAYED 1x4","NaziChance",WTDE)
+createCustomSkin("WTDE","BIG MELON BETRAYED 1x4","NaziChance",WTDE)]]
 
 game.Lighting.DescendantAdded:Connect(function(c00lkidd)
 	if c00lkidd:IsA("BlurEffect") and options.NoBlur == true then
@@ -494,7 +405,6 @@ local function FULLSTOP()
 	end
 	canRunUpdateLoop = false
 	sGUI:Destroy()
-	SNK:Destroy()
 	task.wait(99999999)
 end
 
@@ -1084,9 +994,6 @@ task.spawn(function() --main update loop
 		end
 		local su,err = nil
 		su,err = pcall(function()
-			if options.AssetLoadReplacement == true and Client.PlayerGui:FindFirstChild("RoundTimer"):FindFirstChild("Main") then
-				Client.PlayerGui:WaitForChild("RoundTimer"):WaitForChild("Main").Visible = true
-			end
 			if options.HardMode == true and Client.PlayerGui:FindFirstChild("RoundTimer"):FindFirstChild("Main") then
 				Client.PlayerGui:FindFirstChild("RoundTimer"):FindFirstChild("Main").Visible = false
 			end
@@ -1137,17 +1044,6 @@ task.spawn(function() --main update loop
 					end
 				end
 			end
-			if options.SeeSubSpace == true then
-				for i,model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
-					if model:IsA("Model") and model.Name == "SubspaceTripmine" and not model:FindFirstChild("FilthyESP77") then
-						local high = Instance.new("Highlight")
-						high.FillColor = Color3.fromRGB(0,0,255)
-						high.OutlineColor = Color3.fromRGB(0,0,255)
-						high.Parent = model
-						high.Name = "FilthyESP77"
-					end
-				end
-			end
 			if options.SurvivorESP == true then
 				for i,plr in workspace:FindFirstChild("Players"):FindFirstChild("Survivors"):GetChildren() do
 					if plr:FindFirstChildWhichIsA("Humanoid") and plr:FindFirstChildWhichIsA("Humanoid").Health > 0 and not plr:FindFirstChild("FilthyESP77") then
@@ -1168,12 +1064,21 @@ task.spawn(function() --main update loop
 					end
 				end
 			end
-			if options.SeeTrip == true then
+			if options.TaphTrapESP == true then
 				for i,model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
 					if model:IsA("Model") and model:FindFirstChild("Hook1") and model:FindFirstChild("Wire") and not model:FindFirstChild("FilthyESP77") then
 						local high = Instance.new("Highlight")
 						high.FillColor = Color3.fromRGB(100,0,100)
 						high.OutlineColor = Color3.fromRGB(100,0,100)
+						high.Parent = model
+						high.Name = "FilthyESP77"
+					end
+				end
+				for i,model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
+					if model:IsA("Model") and model.Name == "SubspaceTripmine" and not model:FindFirstChild("FilthyESP77") then
+						local high = Instance.new("Highlight")
+						high.FillColor = Color3.fromRGB(0,0,255)
+						high.OutlineColor = Color3.fromRGB(0,0,255)
 						high.Parent = model
 						high.Name = "FilthyESP77"
 					end
@@ -1264,53 +1169,7 @@ task.spawn(function() --main update loop
 					end
 				end
 			end
-			if options.SNK == true then
-				local nextKiller = {
-					["Player"] = nil,
-					["Killer"] = nil,
-					["PlayerNAME"] = nil,
-					["Chance"] = 0
-				}
-				local possibleKillers = {}
-				local moreThan1posKiller = false
-				for i,plr in game.Players:GetPlayers() do
-					if plr:FindFirstChild("leaderstats") and plr:FindFirstChild("PlayerData") then
-						if plr.leaderstats.KillerChance.Value > nextKiller.Chance then
-							nextKiller.Player = plr
-							nextKiller.Killer = plr.PlayerData.Equipped.Killer.Value
-							nextKiller.PlayerNAME = plr.DisplayName
-							nextKiller.Chance = plr.leaderstats.KillerChance.Value
-							table.clear(possibleKillers)
-							moreThan1posKiller = false
-						elseif plr.leaderstats.KillerChance.Value == nextKiller.Chance then
-							table.insert(possibleKillers,nextKiller)
-							local posKiller = {
-								["Player"] = plr,
-								["Killer"] = plr.PlayerData.Equipped.Killer.Value,
-								["PlayerNAME"] = plr.DisplayName,
-								["Chance"] = plr.leaderstats.KillerChance.Value
-							}						
-							table.insert(possibleKillers,posKiller)
-							moreThan1posKiller = true
-						end						
-					end
-				end
-				if moreThan1posKiller == false then
-					SNK.Text = nextKiller.PlayerNAME .. ' , ' .. nextKiller.Killer
-				else
-					SNK.Text = ""
-					for i,kira in possibleKillers do
-						if kira ~= nil and kira.Player then
-							if #possibleKillers == i then
-								SNK.Text = SNK.Text .. kira.PlayerNAME .. ' , ' .. kira.Killer
-							else
-								SNK.Text = SNK.Text .. kira.PlayerNAME .. ' , ' .. kira.Killer .. " or "
-							end
-							
-						end
-					end
-				end
-			end
+			
 			if options.infZ == true then
 				Client.CameraMaxZoomDistance = 9999999
 			end
@@ -1319,41 +1178,6 @@ task.spawn(function() --main update loop
 			end
 			if options.ShowChat == true then
 				game:GetService("TextChatService"):FindFirstChildWhichIsA("ChatWindowConfiguration").Enabled = true
-			end
-			if options.AnchoredLockOn == true then
-				task.spawn(function()
-					local HRP = Client.Character:FindFirstChild("HumanoidRootPart")
-					if HRP then
-						while UIS:IsKeyDown(Enum.KeyCode.G) do
-							wait()
-							local T = HRP
-							local CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-							local lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-							local SPEED = 0
-								local BG = Instance.new('BodyGyro')
-								local BV = Instance.new('BodyVelocity')
-								BG.P = 9e4
-								BG.Parent = T
-								BV.Parent = T
-								BG.maxTorque = Vector3.new(9e9, 9e9, 9e9)
-								BG.cframe = T.CFrame
-								BV.velocity = Vector3.new(0, 0, 0)
-								BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
-										if Client.Character:FindFirstChildOfClass('Humanoid') then
-											Client.Character:FindFirstChildOfClass('Humanoid').PlatformStand = true
-										end
-										BG.cframe = workspace.CurrentCamera.CoordinateFrame
-									CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-									lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-									SPEED = 0
-									BG:Destroy()
-									BV:Destroy()
-									if Client.Character:FindFirstChildOfClass('Humanoid') then
-										Client.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
-									end
-						end
-					end
-				end)
 			end
 			if options.AutoGen == true then
 				--print("0")
@@ -1708,85 +1532,16 @@ local function GeneratorESP()
 		options.GeneratorESP = false
 	end
 end
-local function AAK() --aim at killer
-	options.AAK = not options.AAK
-end
-local function AAS() --aim at survivor
-	options.AAS = not options.AAS
-end
-local function infZoom() 
-	options.infZ = not options.infZ
-end
-local function IGCA() 
-	DEBUGoptions.IngameCHILDADDED = not DEBUGoptions.IngameCHILDADDED
-end
-local function IGDA() 
-	DEBUGoptions.IngameDESCENDANTADDED = not DEBUGoptions.IngameDESCENDANTADDED
-end
 
-local function SNKfunction() --see/show next killer
-	options.SNK = not options.SNK
-	SNK.Visible = not SNK.Visible
-end
-local function SIOC() --studs instead of class
-	options.SIOC = not options.SIOC
-end
-local function ShowChatF()
-	options.ShowChat = not options.ShowChat
-end
-local function E1PU()
-	options.Easy1x4Popups = not options.Easy1x4Popups
-end
-local function UE1P()
-	options.UltraEZ1x4Popups = not options.UltraEZ1x4Popups
-end
+
+
 local function O7TPpredict()
 	options.OO7n7tpPrediction = not options.OO7n7tpPrediction
 	for i,survivor in workspace.Players.Survivors:GetChildren() do
 		oo7n7predict(survivor)
 	end
 end
-local function ALRf()
-	options.AssetLoadReplacement = not options.AssetLoadReplacement
-end
 
-
-local function RotatedHitF()
-	options.RotatedHit = not options.RotatedHit
-end
-local function FastGenF()
-	options.FastGen = not options.FastGen
-end
-local function AutoGenF()
-	options.AutoGen = not options.AutoGen
-end
-local function AdaptiveFastGenF()
-	options.AdaptiveFastGen = not options.AdaptiveFastGen
-end
-local function NoHiddenF()
-	options.NOHIDDEN = not options.NOHIDDEN
-end
-local function showMinionsF()
-	options.showMinions = not options.showMinions
-end
-local function ConsoleF()
-	options.Console = not options.Console
-	if options.Console == true then
-		console.Visible = true
-	else
-		console.Visible = false
-	end
-end
-local savedName = nil
-local function JF()
-	options.JesusMode = not options.JesusMode
-	if options.JesusMode == true then
-		savedName = scrTitle.Text
-		scrTitle.Text = "JESUS's HELP"
-	else
-		scrTitle.Text = savedName
-	end
-end
 local function AlekWarning()
 	options.AlekWarning = not options.AlekWarning
 	if options.AlekWarning == true then
@@ -1816,17 +1571,6 @@ local function HModeF()
 	stayFunc(HMblur)
 	stayFunc(HMcolorcorrect)
 	MainFrame.Visible = false
-	SNK.Visible = false
-	console.Visible = false
-end
-local function ABGF()
-	options.AutoBlockGuest1337 = not options.AutoBlockGuest1337
-end
-local function GetAllF()
-	options.AutoBlockGuest1337 = not options.AutoBlockGuest1337
-end
-local function NOSTUNF()
-	options.NoStun = not options.NoStun
 end
 local packed = false
 local function HasCharacter(char:string)
@@ -1925,76 +1669,72 @@ local function TurnIntoDummyF()
 		game.Players.LocalPlayer.PlayerGui.MainUI.PlayerListHolder.Contents.Players:FindFirstChild(game.Players.LocalPlayer.Name).PlayerInfo.Username.Text = "CrazyPlayer123"
 	end
 end
-local function INFSPRINTF()
-	options.InfSprint = not options.InfSprint
-end
+
+addTabToUI(1,Color3.fromRGB(255,255,255),"General Cheats","GeneralCheats")
+addTabToUI(2,Color3.fromRGB(255,255,255),"Visual","Visual")
+addTabToUI(3,Color3.fromRGB(255,255,255),"Generator Cheats","GenCheats")
+addTabToUI(4,Color3.fromRGB(255,255,255),"Misc","Misc")
+addTabToUI(666,Color3.fromRGB(255,255,255),"Game Exploits","Exploits")
+--visual
+createOption("NO BLUR","toggle","noBlur","Visual",nil,true)
+createOption("NO FOG","toggle","noFog","Visual",nil,true)
+createOption("FULLBRIGHT","toggle","FullBright","Visual",nil,true)
+createOption("ANTI-COLOR CORRECTION","toggle","AntiColorCorrect","Visual",nil,true)
+createOption("TAPH TRAP ESP","toggle","TaphTrapESP","Visual",nil,true)
+createOption("SURVIVOR ESP","toggle","SurvivorESP","Visual",nil,true)
+createOption("SENTRY ESP","toggle","SeeSentry","Visual")
+createOption("KILLER ESP","toggle","KillerESP","Visual",nil,true)
+createOption("ITEM ESP","toggle","ItemESP","Visual",nil,true)
+createOption("MOVE PREDICTOR","toggle","MovePredictor","Visual",nil,true)
+createOption("GENERATOR ESP","toggle","GeneratorESP","Visual",nil,true)
+createOption("007n7 TP PREDICTION","toggle","OO7n7tpPrediction","Visual",nil,true)
+createOption("MINIONS ESP","toggle","showMinions","Visual",nil,true)
+createOption("SHOW CHAT","toggle","ShowChat","Visual",nil,true)
+createOption("INF ZOOM","toggle","infZ","Visual",nil,true)
+
+--GeneralCheats
+
+createOption("AIM AT KILLER","toggle","AAK","GeneralCheats",nil,true) --aim at killer
+createOption("AIM AT SURVIVOR","toggle","AAS","GeneralCheats",nil,true) --aim at survivor
+--createOption("NEXTKILLER","SHOW NEXT KILLER",SNKfunction,"SNK") --make just player tab visible
+--createOption("STUDSINSTEAD","STUDS INSTEAD OF CLASS",SIOC,"SIOC") --Studs instead of class
+createOption("EASY 1x4 POP-UPS","toggle","Easy1x4Popups","GeneralCheats",nil,true)
 
 
-
-
-
-
-
---cheatz hell yea szweg
-createOption("noBlur","NO BLUR",noBlur,"NoBlur")
-createOption("noFog","NO FOG",noFog,"NoFog")
-createOption("fullB","FULLBRIGHT (BEST WITH NOFOG)",FullBright,"FullBright")
-createOption("AntiColorCorrect","ANTI-COLOR CORRECTION",AntiColorCorrect,"AntiColorCorrect")
-createOption("VISsubspace","SUBSPACETRIPMINE ESP",SeeSubspaceTripmine,"SeeSubSpace")
-createOption("SESP","SURVIVOR ESP",SurvivorESP,"SurvivorESP")
-createOption("VIStripwire","TRIPWIRE ESP",SeeTripwires,"SeeTrip")
-createOption("VISsentry","SENTRY ESP",SeeSentry,"SeeSentry")
-createOption("KillerESP","KILLER ESP",KillerESP,"KillerESP")
-createOption("ItemESP","ITEM ESP",ItemESP,"ItemESP")
-createOption("MovePredictor","MovePredictor",MovePrediction,"MovePredictor")
-createOption("GeneratorESP","Generator ESP",GeneratorESP,"GeneratorESP")
-createOption("AimAtKiller","AIM AT KILLER (keybind=Z)",AAK,"AAK")
-createOption("AimAtSurvivor","AIM AT NEAREST SURVIVOR (keybind=X)",AAS,"AAS")
-createOption("INFZOOM","INFINITE ZOOM",infZoom,"infZ")
-createOption("NEXTKILLER","SHOW NEXT KILLER",SNKfunction,"SNK")
-createOption("STUDSINSTEAD","STUDS INSTEAD OF CLASS",SIOC,"SIOC")
-createOption("SHOWCHAT","CHAT VISIBLE",ShowChatF,"ShowChat")
-createOption("E1PU","EZ 1x4 POP-UPS",E1PU,"Easy1x4Popups")
-createOption("UE1P","ULTRA EZ 1x4 POP-UPS (USE AT YOUR OWN RISK,works only if ez 1x4 pop is on)",UE1P,"UltraEZ1x4Popups",true)
-createOption("ALR","ASSET LOAD REPLACEMENT",ALRf,"AssetLoadReplacement")
-createOption("O7TPP","007n7 TP PREDICTION",O7TPpredict,"OO7n7tpPrediction")
-createOption("SH","SHOW MINIONS",showMinionsF,"showMinions")
-createOption("ABG","AUTO BLOCK GUEST (bad)",ABGF,"AutoBlockGuest1337")
-createOption("NS","NO STUN",NOSTUNF,"NoStun",true)
-createOption("IS","INF SPRINT",INFSPRINTF,"InfSprint",true)
 
 
 --warning config buttons
-createOption("AJW","ALEK JOIN WARNING",AlekWarning,"AlekWarning",false,"WarningConfig")
+--createOption("AJW","ALEK JOIN WARNING",AlekWarning,"AlekWarning",false,"WarningConfig")
 
---generator config buttons
-createOption("FG","FAST GENERATORS (USE AT YOUR OWN RISK,works only if auto-gen is on,recommended to be used with adaptive gens)",FastGenF,"FastGen",true,"generatorConfig")
-createOption("AG","AUTO GENERATOR",AutoGenF,"AutoGen",false,"generatorConfig")
-createOption("AFG","ADAPTIVE FAST GENS(works only if Fast Gens is on and is recomenned to be used with it.)",AdaptiveFastGenF,"AdaptiveFastGen",false,"generatorConfig")
+--generator cheats
+createOption("FAST GENERATORS (USE AT YOUR OWN RISK,works only if auto-gen is on,recommended to be used with adaptive gens)","toggle","FastGen","GenCheats",nil,true)
+createOption("AUTO GENERATOR","toggle","AutoGen","GenCheats",nil,true)
+createOption("ADAPTIVE FAST GENS(works only if Fast Gens is on and is recomenned to be used with it.)","toggle","AdaptiveFastGen","GenCheats",nil,true)
 
---other option buttons
-createOption("RH","ROTATED HIT (USE AT YOUR OWN RISK)",RotatedHitF,"RotatedHit",true,"otheroptions")
-createOption("XRay","XRAY",XRay,"Xray",false,"otheroptions")
-createOption("NH","NO HIDDEN",NoHiddenF,"NOHIDDEN",false,"otheroptions")
-createOption("JM","JESUS CHRIST MODE",JF,"JesusMode",false,"otheroptions")
-createOption("LWA","LEAVE WHEN ALEK",LeaveWhenAlekF,"LeaveWhenAlek",false,"otheroptions")
---createOption("C","CONSOLE",ConsoleF,"Console",true,"otheroptions")
-createOption("HMODE","HARD MODE",HModeF,"HardMode",true,"otheroptions")
+--exploits
+--createOption("ABG","AUTO BLOCK GUEST (WIP)",ABGF,"AutoBlockGuest1337")
+--createOption("NS","NO STUN",NOSTUNF,"NoStun",true)
+--createOption("IS","INF SPRINT",INFSPRINTF,"InfSprint",true)
+--createOption("UE1P","ULTRA EZ 1x4 POP-UPS (USE AT YOUR OWN RISK,works only if ez 1x4 pop is on)",UE1P,"UltraEZ1x4Popups",true) --make it no 1x popups
+
+--misc
+createOption("X-RAY","toggle","XRay","Misc",nil,true)
+createOption("NO HIDDEN","toggle","NOHIDDEN","Misc",nil,true)
+--fun
+--[[createOption("HMODE","HARD MODE",HModeF,"HardMode",true,"otheroptions")
 createOption("GETNG666VIS","GET NOLI+GUEST666 (VISUAL)",getNoliGuest666,"UnUsedValue",false,"otheroptions")
 createOption("GETALLVIS","GET ALL (VISUAL)",getAllCharsF,"UnUsedValue",false,"otheroptions")
 createOption("SWITCHLOCKED","SWITCH LOCKED TO UNLOCKED CHARACTERS (needed to get other characters/skins by kulki gui)",PatchLockedCharacters,"UnUsedValue",false,"otheroptions")
-createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"otheroptions")
+createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"otheroptions")]]
 
-
---debugs heaven no anti-szweg
-createDebugOption("INGAMECA","Ingame Child Added",IGCA,"IngameCHILDADDED")
-createDebugOption("INGAMEDA","Ingame Descendant Added",IGDA,"IngameDESCENDANTADDED")
+PatchLockedCharacters()
+GetCharacter("Noli",7100,true)
 
 if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
 	FULLSTOP()
 end
 
-UIS.InputBegan:Connect(function(input,gpe)
+--[[UIS.InputBegan:Connect(function(input,gpe)
 	if not gpe then
 		if input.KeyCode == Enum.KeyCode.X then --AAS keybind
 			local btt = nil
@@ -2049,17 +1789,14 @@ mouse.Button1Down:Connect(function()
 end)
 mouse.Button1Up:Connect(function()
 	mouseIsBeingHeld = false
-end)
-input.ClearTextOnFocus = false
+end)]]
 
 
 
 print("loaded kulki GUI!")
 sGUI.Parent = Client.PlayerGui
 task.wait(3)
-if not sGUI or sGUI.Parent ~= Client.PlayerGui and canQuit == false then
-	Client:Kick("shedletsky stopped us from exploiting gg's (probably the GUI was prevented to exist by an external script in-game)")
-end
+
 
 --https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source
 --loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
