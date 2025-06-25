@@ -1,4 +1,3 @@
-
 print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
@@ -1141,7 +1140,7 @@ task.spawn(function() --main update loop
 			end
 			if options.AutoItemPickup == true then
 				for i,model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
-					if model:IsA("Tool") and model:FindFirstChild("ItemRoot") and (Client.Character:FindFirstChild("HumanoidRootPart").Position-model.ItemRoot.Position).Mangitude < 80 then
+					if model:IsA("Tool") and model:FindFirstChild("ItemRoot") and (Client.Character:FindFirstChild("HumanoidRootPart").Position-model.ItemRoot.Position).Magnitude < 80 then
 						fireproximityprompt(model:FindFirstChild("ItemRoot"),20)
 					end
 				end
