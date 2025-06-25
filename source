@@ -1,4 +1,4 @@
-print("loading kulki GUI better......")
+print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.0"
@@ -214,7 +214,9 @@ local options = {
 	["WalkspeedNoStop"] = false,
 	["AutoItemPickup"] = false,
 	["WalkspeedHit"] = false,
-	["NoFootstep"] = false,
+	["AutoDodge1x"] = false,
+	["DisableFootprint"] = false,
+	["SpikeNoclip"] = false,
 }
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
@@ -504,30 +506,80 @@ if SavedCommunicator ~= nil then
 end
 
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(function(coolkid)
-	if coolkid:IsA("Model") and coolkid.Name:lower() == "shockwave" and canRunUpdateLoop == true and options.MovePredictor == true then
+	if coolkid:IsA("Model") and coolkid.Name:lower() == "shockwave" and canRunUpdateLoop == true then --mass infection
 		--local cl = coolkid:Clone()
 		--print(cl.Root.Size)
 		--cl.Root.Anchored = true
 		--cl.Root.CFrame = Client.Character.PrimaryPart.CFrame
 		--cl.Parent = workspace
-		coolkid.Root.Transparency = 0
-		coolkid.Root.Color = Color3.fromRGB(0,255,0)
-		coolkid.Root.Size = Vector3.new(coolkid.Root.Size.X+0.5,coolkid.Root.Size.Y+3,coolkid.Root.Size.Z+0.5)
-		local cl = coolkid:Clone()
-		local hitbox = cl.Root
-		local ogPos = hitbox.Position
-		hitbox.Transparency = 0
-		hitbox.Material = Enum.Material.Neon
-		hitbox.Color = Color3.fromRGB(255,0,0)
-		hitbox.CanCollide = false
-		hitbox.CanTouch = false
-		hitbox.CanQuery = false
-		hitbox.Size = Vector3.new(hitbox.Size.X,hitbox.Size.Y-3,hitbox.Size.Z+1000)
-		hitbox.CFrame = hitbox.CFrame + hitbox.CFrame.LookVector*500
-		hitbox.Parent = workspace
-		task.wait(4.5)
-		hitbox:Destroy()
-	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "swords" and canRunUpdateLoop == true and options.MovePredictor == true then
+		if options.AutoDodge1x == true then
+			task.spawn(function()
+				local cl = coolkid:Clone()
+				local hitbox = cl.Root
+				local ogPos = hitbox.Position		
+				local parts = workspace:GetPartBoundsInBox(hitbox.CFrame + hitbox.CFrame.LookVector*500,Vector3.new(hitbox.Size.X,hitbox.Size.Y,hitbox.Size.Z+1000))
+				local floor = nil
+				for i,part in parts do
+					if part.Parent == Client.Character then
+						floor = Instance.new("Part")
+						floor.Size = Vector3.new(5000,hitbox.Sizy.Y,500)
+						floor.Position = Vector3.new(hitbox.Position.X,hitbox.Position.Y+5,hitbox.Position.Z)
+						if floor.Position.Y > Client.Character:FindFirstChild("HumanoidRootPart").Position.Y then
+							Client.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(Client.Character:FindFirstChild("HumanoidRootPart").Position.X,floor.Position.Y+7,Client.Character:FindFirstChild("HumanoidRootPart").Position.Z)
+						end
+						break
+					end
+				end
+				if floor then
+					task.wait(7)
+					floor:Destroy()
+				end
+			end)
+		end
+		if options.MovePredictor == true then
+			coolkid.Root.Transparency = 0
+			coolkid.Root.Color = Color3.fromRGB(0,255,0)
+			coolkid.Root.Size = Vector3.new(coolkid.Root.Size.X+0.5,coolkid.Root.Size.Y+3,coolkid.Root.Size.Z+0.5)
+			local cl = coolkid:Clone()
+			local hitbox = cl.Root
+			local ogPos = hitbox.Position
+			hitbox.Transparency = 0
+			hitbox.Material = Enum.Material.Neon
+			hitbox.Color = Color3.fromRGB(255,0,0)
+			hitbox.CanCollide = false
+			hitbox.CanTouch = false
+			hitbox.CanQuery = false
+			hitbox.Size = Vector3.new(hitbox.Size.X,hitbox.Size.Y-3,hitbox.Size.Z+1000)
+			hitbox.CFrame = hitbox.CFrame + hitbox.CFrame.LookVector*500
+			hitbox.Parent = workspace
+			task.wait(4.5)
+			hitbox:Destroy()			
+		end
+	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "swords" and canRunUpdateLoop == true then --entaglement
+		if options.AutoDodge1x == true then
+			task.spawn(function()
+				local cl = coolkid:Clone()
+				local hitbox = cl.Core
+				local ogPos = hitbox.Position		
+				local parts = workspace:GetPartBoundsInBox(hitbox.CFrame + hitbox.CFrame.LookVector*500,Vector3.new(hitbox.Size.X,hitbox.Size.Y,hitbox.Size.Z+1000))
+				local floor = nil
+				for i,part in parts do
+					if part.Parent == Client.Character then
+						floor = Instance.new("Part")
+						floor.Size = Vector3.new(5000,hitbox.Sizy.Y,500)
+						floor.Position = Vector3.new(hitbox.Position.X,hitbox.Position.Y+5,hitbox.Position.Z)
+						if floor.Position.Y > Client.Character:FindFirstChild("HumanoidRootPart").Position.Y then
+							Client.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(Client.Character:FindFirstChild("HumanoidRootPart").Position.X,floor.Position.Y+7,Client.Character:FindFirstChild("HumanoidRootPart").Position.Z)
+						end
+						break
+					end
+				end
+				if floor then
+					task.wait(7)
+					floor:Destroy()
+				end
+			end)
+		end
 		coolkid.Core.Transparency = 0
 		coolkid.Core.Color = Color3.fromRGB(0,255,0)
 		coolkid.Core.Size = Vector3.new(coolkid.Core.Size.X+0.5,coolkid.Core.Size.Y+2,coolkid.Core.Size.Z+0.5)
@@ -546,43 +598,12 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		hitbox.Parent = workspace
 		task.wait(3.5)
 		hitbox:Destroy()
-	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "spike" and coolkid:FindFirstChild("Spike") and options.AssetLoadReplacement == true and canRunUpdateLoop == true then
+	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "spike" and coolkid:FindFirstChild("Spike") and options.SpikeNoclip == true and canRunUpdateLoop == true then
 		local mesh = coolkid:FindFirstChild("Spike")
-		local cloneHitbox = Instance.new("Part")
-		cloneHitbox.Color = mesh.Color
-		cloneHitbox.CanCollide = false
-		cloneHitbox.Anchored = true
-		cloneHitbox.CanTouch = false
-		cloneHitbox.Material = mesh.Material
-		cloneHitbox.Size = Vector3.new(mesh.Size.X,15,mesh.Size.Z)
-		cloneHitbox.CFrame = mesh.CFrame
-		cloneHitbox.Name = "SpikeAssetReplacement"
-		cloneHitbox.Parent = workspace
-		task.wait(14.1)
-		cloneHitbox:Destroy()
-	elseif options.AssetLoadReplacement == true and coolkid.Name == "1x1x1x1Zombie" then
-		task.wait(0.5)
-		coolkid:FindFirstChild("Torso").Transparency = 0
-		coolkid:FindFirstChild("Head").Transparency = 0
-		coolkid:FindFirstChild("Left Arm").Transparency = 0
-		coolkid:FindFirstChild("Left Leg").Transparency = 0
-		coolkid:FindFirstChild("Right Arm").Transparency = 0
-		coolkid:FindFirstChild("Right Leg").Transparency = 0
-	end
-	if coolkid.Name == "Map" and coolkid:IsA("Model") and options.AssetLoadReplacement == true then
-		print("searching")
-		task.wait(5)
-		local x = 0
-		for i,bar in coolkid:GetDescendants() do
-			x+=1
-			if x >= 500 then
-				task.wait()
-			end
-			if bar.Name == "barrier" and bar.Transparency > 0.9 then
-				bar.Transparency = 0.7
-				bar.Color = Color3.fromRGB(255,0,0)
-			end
-		end
+		mesh.CanCollide = false
+		mesh.CanTouch = false
+		mesh.CanQuery = false
+		mesh.Transparency = 0.7
 	end
 	if coolkid:FindFirstChildWhichIsA("Humanoid") and coolkid:FindFirstChild("Left Arm") and coolkid:FindFirstChild("Left Leg") and options.showMinions == true and coolkid.Name ~= "007n7" then
 		local high = Instance.new("Highlight")
@@ -596,15 +617,6 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		end
 		high.Parent = coolkid
 		high.Name = "FilthyESP77"
-	end
-	if DEBUGoptions.IngameCHILDADDED == true and canRunUpdateLoop == true then
-		print(coolkid.Name .. "   " .. coolkid:GetFullName())
-		if #coolkid:GetDescendants()>0 then
-			for i,d in coolkid:GetDescendants() do
-				print(d.Name)
-				print(d.ClassName)
-			end			
-		end
 	end
 end)
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").DescendantAdded:Connect(function(coolkid)
@@ -1734,8 +1746,9 @@ createOption("NO STUN","toggle","NoStun","Exploits",nil,true)
 --createOption("IS","INF SPRINT",INFSPRINTF,"InfSprint",true)
 --createOption("UE1P","ULTRA EZ 1x4 POP-UPS (USE AT YOUR OWN RISK,works only if ez 1x4 pop is on)",UE1P,"UltraEZ1x4Popups",true) --make it no 1x popups
 createOption("WALKSPEED OVERRIDE NO STOP","toggle","WalkspeedNoStop","Exploits",nil,true)
-createOption("WALKSPEED OVERRIDE EZ HIT","toggle","WalkspeedHit","Exploits",nil,true)
-createOption("NO FOOTSTEP SFX","toggle","NoFootstep","Exploits",nil,true)
+createOption("WALKSPEED OVERRIDE INSTA HIT","toggle","WalkspeedHit","Exploits",nil,true)
+createOption("MASS INFECTION+ENTAGLEMENT AUTO DODGE","toggle","AutoDodge1x","Exploits",nil,true)
+createOption("DISABLE DIGITAL FOOTPRINT","toggle","DisableFootprint","Exploits",nil,true)
 
 --misc
 createOption("X-RAY","toggle","XRay","Misc",nil,true)
@@ -1761,7 +1774,7 @@ hook = hookmetamethod(game,"__namecall",function(self,...)
 				repeat
 					wait()
 					local clos = GetClosestSurvivor(true)
-					if clos.Survivor and clos.Magnitude < 20 then
+					if clos.Survivor and clos.Magnitude < 60 then
 						Client.Character:FindFirstChild("HumanoidRootPart").CFrame = clos.Survivor.HumanoidRootPart.CFrame
 					end
 				until not Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement") or Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement").Value >=0.2				
