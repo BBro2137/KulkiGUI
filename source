@@ -1,4 +1,4 @@
-print("loading kulki GUI rel......")
+print("loading kulki GUI yah......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.0"
@@ -213,6 +213,8 @@ local options = {
 	["InfSprint"] = false,
 	["WalkspeedNoStop"] = false,
 	["AutoItemPickup"] = false,
+	["WalkspeedHit"] = false,
+	["NoFootstep"] = false,
 }
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
@@ -1732,6 +1734,8 @@ createOption("NO STUN","toggle","NoStun","Exploits",nil,true)
 --createOption("IS","INF SPRINT",INFSPRINTF,"InfSprint",true)
 --createOption("UE1P","ULTRA EZ 1x4 POP-UPS (USE AT YOUR OWN RISK,works only if ez 1x4 pop is on)",UE1P,"UltraEZ1x4Popups",true) --make it no 1x popups
 createOption("WALKSPEED OVERRIDE NO STOP","toggle","WalkspeedNoStop","Exploits",nil,true)
+createOption("WALKSPEED OVERRIDE EZ HIT","toggle","WalkspeedHit","Exploits",nil,true)
+createOption("NO FOOTSTEP SFX","toggle","NoFootstep","Exploits",nil,true)
 
 --misc
 createOption("X-RAY","toggle","XRay","Misc",nil,true)
@@ -1750,8 +1754,16 @@ hook = hookmetamethod(game,"__namecall",function(self,...)
 	local args = {...}
 	local method = getnamecallmethod()
 	if options.WalkspeedNoStop ==true and method == "FireServer" and args[1] == Client.Name .. "C00lkiddCollision" then
-		
 		return nil
+	elseif options.WalkspeedHit == true and method == "FireServer" and args[2] == "WalkspeedOverride" then
+		Client.Character:FindFirstChild("SpeedMultipliers"):WaitForChild("HinderedMovement",1)
+		repeat
+			wait()
+			local clos = GetClosestSurvivor(true)
+			if clos.Survivor and clos.Magnitude < 15 then
+				Client.Character:FindFirstChild("HumanoidRootPart").CFrame = clos.Survivor.HumanoidRootPart.CFrame
+			end
+		until not Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement") or Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement").Value >=0.2
 	end
 	return hook(self,unpack(args))
 end)
