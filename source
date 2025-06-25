@@ -1,3 +1,4 @@
+
 print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
@@ -211,7 +212,8 @@ local options = {
 	["UnUsedValue"] = false,
 	["NoStun"] = false,
 	["InfSprint"] = false,
-	["WalkspeedNoStop"] = false
+	["WalkspeedNoStop"] = false,
+	["AutoItemPickup"] = false,
 }
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
@@ -1137,6 +1139,13 @@ task.spawn(function() --main update loop
 					end
 				end
 			end
+			if options.AutoItemPickup == true then
+				for i,model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
+					if model:IsA("Tool") and model:FindFirstChild("ItemRoot") and (Client.Character:FindFirstChild("HumanoidRootPart").Position-model.ItemRoot.Position).Mangitude < 80 then
+						fireproximityprompt(model:FindFirstChild("ItemRoot"),20)
+					end
+				end
+			end
 			if options.GeneratorESP == true then
 				for i,bil in GENDISPLAYS do
 					if bil and bil.Parent and bil:FindFirstChildWhichIsA("TextLabel") and bil.Parent:IsA("Model") and bil ~= nil and bil.Parent.Name == "Generator" and bil.Parent:FindFirstChild("Progress") then
@@ -1695,6 +1704,7 @@ createOption("007n7 TP PREDICTION","toggle","OO7n7tpPrediction","Visual",nil,tru
 createOption("MINIONS ESP","toggle","showMinions","Visual",nil,true)
 createOption("SHOW CHAT","toggle","ShowChat","Visual",nil,true)
 createOption("INF ZOOM","toggle","infZ","Visual",nil,true)
+createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
 
 --GeneralCheats
 
@@ -1703,6 +1713,7 @@ createOption("AIM AT SURVIVOR","toggle","AAS","GeneralCheats",nil,true) --aim at
 --createOption("NEXTKILLER","SHOW NEXT KILLER",SNKfunction,"SNK") --make just player tab visible
 --createOption("STUDSINSTEAD","STUDS INSTEAD OF CLASS",SIOC,"SIOC") --Studs instead of class
 createOption("EASY 1x4 POP-UPS","toggle","Easy1x4Popups","GeneralCheats",nil,true)
+createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
 
 
 
