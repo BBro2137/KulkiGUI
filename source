@@ -1,5 +1,4 @@
-
-print("loading kulki GUI yes......")
+print("loading kulki GUI rel......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.0"
@@ -1143,7 +1142,7 @@ task.spawn(function() --main update loop
 				for i,model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
 					print(model.Name)
 					if model:IsA("Tool") and model:FindFirstChild("ItemRoot") then
-						fireproximityprompt(model:FindFirstChild("ItemRoot"):FindFirstChildWhichIsA("ProximityPrompt"),20)
+						fireproximityprompt(model:FindFirstChild("ItemRoot"):FindFirstChildWhichIsA("ProximityPrompt"),50)
 					end
 				end
 			end
