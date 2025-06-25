@@ -524,6 +524,9 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 					if part.Parent == Client.Character then
 						floor = Instance.new("Part")
 						floor.Size = Vector3.new(5000,hitbox.Size.Y,500)
+						floor.Anchored = true
+						floor.Transparency = 0.7
+						floor.CastShadow = false
 						floor.Position = Vector3.new(hitbox.Position.X,hitbox.Position.Y+5,hitbox.Position.Z)
 						if floor.Position.Y > Client.Character:FindFirstChild("HumanoidRootPart").Position.Y then
 							Client.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(Client.Character:FindFirstChild("HumanoidRootPart").Position.X,floor.Position.Y+7,Client.Character:FindFirstChild("HumanoidRootPart").Position.Z)
@@ -571,6 +574,9 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 					if part.Parent == Client.Character then
 						floor = Instance.new("Part")
 						floor.Size = Vector3.new(5000,hitbox.Size.Y,500)
+						floor.Anchored = true
+						floor.Transparency = 0.7
+						floor.CastShadow = false
 						floor.Position = Vector3.new(hitbox.Position.X,hitbox.Position.Y+5,hitbox.Position.Z)
 						if floor.Position.Y > Client.Character:FindFirstChild("HumanoidRootPart").Position.Y then
 							Client.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(Client.Character:FindFirstChild("HumanoidRootPart").Position.X,floor.Position.Y+7,Client.Character:FindFirstChild("HumanoidRootPart").Position.Z)
@@ -1766,7 +1772,7 @@ createOption("SWITCHLOCKED","SWITCH LOCKED TO UNLOCKED CHARACTERS (needed to get
 createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"otheroptions")]]
 
 PatchLockedCharacters()
-GetCharacter("NoliRework",7100,true)
+GetCharacter("Taph",7100,false)
 local hook;
 hook = hookmetamethod(game,"__namecall",function(self,...)
 	local args = {...}
