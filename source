@@ -1,4 +1,4 @@
-print("loading kulki GUI 3......")
+print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.0"
@@ -611,10 +611,15 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		hitbox:Destroy()
 	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "spike" and coolkid:FindFirstChild("Spike") and options.SpikeNoclip == true and canRunUpdateLoop == true then
 		local mesh = coolkid:FindFirstChild("Spike")
+		local root = coolkid:FindFirstChild("Root")
 		mesh.CanCollide = false
 		mesh.CanTouch = false
 		mesh.CanQuery = false
 		mesh.Transparency = 0.7
+		root.CanCollide = false
+		root.CanTouch = false
+		root.CanQuery = false
+		root.Transparency = 0.7
 	end
 	if coolkid:FindFirstChildWhichIsA("Humanoid") and coolkid:FindFirstChild("Left Arm") and coolkid:FindFirstChild("Left Leg") and options.showMinions == true and coolkid.Name ~= "007n7" then
 		local high = Instance.new("Highlight")
