@@ -75,11 +75,13 @@ line.BackgroundColor3 = Color3.fromRGB(15,15,15)
 line.Size = UDim2.new(0.013, 0,1, 0)
 line.Position = UDim2.new(0.188, 0,0, 0)
 line.Parent = MainFrame
-local FR_options = Instance.new("Frame")
+local FR_options = Instance.new("ScrollingFrame")
 FR_options.Position = UDim2.new(0.201, 0,0.184, 0)
 FR_options.BackgroundTransparency = 1
-FR_options.Size = UDim2.new(0.797, 0,0.816, 0)
+FR_options.Size = UDim2.new(0.799, 0,0.814, 0)
 FR_options:AddTag("Tab")
+FR_options.ScrollBarThickness = 12
+FR_options.ScrollBarImageTransparency = 0.5
 layout:Clone().Parent = FR_options
 
 local KGM = Instance.new("TextLabel")
@@ -98,7 +100,7 @@ hitbox.Position = UDim2.new(0.257, 0,0.243, 0)
 hitbox.BackgroundTransparency = 1
 hitbox.Text = ""
 hitbox.Parent = KGM
-hitbox.MouseButton2Click:Connect(function()
+hitbox.MouseButton1Click:Connect(function()
 	KGM.Visible = false
 	MainFrame.Visible = true
 end)
@@ -255,7 +257,7 @@ local explainText = {
 local function createOption(displayed:string,OptionType:string,OptionIndex:string,ForTab:string,default:string,FunctionToggle:boolean,Func)
 	if OptionType:lower() == "toggle" then
 		local btt = Instance.new("TextButton")
-		btt.Size = UDim2.new(1, 0,0.161, 0)
+		btt.Size = UDim2.new(1, 0,0.003, 0)
 		if not default then
 			default = "OFF"
 		end
