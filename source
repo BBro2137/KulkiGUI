@@ -1,4 +1,4 @@
-print("loading kulki GUI mid......")
+print("loading kulki GUI better......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.0"
@@ -1756,15 +1756,16 @@ hook = hookmetamethod(game,"__namecall",function(self,...)
 	if options.WalkspeedNoStop ==true and method == "FireServer" and args[1] == Client.Name .. "C00lkiddCollision" then
 		return nil
 	elseif options.WalkspeedHit == true and method == "FireServer" and args[2] == "WalkspeedOverride" then
-		Client.Character:FindFirstChild("SpeedMultipliers"):WaitForChild("HinderedMovement",1)
 		task.spawn(function()
-			repeat
-				wait()
-				local clos = GetClosestSurvivor(true)
-				if clos.Survivor and clos.Magnitude < 15 then
-					Client.Character:FindFirstChild("HumanoidRootPart").CFrame = clos.Survivor.HumanoidRootPart.CFrame
-				end
-			until not Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement") or Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement").Value >=0.2
+			if Client.Character:FindFirstChild("SpeedMultipliers"):WaitForChild("HinderedMovement",2) then
+				repeat
+					wait()
+					local clos = GetClosestSurvivor(true)
+					if clos.Survivor and clos.Magnitude < 20 then
+						Client.Character:FindFirstChild("HumanoidRootPart").CFrame = clos.Survivor.HumanoidRootPart.CFrame
+					end
+				until not Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement") or Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement").Value >=0.2				
+			end
 		end)
 	end
 	return hook(self,unpack(args))
