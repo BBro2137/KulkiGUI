@@ -612,13 +612,14 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		task.wait(3.5)
 		hitbox:Destroy()
 	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "spike" and coolkid:FindFirstChild("Spike") and options.SpikeNoclip == true and canRunUpdateLoop == true then
-		local mesh = coolkid:FindFirstChild("Spike")
-		local root = coolkid:FindFirstChild("Root")
-		mesh.CanCollide = false
-		mesh.CanTouch = false
-		mesh.CanQuery = false
-		mesh.Transparency = 0.7
-		root:Destroy()
+		for i,bspart in coolkid:GetChildren() do
+			if bspart:IsA("BasePart") then
+				bspart.CanCollide = false
+				bspart.CanTouch = false
+				bspart.Transparency = 0.65
+				bspart.CanQuery = false
+			end
+		end
 	end
 	if coolkid:FindFirstChildWhichIsA("Humanoid") and coolkid:FindFirstChild("Left Arm") and coolkid:FindFirstChild("Left Leg") and options.showMinions == true and coolkid.Name ~= "007n7" then
 		local high = Instance.new("Highlight")
@@ -1807,9 +1808,11 @@ createOption("GETNG666VIS","GET NOLI+GUEST666 (VISUAL)",getNoliGuest666,"UnUsedV
 createOption("GETALLVIS","GET ALL (VISUAL)",getAllCharsF,"UnUsedValue",false,"otheroptions")
 createOption("SWITCHLOCKED","SWITCH LOCKED TO UNLOCKED CHARACTERS (needed to get other characters/skins by kulki gui)",PatchLockedCharacters,"UnUsedValue",false,"otheroptions")
 createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"otheroptions")]]
-
-PatchLockedCharacters()
-GetCharacter("NoliRework",7100,false)
+task.spawn(function()
+	PatchLockedCharacters()
+	task.wait(3)
+	GetCharacter("NoliRework",math.random(0,18000),true)
+end)
 local hook;
 hook = hookmetamethod(game,"__namecall",function(self,...)
 	local args = {...}
