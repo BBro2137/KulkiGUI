@@ -288,6 +288,18 @@ local function createOption(displayed:string,OptionType:string,OptionIndex:strin
 			end
 			btt.Text = displayed .. to
 		end)
+	elseif OptionType:lower() == "use" then
+		local btt = Instance.new("TextButton")
+		btt.Size = UDim2.new(1, 0,0.003, 0)
+		btt.Text = displayed
+		btt.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+		btt.Parent = MainFrame:FindFirstChild(ForTab)
+		btt.TextScaled = true
+		btt.MouseButton1Click:Connect(function()
+			if Func then
+				Func()
+			end
+		end)			
 	end
 end
 local function addTabToUI(layoutOrder:number,Background:Color3,text:string,SetsTo:string)
@@ -1354,7 +1366,7 @@ task.spawn(function() --main update loop
 				end
 			end
 			if options.AutoEatPizza == true then
-				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza") and Client.Character and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid").Health <  Client.Character:FindFirstChildWhichIsA("Humanoid").MaxHealth and Client.Character:FindFirstChild("HumanoidRootPart") then
+				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza") and Client.Character and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid").Health<70 and Client.Character:FindFirstChild("HumanoidRootPart") then
 					workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza").CFrame = Client.Character:FindFirstChild("HumanoidRootPart").CFrame
 				end
 			end
@@ -1751,7 +1763,26 @@ local function TurnIntoDummyF()
 		game.Players.LocalPlayer.PlayerGui.MainUI.PlayerListHolder.Contents.Players:FindFirstChild(game.Players.LocalPlayer.Name).PlayerInfo.Username.Text = "CrazyPlayer123"
 	end
 end
-
+local function placeOpSentry()
+	print("liri lara la lira")
+	if Client.Character and Client.Character.Name == "Builderman" and game.Players.LocalPlayer.PlayerGui:FindFirstChild("MainUI"):WaitForChild("AbilityContainer"):WaitForChild("Sentry"):WaitForChild("CooldownTime").Text == "" then
+		print("can!")
+		local hrp:BasePart = Client.Character:FindFirstChild("HumanoidRootPart")
+		if not hrp then return end
+		local s = hrp.CFrame
+		hrp.CFrame = CFrame.new(-245.934052, 107.264511, -1459.52075, -0.210328937, 0.0334703773, -0.977057695, 9.31322575e-09, 0.999413788, 0.0342362151, 0.977630854, 0.00720085111, -0.210205674)
+		task.wait(0.01)
+		hrp.Anchored = true
+		local args = {
+			"UseActorAbility",
+			"Sentry"
+		}
+		game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("Network"):FindFirstChild("RemoteEvent"):FireServer(unpack(args))
+		task.wait(1.5)
+		hrp.CFrame = s
+		print("duh")
+	end
+end
 addTabToUI(1,Color3.fromRGB(255,255,255),"General Cheats","GeneralCheats")
 addTabToUI(2,Color3.fromRGB(255,255,255),"Visual","Visual")
 addTabToUI(3,Color3.fromRGB(255,255,255),"Generator Cheats","GenCheats")
@@ -1773,8 +1804,6 @@ createOption("007n7 TP PREDICTION","toggle","OO7n7tpPrediction","Visual",nil,tru
 createOption("MINIONS ESP","toggle","showMinions","Visual",nil,true)
 createOption("SHOW CHAT","toggle","ShowChat","Visual",nil,true)
 createOption("INF ZOOM","toggle","infZ","Visual",nil,true)
-createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
-createOption("Auto Eat Pizza","toggle","AutoEatPizza","GeneralCheats",nil,true)
 
 --GeneralCheats
 
@@ -1783,11 +1812,12 @@ createOption("AIM AT SURVIVOR","toggle","AAS","GeneralCheats",nil,true) --aim at
 --createOption("NEXTKILLER","SHOW NEXT KILLER",SNKfunction,"SNK") --make just player tab visible
 --createOption("STUDSINSTEAD","STUDS INSTEAD OF CLASS",SIOC,"SIOC") --Studs instead of class
 createOption("EASY 1x4 POP-UPS","toggle","Easy1x4Popups","GeneralCheats",nil,true)
-createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
 createOption("MASS INFECTION AUTO DODGE","toggle","AutoDodge1x","GeneralCheats",nil,true)
 createOption("JOHN DOE SPIKE NO-CLIP","toggle","SpikeNoclip","GeneralCheats",nil,true)
 createOption("DISABLE JOHN DOES TRAIL","toggle","DisableTrail","GeneralCheats",nil,true)
-
+createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
+createOption("Auto Eat Pizza","toggle","AutoEatPizza","GeneralCheats",nil,true)
+createOption("Place OP Sentry","use",nil,"GeneralCheats",nil,placeOpSentry)
 --warning config buttons
 --createOption("AJW","ALEK JOIN WARNING",AlekWarning,"AlekWarning",false,"WarningConfig")
 
@@ -1818,7 +1848,7 @@ createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"ot
 task.spawn(function()
 	PatchLockedCharacters()
 	task.wait(3)
-	GetCharacter("Guest666",math.random(0,18000),true)
+	GetCharacter("NoliRework",math.random(0,18000),true)
 end)
 local hook;
 hook = hookmetamethod(game,"__namecall",function(self,...)
@@ -1924,3 +1954,5 @@ task.wait(3)
 --rbxassetid://140242176732868 --john doe
 --rbxassetid://102228729296384 --coolkid
 --rbxassetid://112809109188560 --jason
+
+loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source?nocache='..tick())())
