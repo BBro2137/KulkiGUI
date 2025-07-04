@@ -264,7 +264,8 @@ local explainText = {
 	["showMinions"] = "shows minios of coolkid and 1x4 etc",
 	["JesusMode"] = "kulki GUI is now jesus",
 }
-local function createOption(displayed:string,OptionType:string,OptionIndex:string,ForTab:string,default:string,FunctionToggle:boolean,Func)
+local function createOption(displayed:string,OptionType:string,OptionIndex:string,ForTab:string,default:string,FunctionToggle:boolean,Func,onlyOnMap:string,arg1:any)
+	local relbt = nil
 	if OptionType:lower() == "toggle" then
 		local btt = Instance.new("TextButton")
 		btt.Size = UDim2.new(1, 0,0.003, 0)
@@ -284,10 +285,11 @@ local function createOption(displayed:string,OptionType:string,OptionIndex:strin
 				to = " (OFF)"
 			end
 			if Func then
-				Func()
+				Func(arg1)
 			end
 			btt.Text = displayed .. to
 		end)
+		relbt = btt
 	elseif OptionType:lower() == "use" then
 		local btt = Instance.new("TextButton")
 		btt.Size = UDim2.new(1, 0,0.003, 0)
@@ -299,10 +301,19 @@ local function createOption(displayed:string,OptionType:string,OptionIndex:strin
 			print("YES")
 			if Func then
 				print("HOLDUP")
-				Func()
+				Func(arg1)
 			end
-		end)			
+		end)
+		relbt = btt		
 	end
+	workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(function(child)
+		task.wait(5)
+		if child:GetAttribute("MapName") == onlyOnMap then
+			relbt.Visible = true
+		else
+			relbt.Visible = false
+		end
+	end)
 end
 local function addTabToUI(layoutOrder:number,Background:Color3,text:string,SetsTo:string)
 	local btt = Instance.new("TextButton")
@@ -311,6 +322,7 @@ local function addTabToUI(layoutOrder:number,Background:Color3,text:string,SetsT
 	btt.BackgroundColor3 = Background
 	btt.Text = text
 	btt.Parent = FR_tabs
+	btt.TextScaled = true
 	local tab = FR_options:Clone()
 	tab.Parent = MainFrame
 	tab.Name = SetsTo
@@ -1767,14 +1779,12 @@ local function TurnIntoDummyF()
 		game.Players.LocalPlayer.PlayerGui.MainUI.PlayerListHolder.Contents.Players:FindFirstChild(game.Players.LocalPlayer.Name).PlayerInfo.Username.Text = "CrazyPlayer123"
 	end
 end
-local function placeOpSentry()
-	print("liri lara la lira")
+local function placeOpSentry(loc:CFrame)
 	if Client.Character and Client.Character.Name == "Builderman" and game.Players.LocalPlayer.PlayerGui:FindFirstChild("MainUI"):WaitForChild("AbilityContainer"):WaitForChild("Sentry"):WaitForChild("CooldownTime").Text == "" then
-		print("can!")
 		local hrp:BasePart = Client.Character:FindFirstChild("HumanoidRootPart")
 		if not hrp then return end
 		local s = hrp.CFrame
-		hrp.CFrame = CFrame.new(-245.934052, 107.264511, -1459.52075, -0.210328937, 0.0334703773, -0.977057695, 9.31322575e-09, 0.999413788, 0.0342362151, 0.977630854, 0.00720085111, -0.210205674)
+		hrp.CFrame = loc
 		task.wait(0.01)
 		hrp.Anchored = true
 		local args = {
@@ -1782,15 +1792,17 @@ local function placeOpSentry()
 			"Sentry"
 		}
 		game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("Network"):FindFirstChild("RemoteEvent"):FireServer(unpack(args))
-		task.wait(1.5)
+		task.wait(1)
+		hrp.Anchored = false
+		task.wait(0.5)
 		hrp.CFrame = s
-		print("duh")
 	end
 end
 addTabToUI(1,Color3.fromRGB(255,255,255),"General Cheats","GeneralCheats")
 addTabToUI(2,Color3.fromRGB(255,255,255),"Visual","Visual")
 addTabToUI(3,Color3.fromRGB(255,255,255),"Generator Cheats","GenCheats")
 addTabToUI(4,Color3.fromRGB(255,255,255),"Misc","Misc")
+addTabToUI(5,Color3.fromRGB(255,255,255),"Special Sentry Locations","SSL")
 addTabToUI(666,Color3.fromRGB(255,255,255),"Game Exploits","Exploits")
 --visual
 createOption("NO BLUR","toggle","noBlur","Visual",nil,true)
@@ -1821,7 +1833,6 @@ createOption("JOHN DOE SPIKE NO-CLIP","toggle","SpikeNoclip","GeneralCheats",nil
 createOption("DISABLE JOHN DOES TRAIL","toggle","DisableTrail","GeneralCheats",nil,true)
 createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
 createOption("Auto Eat Pizza","toggle","AutoEatPizza","GeneralCheats",nil,true)
-createOption("Place OP Sentry","use",nil,"GeneralCheats",nil,nil,placeOpSentry)
 --warning config buttons
 --createOption("AJW","ALEK JOIN WARNING",AlekWarning,"AlekWarning",false,"WarningConfig")
 
@@ -1849,10 +1860,20 @@ createOption("GETNG666VIS","GET NOLI+GUEST666 (VISUAL)",getNoliGuest666,"UnUsedV
 createOption("GETALLVIS","GET ALL (VISUAL)",getAllCharsF,"UnUsedValue",false,"otheroptions")
 createOption("SWITCHLOCKED","SWITCH LOCKED TO UNLOCKED CHARACTERS (needed to get other characters/skins by kulki gui)",PatchLockedCharacters,"UnUsedValue",false,"otheroptions")
 createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"otheroptions")]]
+
+-- sentry locations
+createOption("BRANDON_WORKS big castle","use",nil,"SSL",nil,nil,placeOpSentry,"BrandonWorks",CFrame.new(-245.934052, 107.264511, -1459.52075, -0.210328937, 0.0334703773, -0.977057695, 9.31322575e-09, 0.999413788, 0.0342362151, 0.977630854, 0.00720085111, -0.210205674))
+createOption("BRANDON_WORKS killer spawn small wood wall","use",nil,"SSL",nil,nil,placeOpSentry,"BrandonWorks",CFrame.new(-448.160217, 83.9325256, -1277.98096, 0.997020423, -1.02201059e-09, -0.0771378353, 2.19752527e-09, 1, 1.51542618e-08, 0.0771378353, -1.52786228e-08, 0.997020423))
+createOption("YORICKS_PLACE graveyard","use",nil,"SSL",nil,nil,placeOpSentry,"YoricksRestingPlace",CFrame.new(229.808914, 56.4740601, -2069.83765, 0.116056263, -8.43870041e-09, -0.993242681, 3.20870122e-08, 1, -4.74687578e-09, 0.993242681, -3.13192814e-08, 0.116056263))
+createOption("C00L_CARNIVAL mid","use",nil,"SSL",nil,nil,placeOpSentry,"C00lCarnival",CFrame.new(1450.29785, 104.187317, 242.673553, 0.999912381, -3.61686708e-10, 0.0132357376, 2.97002117e-10, 1, 4.88908114e-09, -0.0132357376, -4.88472196e-09, 0.999912381))
+createOption("C00L_CARNIVAL red house lamp","use",nil,"SSL",nil,nil,placeOpSentry,"C00lCarnival",CFrame.new(1439.69751, 98.1062927, 132.950409, 0.996913493, 0.0128333233, 0.0774522498, -5.59864566e-06, 0.986560822, -0.163394541, -0.0785082504, 0.162889779, 0.983515799))
+
+
 task.spawn(function()
 	PatchLockedCharacters()
 	task.wait(3)
 	GetCharacter("Guest666",math.random(0,18000),true)
+	GetCharacter("NoliRework",math.random(0,18000),true)
 end)
 local hook;
 hook = hookmetamethod(game,"__namecall",function(self,...)
