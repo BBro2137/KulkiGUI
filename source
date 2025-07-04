@@ -1804,6 +1804,7 @@ local function placeOpSentry(loc:CFrame)
 		}
 		game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("Network"):FindFirstChild("RemoteEvent"):FireServer(unpack(args))
 		task.wait(3)
+		BV:Destroy()
 		hrp.CFrame = s
 	end
 end
@@ -1874,8 +1875,8 @@ createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"ot
 createOption("BRANDON_WORKS big castle","use",nil,"SSL",nil,nil,placeOpSentry,"BrandonWorks",CFrame.new(-245.934052, 107.264511, -1459.52075, -0.210328937, 0.0334703773, -0.977057695, 9.31322575e-09, 0.999413788, 0.0342362151, 0.977630854, 0.00720085111, -0.210205674))
 createOption("BRANDON_WORKS killer spawn small wood wall","use",nil,"SSL",nil,nil,placeOpSentry,"BrandonWorks",CFrame.new(-448.160217, 83.9325256, -1277.98096, 0.997020423, -1.02201059e-09, -0.0771378353, 2.19752527e-09, 1, 1.51542618e-08, 0.0771378353, -1.52786228e-08, 0.997020423))
 createOption("YORICKS_PLACE graveyard","use",nil,"SSL",nil,nil,placeOpSentry,"YoricksRestingPlace",CFrame.new(229.808914, 56.4740601, -2069.83765, 0.116056263, -8.43870041e-09, -0.993242681, 3.20870122e-08, 1, -4.74687578e-09, 0.993242681, -3.13192814e-08, 0.116056263))
-createOption("C00L_CARNIVAL mid","use",nil,"SSL",nil,nil,placeOpSentry,"C00lCarnival",CFrame.new(1450.29785, 104.187317, 242.673553, 0.999912381, -3.61686708e-10, 0.0132357376, 2.97002117e-10, 1, 4.88908114e-09, -0.0132357376, -4.88472196e-09, 0.999912381))
-createOption("C00L_CARNIVAL red house lamp","use",nil,"SSL",nil,nil,placeOpSentry,"C00lCarnival",CFrame.new(1439.69751, 98.1062927, 132.950409, 0.996913493, 0.0128333233, 0.0774522498, -5.59864566e-06, 0.986560822, -0.163394541, -0.0785082504, 0.162889779, 0.983515799))
+createOption("C00L_CARNIVAL mid","use",nil,"SSL",nil,nil,placeOpSentry,"C00lCarnival",CFrame.new(1451.04944, 104.593315, 244.01712, 0.998600781, -2.60465018e-11, 0.052881971, 4.21817355e-12, 1, 4.12886114e-10, -0.052881971, -4.1208531e-10, 0.998600781))
+createOption("C00L_CARNIVAL survivor spawn black stand","use",nil,"SSL",nil,nil,placeOpSentry,"C00lCarnival",CFrame.new(1345.47705, 100.082138, 249.647903, -0.0342284441, 5.19648768e-09, -0.999414146, -5.58999291e-10, 1, 5.21867882e-09, 0.999414146, 7.37298445e-10, -0.0342284441))
 
 
 task.spawn(function()
