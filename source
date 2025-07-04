@@ -670,6 +670,12 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 		high.Parent = coolkid
 		high.Name = "FilthyESP77"
 	end
+	if coolkid.Name == "Map" then
+		task.wait(3)
+		if coolkid:GetAttribute("MapName") == "HorrorHotel" then
+			coolkid:WaitForChild("Vaporwave"):WaitForChild("Bed"):WaitForChild("Barrier").CanCollide = false
+		end
+	end
 end)
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").DescendantAdded:Connect(function(coolkid)
 	if canRunUpdateLoop == true then
@@ -1877,6 +1883,11 @@ createOption("BRANDON_WORKS killer spawn small wood wall","use",nil,"SSL",nil,ni
 createOption("YORICKS_PLACE graveyard","use",nil,"SSL",nil,nil,placeOpSentry,"YoricksRestingPlace",CFrame.new(229.808914, 56.4740601, -2069.83765, 0.116056263, -8.43870041e-09, -0.993242681, 3.20870122e-08, 1, -4.74687578e-09, 0.993242681, -3.13192814e-08, 0.116056263))
 createOption("C00L_CARNIVAL mid","use",nil,"SSL",nil,nil,placeOpSentry,"C00lCarnival",CFrame.new(1451.04944, 104.593315, 244.01712, 0.998600781, -2.60465018e-11, 0.052881971, 4.21817355e-12, 1, 4.12886114e-10, -0.052881971, -4.1208531e-10, 0.998600781))
 createOption("C00L_CARNIVAL survivor spawn black stand","use",nil,"SSL",nil,nil,placeOpSentry,"C00lCarnival",CFrame.new(1345.47705, 100.082138, 249.647903, -0.0342284441, 5.19648768e-09, -0.999414146, -5.58999291e-10, 1, 5.21867882e-09, 0.999414146, 7.37298445e-10, -0.0342284441))
+createOption("GLASS_HOUSES CASTLE ENTRANCE","use",nil,"SSL",nil,nil,placeOpSentry,"GlassHouses",CFrame.new(191.134964, 42.9999924, 1500.17273, -0.966944814, -6.27276009e-15, 0.254985482, -1.02716435e-09, 1, -3.89514332e-09, -0.254985482, -4.0283008e-09, -0.966944814))
+createOption("GLASS_HOUSES TREE ON HILL ENTRANCE","use",nil,"SSL",nil,nil,placeOpSentry,"GlassHouses",CFrame.new(134.641815, 43.3603516, 1351.99609, -0.559997439, 9.23384391e-09, -0.828494608, 3.44718476e-10, 1, 1.0912327e-08, 0.828494608, 5.82527582e-09, -0.559997439))
+createOption("HORROR_HOTEL VAPORWAVE BED","use",nil,"SSL",nil,nil,placeOpSentry,"HorrorHotel",CFrame.new(2959.46997, 68.1796722, -7.27701473, 0.338237613, 5.48549595e-10, -0.941060722, -5.19648657e-10, 1, 3.96132627e-10, 0.941060722, 3.55034002e-10, 0.338237613))
+createOption("HORROR_HOTEL BALLPIT ENTRANCE","use",nil,"SSL",nil,nil,placeOpSentry,"HorrorHotel",CFrame.new(3229.90137, 75.9094238, -119.4897, -0.999259591, 3.69015396e-09, -0.038472835, 4.74569362e-09, 1, -2.73446439e-08, 0.038472835, -2.7506978e-08, -0.999259591))
+createOption("HORROR_HOTEL HUGE ROOM MID","use",nil,"SSL",nil,nil,placeOpSentry,"HorrorHotel",CFrame.new(3192.94727, 75.5650787, -89.0336304, 0.998695493, -5.81161341e-10, -0.0510613248, 2.55399313e-10, 1, -6.3863439e-09, 0.0510613248, 6.36497166e-09, 0.998695493))
 
 
 task.spawn(function()
