@@ -219,6 +219,7 @@ local options = {
 	["SpikeNoclip"] = false,
 	["DisableTrail"] = false,
 	["NoFallSlowness"] = false,
+	["AutoEatPizza"] = false,
 }
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
@@ -1352,6 +1353,11 @@ task.spawn(function() --main update loop
 					end
 				end
 			end
+			if options.AutoEatPizza == true then
+				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza") and Client.Character and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid").Health <  Client.Character:FindFirstChildWhichIsA("Humanoid").MaxHealth and Client.Character:FindFirstChild("HumanoidRootPart") then
+					workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza").CFrame = Client.Character:FindFirstChild("HumanoidRootPart").CFrame
+				end
+			end
 		end)
 		if err then
 			warn("OH MY GOOOOOOOD!!!!, WADAFAK!!!!! , " .. tostring(err))
@@ -1768,6 +1774,7 @@ createOption("MINIONS ESP","toggle","showMinions","Visual",nil,true)
 createOption("SHOW CHAT","toggle","ShowChat","Visual",nil,true)
 createOption("INF ZOOM","toggle","infZ","Visual",nil,true)
 createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
+createOption("Auto Eat Pizza","toggle","AutoEatPizza","GeneralCheats",nil,true)
 
 --GeneralCheats
 
@@ -1811,7 +1818,7 @@ createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"ot
 task.spawn(function()
 	PatchLockedCharacters()
 	task.wait(3)
-	GetCharacter("NoliRework",math.random(0,18000),true)
+	GetCharacter("Guest666",math.random(0,18000),true)
 end)
 local hook;
 hook = hookmetamethod(game,"__namecall",function(self,...)
