@@ -1792,7 +1792,7 @@ local function placeOpSentry(loc:CFrame)
 			"Sentry"
 		}
 		game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("Network"):FindFirstChild("RemoteEvent"):FireServer(unpack(args))
-		task.wait(1)
+		task.wait(3)
 		hrp.Anchored = false
 		task.wait(0.5)
 		hrp.CFrame = s
@@ -1874,6 +1874,7 @@ task.spawn(function()
 	task.wait(3)
 	GetCharacter("Guest666",math.random(0,18000),true)
 	GetCharacter("NoliRework",math.random(0,18000),true)
+	GetCharacter("NoliOld",math.random(0,18000),true)
 end)
 local hook;
 hook = hookmetamethod(game,"__namecall",function(self,...)
