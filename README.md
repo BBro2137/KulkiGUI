@@ -2,7 +2,9 @@
 > dont exploit, its for educational purposes only.
 >
 > loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
-no-cache version below
+> 
+> no-cache version below
+> 
 > loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source?nocache='..tick())()
 
 > [!NOTE]
