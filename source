@@ -296,7 +296,9 @@ local function createOption(displayed:string,OptionType:string,OptionIndex:strin
 		btt.Parent = MainFrame:FindFirstChild(ForTab)
 		btt.TextScaled = true
 		btt.MouseButton1Click:Connect(function()
+			print("YES")
 			if Func then
+				print("HOLDUP")
 				Func()
 			end
 		end)			
@@ -322,10 +324,12 @@ local function addTabToUI(layoutOrder:number,Background:Color3,text:string,SetsT
 	end)
 	return {["Button"]=btt,["Tab"]=tab}
 end
+
 if RunService:IsStudio() then
 	addTabToUI(1,Color3.fromRGB(255,255,255),"General Cheats","GeneralCheats")
 	addTabToUI(2,Color3.fromRGB(255,255,255),"Misc","Misc")
 	createOption("TEST 01","toggle","UnUsedValue","GeneralCheats",nil,true)
+	createOption("USE TEST","use",nil,"GeneralCheats",nil,nil,nil)
 	sGUI.Parent = Client.PlayerGui
 	assert(false," rest of kulki gui code cannot run in studio!")
 end
@@ -1817,7 +1821,7 @@ createOption("JOHN DOE SPIKE NO-CLIP","toggle","SpikeNoclip","GeneralCheats",nil
 createOption("DISABLE JOHN DOES TRAIL","toggle","DisableTrail","GeneralCheats",nil,true)
 createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
 createOption("Auto Eat Pizza","toggle","AutoEatPizza","GeneralCheats",nil,true)
-createOption("Place OP Sentry","use",nil,"GeneralCheats",nil,placeOpSentry)
+createOption("Place OP Sentry","use",nil,"GeneralCheats",nil,nil,placeOpSentry)
 --warning config buttons
 --createOption("AJW","ALEK JOIN WARNING",AlekWarning,"AlekWarning",false,"WarningConfig")
 
@@ -1848,7 +1852,7 @@ createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"ot
 task.spawn(function()
 	PatchLockedCharacters()
 	task.wait(3)
-	GetCharacter("NoliRework",math.random(0,18000),true)
+	GetCharacter("Guest666",math.random(0,18000),true)
 end)
 local hook;
 hook = hookmetamethod(game,"__namecall",function(self,...)
@@ -1955,4 +1959,4 @@ task.wait(3)
 --rbxassetid://102228729296384 --coolkid
 --rbxassetid://112809109188560 --jason
 
-loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source?nocache='..tick())())
+--loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source?nocache='..tick())())
