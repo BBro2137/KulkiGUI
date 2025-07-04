@@ -266,6 +266,17 @@ local explainText = {
 }
 local function createOption(displayed:string,OptionType:string,OptionIndex:string,ForTab:string,default:string,FunctionToggle:boolean,Func,onlyOnMap:string,arg1:any)
 	local relbt = nil
+	local function can()
+		if onlyOnMap then
+			if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetAttribute("MapName") == onlyOnMap then
+				return true
+			else
+				return false
+			end
+		else
+			return true
+		end
+	end
 	if OptionType:lower() == "toggle" then
 		local btt = Instance.new("TextButton")
 		btt.Size = UDim2.new(1, 0,0.003, 0)
@@ -277,43 +288,39 @@ local function createOption(displayed:string,OptionType:string,OptionIndex:strin
 		btt.Parent = MainFrame:FindFirstChild(ForTab)
 		btt.TextScaled = true
 		btt.MouseButton1Click:Connect(function()
-			if FunctionToggle == true then
-				options[OptionIndex] = not options[OptionIndex]
+			if can() == true then
+				if FunctionToggle == true then
+					options[OptionIndex] = not options[OptionIndex]
+				end
+				local to = " (ON)"
+				if options[OptionIndex] == false then
+					to = " (OFF)"
+				end
+				if Func then
+					Func(arg1)
+				end
+				btt.Text = displayed .. to				
 			end
-			local to = " (ON)"
-			if options[OptionIndex] == false then
-				to = " (OFF)"
-			end
-			if Func then
-				Func(arg1)
-			end
-			btt.Text = displayed .. to
 		end)
 		relbt = btt
 	elseif OptionType:lower() == "use" then
-		local btt = Instance.new("TextButton")
-		btt.Size = UDim2.new(1, 0,0.003, 0)
-		btt.Text = displayed
-		btt.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-		btt.Parent = MainFrame:FindFirstChild(ForTab)
-		btt.TextScaled = true
-		btt.MouseButton1Click:Connect(function()
-			print("YES")
-			if Func then
-				print("HOLDUP")
-				Func(arg1)
-			end
-		end)
-		relbt = btt		
+		if can() == true then
+			local btt = Instance.new("TextButton")
+			btt.Size = UDim2.new(1, 0,0.003, 0)
+			btt.Text = displayed
+			btt.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+			btt.Parent = MainFrame:FindFirstChild(ForTab)
+			btt.TextScaled = true
+			btt.MouseButton1Click:Connect(function()
+				print("YES")
+				if Func then
+					print("HOLDUP")
+					Func(arg1)
+				end
+			end)
+			relbt = btt
+		end		
 	end
-	workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(function(child)
-		task.wait(5)
-		if child:GetAttribute("MapName") == onlyOnMap then
-			relbt.Visible = true
-		else
-			relbt.Visible = false
-		end
-	end)
 end
 local function addTabToUI(layoutOrder:number,Background:Color3,text:string,SetsTo:string)
 	local btt = Instance.new("TextButton")
