@@ -1883,7 +1883,6 @@ task.spawn(function()
 	task.wait(3)
 	GetCharacter("Guest666",math.random(0,18000),true)
 	GetCharacter("NoliRework",math.random(0,18000),true)
-	GetCharacter("BonkBoy",math.random(0,18000),true)
 end)
 local hook;
 hook = hookmetamethod(game,"__namecall",function(self,...)
