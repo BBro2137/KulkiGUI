@@ -1791,16 +1791,18 @@ local function placeOpSentry(loc:CFrame)
 		local hrp:BasePart = Client.Character:FindFirstChild("HumanoidRootPart")
 		if not hrp then return end
 		local s = hrp.CFrame
+		local BV = Instance.new('BodyVelocity')
+		BV.Parent = Client.Character:FindFirstChild("HumanoidRootPart")
+		BV.velocity = Vector3.new(0, 0, 0)
+		BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
 		hrp.CFrame = loc
-		task.wait(0.01)
-		hrp.Anchored = true
 		local args = {
 			"UseActorAbility",
 			"Sentry"
 		}
 		game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("Network"):FindFirstChild("RemoteEvent"):FireServer(unpack(args))
 		task.wait(3)
-		hrp.Anchored = false
+		
 		task.wait(0.5)
 		hrp.CFrame = s
 	end
