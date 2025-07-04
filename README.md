@@ -7,7 +7,7 @@
 
 > [!NOTE]
 > the only executors this was used and confirmed to be working on (that doesnt mean they bypass the new anticheat) were:
->[Velocity](https://getvelocity.live), [JJsploit](https://wearedevs.net/d/JJSploit), [Xeno](https://www.xeno.now)
+>[Delta](https://deltaexploits.gg)
 
 
 Q: is it safe?
