@@ -2,13 +2,6 @@
 > dont exploit, its for educational purposes only.
 >
 > loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
-> 
-> no-cache version below
-> 
-> loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source?nocache='..tick())()
-
-> [!NOTE]
-> KULKI GUI is disabled until executors bypass the new anticheat stay safe
 
 
 > [!NOTE]
