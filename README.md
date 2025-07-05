@@ -2,6 +2,11 @@
 > dont exploit, its for educational purposes only.
 >
 > loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
+>
+> the robot/ai autoplay version of kulki gui (VERY EARLY BUILD,ONLY CAN PLAY AS KILLER)
+>
+> loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/KulkiGuiAI'))()
+
 
 
 > [!NOTE]
