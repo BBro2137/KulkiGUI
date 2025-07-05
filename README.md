@@ -3,7 +3,7 @@
 >
 > loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
 >
-> the robot/ai autoplay version of kulki gui (VERY EARLY BUILD,ONLY CAN PLAY AS KILLER)
+> the robot/ai autoplay version of kulki gui (VERY EARLY BUILD,ONLY CAN PLAY AS KILLER JASON)
 >
 > loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/KulkiGuiAI'))()
 
