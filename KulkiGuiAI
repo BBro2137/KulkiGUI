@@ -680,6 +680,7 @@ local Data = {
 	["Goal"] = nil,
 	["Target"] = nil,
 	["RegeningStamina"] = false,
+	["IsUpdateRunCooldown"] = false,
 }
 local ForsakenModules = {
 	["Systems"] = {
@@ -693,9 +694,6 @@ game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
 end)
 local function onMapStart()
 	task.wait(1.5)
-	for i,survivor in workspace:FindFirstChild("Players"):FindFirstChild("Survivors"):GetChildren() do
-		Data.Target = GetClosestSurvivor(false)
-	end
 end
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(function(kid)
 	if kid.Name == "Map" then
@@ -728,6 +726,11 @@ task.spawn(function() --main update loop
 		local su,err = nil
 		su,err = pcall(function()
 			if options.Enabled == true and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Slowdown")  then
+					if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Slowdown"):FindFirstChild("Arms") then
+						workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Slowdown"):FindFirstChild("Arms"):Destroy()
+					end
+				end
 				local readOnlyValues = {
 					["Stamina"] = ForsakenModules.Systems.Sprinting.Stamina,
 					["IsSprinting"] = ForsakenModules.Systems.Sprinting.IsSprinting
@@ -757,20 +760,37 @@ task.spawn(function() --main update loop
 						if readOnlyValues.Stamina < 20 then
 							FINAL.Sprint = false
 						else
-							if Data.Target.Name ~= "Builderman" and Data.Target.Name ~= "Taph"  then
-								useAbility("Behead")
+							local c = true
+							if Data.Target.Name == "Guest1337" then
+								local guest:Instance = Data.Target
+								if guest:FindFirstChild("SpeedMultipliers"):FindFirstChild("GuestBlocking") and guest:FindFirstChild("ResistanceMultipliers"):FindFirstChild("ResistanceStatus") then
+									c = false
+								end
 							end
-							useAbility("Slash")
+							if c == true then
+								if Data.Target.Name ~= "Builderman" and Data.Target.Name ~= "Taph"  then
+									useAbility("Behead")
+								end
+								useAbility("Slash")								
+							end
 						end
 					end
+				end
+				if not Data.Target or not Data.Target.Parent or not Data.Target:FindFirstChildWhichIsA("Humanoid") or Data.Target:FindFirstChildWhichIsA("Humanoid").Health<=0 then
+					Data.Target = GetClosestSurvivor(false)
 				end
 				if workspace.CurrentCamera and Data.Target and Data.Target:FindFirstChild("HumanoidRootPart") then
 					local at:Vector3 = Data.Target:FindFirstChild("HumanoidRootPart").Position
 					workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position,at)
 				end
 				setSprintingTo(FINAL.Sprint)
-				if Data.Goal then
+				if Data.Goal and Data.IsUpdateRunCooldown == false then
 					poth:Run(Data.Goal)
+					Data.IsUpdateRunCooldown = true
+					task.spawn(function()
+						task.wait(0.15)
+						Data.IsUpdateRunCooldown = false
+					end)
 				end		
 			elseif poth and poth._status and poth._status ~= "Idle" then
 				poth:Stop()
@@ -842,7 +862,7 @@ createOption("AI ENABLED","toggle","Enabled","General",nil,true)
 task.spawn(function()
 	PatchLockedCharacters()
 	task.wait(3)
-	GetCharacter("Guest6",math.random(0,18000),true)
+	GetCharacter("Guest8",math.random(0,18000),true)
 end)
 
 if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
