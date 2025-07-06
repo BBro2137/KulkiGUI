@@ -679,6 +679,7 @@ poth.Visualize = true
 local Data = {
 	["Goal"] = nil,
 	["Target"] = nil,
+	["RegeningStamina"] = false,
 }
 local ForsakenModules = {
 	["Systems"] = {
@@ -705,31 +706,48 @@ end)
 if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
 	onMapStart()
 end
+local function setSprintingTo(value:boolean)
+	if ForsakenModules.Systems.Sprinting.IsSprinting ~= value then
+		for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.SprintingButton.MouseButton1Down)) do
+			v:Fire()
+		end		
+	end
+end
 task.spawn(function() --main update loop
 	while true do
 		task.wait()
-		print("im mad and im ai")
 		if canRunUpdateLoop == false then
 			break
 		end
 		local su,err = nil
 		su,err = pcall(function()
-			local currentValues = {
-				["Stamina"] = ForsakenModules.Systems.Sprinting.Stamina
-			}
-			if currentValues.Stamina>10 and ForsakenModules.Systems.Sprinting.CanSprint == true then
-				ForsakenModules.Systems.Sprinting.IsSprinting = true
+			if options.Enabled == true then
+				local readOnlyValues = {
+					["Stamina"] = ForsakenModules.Systems.Sprinting.Stamina,
+					["IsSprinting"] = ForsakenModules.Systems.Sprinting.IsSprinting
+				}
+				if readOnlyValues.Stamina>10 and ForsakenModules.Systems.Sprinting.CanSprint == true and Data.RegeningStamina == false then
+					setSprintingTo(true)
+				else
+					setSprintingTo(false)
+				end
+				if readOnlyValues.Stamina < 15 and Data.RegeningStamina == false then
+					Data.RegeningStamina = true
+					task.spawn(function()
+						task.wait(2.5)
+						Data.RegeningStamina = false
+					end)
+				end
+				if Data.Target then
+					Data.Goal = Data.Target:FindFirstChild("HumanoidRootPart")
+				else
+					Data.Goal = nil
+				end
+				if Data.Goal then
+					poth:Run(Data.Goal)
+				end		
 			else
-				ForsakenModules.Systems.Sprinting.IsSprinting = false
-			end
-			if Data.Target then
-				Data.Goal = Data.Target:FindFirstChild("HumanoidRootPart")
-			else
-				Data.Goal = nil
-			end
-			if Data.Goal then
-				print("try and block this!")
-				poth:Run(Data.Goal)
+				poth:Stop()
 			end
 		end)
 		if err then
