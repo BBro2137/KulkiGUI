@@ -777,7 +777,7 @@ task.spawn(function() --main update loop
 							if enemy:FindFirstChild("Sword").Transparency > 0.7 then
 								local op:CFrame = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame
 								local rev = op * CFrame.new(0,0,-5)
-								Data.Goal = rev
+								Data.Goal = Vector3.new(rev.X,rev.Y,rev.Z)
 							end					
 						end
 						if c == true then
