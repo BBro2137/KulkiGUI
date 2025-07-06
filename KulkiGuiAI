@@ -713,6 +713,13 @@ local function setSprintingTo(value:boolean)
 		end		
 	end
 end
+local function useAbility(ability:string)
+	local args = {
+		"UseActorAbility",
+		ability
+	}
+	game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("Network"):FindFirstChild("RemoteEvent"):FireServer(unpack(args))
+end
 task.spawn(function() --main update loop
 	while true do
 		task.wait()
@@ -721,15 +728,18 @@ task.spawn(function() --main update loop
 		end
 		local su,err = nil
 		su,err = pcall(function()
-			if options.Enabled == true then
+			if options.Enabled == true and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 				local readOnlyValues = {
 					["Stamina"] = ForsakenModules.Systems.Sprinting.Stamina,
 					["IsSprinting"] = ForsakenModules.Systems.Sprinting.IsSprinting
 				}
+				local FINAL = {
+					["Sprint"] = false
+				}
 				if readOnlyValues.Stamina>10 and ForsakenModules.Systems.Sprinting.CanSprint == true and Data.RegeningStamina == false then
-					setSprintingTo(true)
+					FINAL.Sprint = true
 				else
-					setSprintingTo(false)
+					FINAL.Sprint = false
 				end
 				if readOnlyValues.Stamina < 15 and Data.RegeningStamina == false then
 					Data.RegeningStamina = true
@@ -743,6 +753,23 @@ task.spawn(function() --main update loop
 				else
 					Data.Goal = nil
 				end
+				if Data.Target and Data.Goal then
+					if (Data.Goal.Position-Client.Character:FindFirstChild("HumanoidRootPart").Position) < 10 then
+						if readOnlyValues.Stamina < 20 then
+							FINAL.Sprint = false
+						else
+							useAbility("Slash")
+						end
+					end
+				end
+				if workspace.CurrentCamera and Data.Goal then
+					local at:Vector3 = Data.Goal
+					if typeof(Data.Goal) == "Instance" then
+						at = Data.Goal.Position
+					end
+					workspace.CurrentCamera.CFrame = CFrame.lookAt(Data.Goal)
+				end
+				setSprintingTo(FINAL.Sprint)
 				if Data.Goal then
 					poth:Run(Data.Goal)
 				end		
