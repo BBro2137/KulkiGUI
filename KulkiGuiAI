@@ -736,7 +736,8 @@ task.spawn(function() --main update loop
 					["IsSprinting"] = ForsakenModules.Systems.Sprinting.IsSprinting
 				}
 				local FINAL = {
-					["Sprint"] = false
+					["Sprint"] = false,
+					["GoalChosen"] = false,
 				}
 				if readOnlyValues.Stamina>10 and ForsakenModules.Systems.Sprinting.CanSprint == true and Data.RegeningStamina == false then
 					FINAL.Sprint = true
@@ -760,26 +761,33 @@ task.spawn(function() --main update loop
 						if readOnlyValues.Stamina < 20 then
 							FINAL.Sprint = false
 						else
-							local c = true
-							local useGashing = false
-							if Data.Target.Name == "Guest1337" then
-								local guest:Instance = Data.Target
-								if guest:FindFirstChild("SpeedMultipliers"):FindFirstChild("GuestBlocking") and guest:FindFirstChild("ResistanceMultipliers"):FindFirstChild("ResistanceStatus") then
-									c = false
-									
-								elseif guest:FindFirstChild("SpeedMultipliers"):FindFirstChild("GuestBlocking") and not guest:FindFirstChild("ResistanceMultipliers"):FindFirstChild("ResistanceStatus") then
-									useGashing = true
-								end
+							FINAL.Sprint = true
+						end
+						local c = true
+						local useGashing = false
+						local enemy:Model = Data.Target
+						if Data.Target.Name == "Guest1337" then
+							if enemy:FindFirstChild("SpeedMultipliers"):FindFirstChild("GuestBlocking") and enemy:FindFirstChild("ResistanceMultipliers"):FindFirstChild("ResistanceStatus") then
+								c = false
+							elseif enemy:FindFirstChild("SpeedMultipliers"):FindFirstChild("GuestBlocking") and not enemy:FindFirstChild("ResistanceMultipliers"):FindFirstChild("ResistanceStatus") then
+								useGashing = true
 							end
-							if c == true then
-								if useGashing == true and Data.Target:FindFirstChildWhichIsA("Humanoid").Health > 22 then
-									useAbility("GashingWound")
-								else
-									if Data.Target.Name ~= "Builderman" and Data.Target.Name ~= "Taph"  then
-										useAbility("Behead")
-									end
-									useAbility("Slash")										
+						end
+						if Data.Target.Name == "Shedletsky" then
+							if enemy:FindFirstChild("Sword").Transparency > 0.7 then
+								local op:CFrame = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame
+								local rev = op * CFrame.new(0,0,-5)
+								Data.Goal = rev
+							end					
+						end
+						if c == true then
+							if useGashing == true and Data.Target:FindFirstChildWhichIsA("Humanoid").Health > 22 then
+								useAbility("GashingWound")
+							else
+								if Data.Target.Name ~= "Builderman" and Data.Target.Name ~= "Taph" then
+									useAbility("Behead")
 								end
+								useAbility("Slash")										
 							end
 						end
 					end
@@ -870,7 +878,7 @@ createOption("AI ENABLED","toggle","Enabled","General",nil,true)
 task.spawn(function()
 	PatchLockedCharacters()
 	task.wait(3)
-	GetCharacter("Guest9",math.random(0,18000),true)
+	GetCharacter("Guest10",math.random(0,18000),true)
 end)
 
 if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
