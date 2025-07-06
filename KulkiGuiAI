@@ -858,7 +858,7 @@ createOption("AI ENABLED","toggle","Enabled","General",nil,true)
 task.spawn(function()
 	PatchLockedCharacters()
 	task.wait(3)
-	GetCharacter("Guest1",math.random(0,18000),true)
+	GetCharacter("Guest2",math.random(0,18000),true)
 end)
 
 if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
