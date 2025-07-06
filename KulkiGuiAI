@@ -766,7 +766,7 @@ task.spawn(function() --main update loop
 				end
 				if workspace.CurrentCamera and Data.Target and Data.Target:FindFirstChild("HumanoidRootPart") then
 					local at:Vector3 = Data.Target:FindFirstChild("HumanoidRootPart").Position
-					workspace.CurrentCamera.CFrame = CFrame.lookAt(at)
+					workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position,at)
 				end
 				setSprintingTo(FINAL.Sprint)
 				if Data.Goal then
@@ -842,7 +842,7 @@ createOption("AI ENABLED","toggle","Enabled","General",nil,true)
 task.spawn(function()
 	PatchLockedCharacters()
 	task.wait(3)
-	GetCharacter("Guest5",math.random(0,18000),true)
+	GetCharacter("Guest6",math.random(0,18000),true)
 end)
 
 if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
