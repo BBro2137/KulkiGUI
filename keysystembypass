@@ -1,0 +1,66 @@
+local HttpSpy = loadstring(game:HttpGet("https://raw.githubusercontent.com/NotDSF/HttpSpy/main/init.lua"))({
+	AutoDecode = true, -- Automatically decodes JSON
+	Highlighting = true, -- Highlights the output
+	SaveLogs = true, -- Save logs to a text file
+	CLICommands = true, -- Allows you to input commands into the console
+	ShowResponse = true, -- Shows the request response
+	API = true, -- Enables the script API
+	BlockedURLs = {} -- Blocked urls
+});
+HttpSpy.OnRequest:Connect(function(req) 
+	warn("request made:", req.Url);
+end);
+local luarmorhttp = {
+	"https://us2-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://au2-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://eu2-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://as2-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	
+	"https://eu1-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://us1-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://as1-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://au1-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	
+	"https://eu3-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://us3-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://as3-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://au3-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+
+	"https://eu4-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://us4-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://as4-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+	"https://au4-roblox-auth.luarmor.net/check_key?key=HEcvYupOqghaDCOQYAECJxjrahKtWDqx&script_id=e4aedc7ccd2bacd83555baa884f3d4b1",
+}
+for i,urluar in luarmorhttp do
+	HttpSpy:HookSynRequest(urluar, function(response) 
+		print("hijacking hoho hub v5 initialized trough SynRequest().")
+		response["Success"] = true
+		response["StatusCode"] = 200
+		response["Body"] = game.HttpService:JSONEncode({["code"]="KEY_VALID",["message"]="The key provided was hacked and turned into a good one :D"})
+		--[[pcall(function()
+			for i,arg in pairs(response) do
+				local su,err = pcall(function()
+					print("ARG: ".. tostring(arg) .. " POS:".. i)
+				end)
+				if err then
+					print("FAILED TO READ VALUE ERROR: " .. err .. " FIXED/PLAIN VALUE READ:")
+					print(arg)
+				end
+			end
+		end)]]
+		return response;
+	end);	
+end
+HttpSpy:HookSynRequest("https://eu1-roblox-auth.luarmor.net/v8/auth/e4aedc7ccd2bacd83555baa884f3d4b1/init?t=aEkIk1kkkIkIkIklklk1k1aIkOkQkbkbk9QbkkklklkaklkQk0kQkakkkak9kQk9kkkakOkbkbklkIkQklklk1kOkakak9kIkbkbkka1k1kIkakIklkba1kbkakaklkak9aIkQk1kbklkba1klk1klklklkOa1kQkQklkaklkla1kkklk9k9klkkaIkQkOk0kIkbaIkQk9kkk1k0a1kQkkkIk0kakIbalb1E1Ell1Tl91Tlllbla1kkalOlblI1T&v=0059&k=HEcvYupOqghaDCOQYAECJxjrahKtWDqx",function(response)
+	pcall(function()
+		for i,arg in pairs(response) do
+			local su,err = pcall(function()
+				print("ARG: ".. tostring(arg) .. " POS:".. i)
+			end)
+			if err then
+				print("FAILED TO READ VALUE ERROR: " .. err .. " FIXED/PLAIN VALUE READ:")
+				print(arg)
+			end
+		end
+	end)
+end)
