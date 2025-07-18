@@ -1,7 +1,7 @@
 local hohoScriptID = "e4aedc7ccd2bacd83555baa884f3d4b1"
 
 local HoHOapi = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
-HoHOapi.script_id = isSupport
+HoHOapi.script_id = hohoScriptID
 local su,err = pcall(function (...)
     print(HoHOapi)
     if type(HoHOapi) == "table" then
