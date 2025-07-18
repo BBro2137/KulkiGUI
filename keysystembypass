@@ -4,9 +4,8 @@ local HoHOapi = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/libra
 HoHOapi.script_id = hohoScriptID
 local su,err = pcall(function (...)
     print(HoHOapi)
-    if type(HoHOapi) == "table" then
-        for i,v in HoHOapi do print(v) end
-    end
+    print("contents of api:")
+    for i,v in HoHOapi do print(v) end
 end)
 if err then
     warn(err)
