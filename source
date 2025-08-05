@@ -1,6 +1,6 @@
 print("loading kulki GUI......")
 
-local DebugTime = "11!28"
+local DebugTime = "11!33"
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.1"
 local SavedCommunicator:BindableEvent = nil
@@ -151,7 +151,8 @@ LagButton.Text = "LAG SERVER"
 LagButton.BackgroundColor3 = Color3.fromRGB(255,0,0)
 LagButton.TextColor3 = Color3.fromRGB(0,0,0)
 LagButton.TextScaled = true
-LagButton.Parent = MainFrame
+Instance.new("UIDragDetector").Parent = LagButton
+LagButton.Parent = sGUI
 
 --actual kulki gui code below
 
