@@ -1,6 +1,6 @@
 print("loading kulki GUI......")
 
-local DebugTime = "11!33"
+local DebugTime = "11!41"
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.1"
 local SavedCommunicator:BindableEvent = nil
@@ -98,7 +98,8 @@ UIdrag:Clone().Parent = KGM
 KGM.Visible = false
 local hitbox = Instance.new("TextButton")
 hitbox.Size = UDim2.new(0.5, 0,0.5, 0)
-hitbox.Position = UDim2.new(0.257, 0,0.243, 0)
+hitbox.AnchorPoint = Vector2.new(0.5,0.5)
+hitbox.Position = UDim2.new(0.5, 0,0.5, 0)
 hitbox.BackgroundTransparency = 1
 hitbox.Text = ""
 hitbox.Parent = KGM
@@ -152,6 +153,8 @@ LagButton.BackgroundColor3 = Color3.fromRGB(255,0,0)
 LagButton.TextColor3 = Color3.fromRGB(0,0,0)
 LagButton.TextScaled = true
 Instance.new("UIDragDetector").Parent = LagButton
+local LBH = hitbox:Clone()
+LBH.Parent = LagButton
 LagButton.Parent = sGUI
 
 --actual kulki gui code below
@@ -378,16 +381,16 @@ HMcolorcorrect.Enabled = false
 HMcolorcorrect.Contrast = -2
 HMcolorcorrect.Name = "HARDMODEcolorcorrect"
 
-LagButton.MouseButton1Click:Connect(function()
-	if options.ServerLagButton==true then
-		for i=0,99999,1 do
-			local args = {
-				"FootstepPlayed",
-				0
-			}
-			game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Network"):WaitForChild("UnreliableRemoteEvent"):FireServer(unpack(args))
-		end
-	end
+LBH.MouseButton1Click:Connect(function()
+	print("lagging")
+	local x = 0
+	repeat
+		local args = {
+			"FootstepPlayed",
+			0
+		}
+		game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Network"):WaitForChild("UnreliableRemoteEvent"):FireServer(unpack(args))
+	until x>=99999
 end)
 
 local function stayFunc(thing:Instance)
