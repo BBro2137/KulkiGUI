@@ -2,7 +2,7 @@ print("loading kulki GUI......")
 
 local DebugTime = "11!28"
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 3.0"
+local versionString = "VERSION 3.1"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
