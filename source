@@ -1,5 +1,6 @@
 print("loading kulki GUI......")
 
+local DebugTime = "11!16"
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.0"
 local SavedCommunicator:BindableEvent = nil
@@ -140,6 +141,17 @@ subtitle.Position = UDim2.new(0.201, 0,0.139, 0)
 subtitle.Parent = MainFrame
 subtitle.Font = Enum.Font.SourceSansBold
 
+local LagButton = Instance.new("TextButton")
+LagButton.Visible = false
+LagButton.Position = UDim2.new(1, 0,0.5, 0)
+LagButton.AnchorPoint = Vector2.new(1,0)
+LagButton.Size = UDim2.new(0.083, 0,0.15, 0)
+Instance.new("UIAspectRatioConstraint").Parent = LagButton
+LagButton.Text = "LAG SERVER"
+LagButton.BackgroundColor3 = Color3.fromRGB(255,0,0)
+LagButton.TextColor3 = Color3.fromRGB(0,0,0)
+LagButton.TextScaled = true
+
 --actual kulki gui code below
 
 
@@ -220,7 +232,10 @@ local options = {
 	["DisableTrail"] = false,
 	["NoFallSlowness"] = false,
 	["AutoEatPizza"] = false,
+	["ServerLagButton"] = false,
+	["AntiEntaglement"] = false
 }
+
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
 	["IngameDESCENDANTADDED"] = false,
@@ -360,6 +375,18 @@ local HMcolorcorrect = Instance.new("ColorCorrectionEffect")
 HMcolorcorrect.Enabled = false
 HMcolorcorrect.Contrast = -2
 HMcolorcorrect.Name = "HARDMODEcolorcorrect"
+
+LagButton.MouseButton1Click:Connect(function()
+	if options.ServerLagButton==true then
+		for i=0,99999,1 do
+			local args = {
+				"FootstepPlayed",
+				0
+			}
+			game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Network"):WaitForChild("UnreliableRemoteEvent"):FireServer(unpack(args))
+		end
+	end
+end)
 
 local function stayFunc(thing:Instance)
 	local ogParent = thing.Parent
@@ -1276,6 +1303,16 @@ task.spawn(function() --main update loop
 			if options.ShowChat == true then
 				game:GetService("TextChatService"):FindFirstChildWhichIsA("ChatWindowConfiguration").Enabled = true
 			end
+			if options.AntiEntaglement==true then
+				if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("SpeedMultipliers") and game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI") and game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("1x1x1x1Popup") then
+					if game.Players.LocalPlayer.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("SlowedStatus") then game.Players.LocalPlayer.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("SlowedStatus"):Destroy() end
+					for i,f in game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):GetChildren() do
+						if f.Name == "1x1x1x1Popup" then
+							f:Destroy()
+						end
+					end
+				end
+			end
 			if options.AutoGen == true then
 				--print("0")
 				if Client.Character and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Generator") and Client.Character:FindFirstChild("SpeedMultipliers") and Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("FixingGenerator") and speedingGen == false then
@@ -1398,6 +1435,11 @@ task.spawn(function() --main update loop
 				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza") and Client.Character and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid").Health<70 and Client.Character:FindFirstChild("HumanoidRootPart") then
 					workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza").CFrame = Client.Character:FindFirstChild("HumanoidRootPart").CFrame
 				end
+			end
+			if options.ServerLagButton == true then
+				LagButton.Visible = true
+			else
+				LagButton.Visible = false
 			end
 		end)
 		if err then
@@ -1814,6 +1856,7 @@ local function placeOpSentry(loc:CFrame)
 		hrp.CFrame = s
 	end
 end
+
 addTabToUI(1,Color3.fromRGB(255,255,255),"General Cheats","GeneralCheats")
 addTabToUI(2,Color3.fromRGB(255,255,255),"Visual","Visual")
 addTabToUI(3,Color3.fromRGB(255,255,255),"Generator Cheats","GenCheats")
@@ -1849,6 +1892,9 @@ createOption("JOHN DOE SPIKE NO-CLIP","toggle","SpikeNoclip","GeneralCheats",nil
 createOption("DISABLE JOHN DOES TRAIL","toggle","DisableTrail","GeneralCheats",nil,true)
 createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
 createOption("Auto Eat Pizza","toggle","AutoEatPizza","GeneralCheats",nil,true)
+createOption("ANTI ENTAGLEMENT","toggle","AntiEntaglement","GeneralCheats",nil,true)
+
+
 --warning config buttons
 --createOption("AJW","ALEK JOIN WARNING",AlekWarning,"AlekWarning",false,"WarningConfig")
 
@@ -1861,11 +1907,11 @@ createOption("ADAPTIVE FAST GENS(works only if Fast Gens is on and is recomenned
 --createOption("ABG","AUTO BLOCK GUEST (WIP)",ABGF,"AutoBlockGuest1337")
 createOption("NO STUN","toggle","NoStun","Exploits",nil,true)
 createOption("NO FALL SLOWNESS","toggle","NoFallSlowness","Exploits",nil,true)
-createOption("INF SPRINT","toggle","InfSprint","Exploits",nil,true)
---createOption("UE1P","ULTRA EZ 1x4 POP-UPS (USE AT YOUR OWN RISK,works only if ez 1x4 pop is on)",UE1P,"UltraEZ1x4Popups",true) --make it no 1x popups
+createOption("INFINITE STAMINA","toggle","InfSprint","Exploits",nil,true)
 createOption("WALKSPEED OVERRIDE NO STOP","toggle","WalkspeedNoStop","Exploits",nil,true)
 createOption("WALKSPEED OVERRIDE INSTA HIT","toggle","WalkspeedHit","Exploits",nil,true)
 createOption("DISABLE DIGITAL FOOTPRINT","toggle","DisableFootprint","Exploits",nil,true)
+createOption("SERVER LAG BUTTON (DOESNT WORK IN LOBBY)","toggle","ServerLagButton","Exploits",nil,true)
 
 --misc
 createOption("X-RAY","toggle","XRay","Misc",nil,true)
@@ -1892,28 +1938,29 @@ createOption("HORROR_HOTEL HUGE ROOM MID","use",nil,"SSL",nil,nil,placeOpSentry,
 
 task.spawn(function()
 	PatchLockedCharacters()
-	task.wait(3)
-	GetCharacter("Guest666",math.random(0,18000),true)
-	GetCharacter("NoliRework",math.random(0,18000),true)
+	task.wait(2)
+	GetCharacter(DebugTime,math.random(0,18000),false)
 end)
 local hook;
 hook = hookmetamethod(game,"__namecall",function(self,...)
 	local args = {...}
 	local method = getnamecallmethod()
-	if options.WalkspeedNoStop ==true and method == "FireServer" and args[1] == Client.Name .. "C00lkiddCollision" then
-		return nil
-	elseif options.WalkspeedHit == true and method == "FireServer" and args[2] == "WalkspeedOverride" then
-		task.spawn(function()
-			if Client.Character:FindFirstChild("SpeedMultipliers"):WaitForChild("HinderedMovement",2) then
-				repeat
-					wait()
-					local clos = GetClosestSurvivor(true)
-					if clos.Survivor and clos.Magnitude < 60 then
-						Client.Character:FindFirstChild("HumanoidRootPart").CFrame = clos.Survivor.HumanoidRootPart.CFrame
-					end
-				until not Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement") or Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement").Value >=0.2				
-			end
-		end)
+	if canRunUpdateLoop then
+		if options.WalkspeedNoStop ==true and method == "FireServer" and args[1] == Client.Name .. "C00lkiddCollision" then
+			return nil
+		elseif options.WalkspeedHit == true and method == "FireServer" and args[2] == "WalkspeedOverride" then
+			task.spawn(function()
+				if Client.Character:FindFirstChild("SpeedMultipliers"):WaitForChild("HinderedMovement",2) then
+					repeat
+						wait()
+						local clos = GetClosestSurvivor(true)
+						if clos.Survivor and clos.Magnitude < 60 then
+							Client.Character:FindFirstChild("HumanoidRootPart").CFrame = clos.Survivor.HumanoidRootPart.CFrame
+						end
+					until not Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement") or Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement").Value >=0.2				
+				end
+			end)
+		end		
 	end
 	return hook(self,unpack(args))
 end)
@@ -1987,8 +2034,7 @@ for i,tab in MainFrame:GetChildren() do
 end
 
 print("loaded kulki GUI!")
-sGUI.Parent = Client.PlayerGui
-task.wait(3)
+sGUI.Parent = game:GetService("CoreGui")
 
 
 --https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source
