@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "15!19"
+local DEBUG_VERSION = "15!24"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -759,7 +759,7 @@ local function getClosestGenerator():Model
 		local gens = {}
 		for i,gen in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
 			if gen.Name == "Generator" and gen.Progress.Value ~= 100 then
-				table.insert(gens,gen)
+				table.insert(gens,gen:FindFirstChild("Positions"):FindFirstChild("Center"))
 			end
 		end
 		return getClosestPartFromTo(gens,Client.Character:FindFirstChild("HumanoidRootPart"))
