@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "14!42"
+local DEBUG_VERSION = "14!52"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -895,6 +895,9 @@ task.spawn(function() --main update loop
 				
 				if workspace.CurrentCamera and Data.Goal then
 					local at:Vector3 = Data.Goal
+					if typeof(at) == "Instance" then
+						at = at.Position
+					end
 					workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position,at)
 				end
 				setSprintingTo(FINAL.Sprint)
