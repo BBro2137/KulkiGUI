@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!37"
+local DEBUG_VERSION = "16!41"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -804,7 +804,10 @@ local chatText = {
 }
 
 local function plrChatted(message:string,plr:Player)
-	if plr ~= Client and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid")>0 and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildWhichIsA("Humanoid") and (plr.Character:FindFirstChild("HumanoidRootPart")-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<30 then
+	print(message)
+	print(plr.Name)
+	if plr ~= Client and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid").Health>0 and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildWhichIsA("Humanoid") and (plr.Character:FindFirstChild("HumanoidRootPart")-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<30 then
+		print("pass")
 		if Client.Character.Parent.Name==plr.Character.Parent.Name then
 			local function hasKeywords(keywords)
 				local found = 0
@@ -822,6 +825,7 @@ local function plrChatted(message:string,plr:Player)
 			
 			if hasKeywords(chatText.Reset.Keywords) then
 				sayInChat(chatText.Reset.Responses[math.random(1,#chatText.Reset.Responses)])
+				Client.Character:FindFirstChildWhichIsA("Humanoid").Health = 0
 			elseif hasKeywords(chatText.ConfrontedIfAI.Keywords) then
 				sayInChat(chatText.ConfrontedIfAI.Responses[math.random(1,#chatText.ConfrontedIfAI.Responses)])
 			elseif hasKeywords(chatText.AskedOfkulkiGui) then
@@ -837,6 +841,7 @@ local function plrChatted(message:string,plr:Player)
 			end
 		end	
 	end
+	print("end of warudo")
 end
 for i,plr in game.Players:GetPlayers() do
 	plr.Chatted:Connect(plrChatted)
