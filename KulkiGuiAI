@@ -1,7 +1,8 @@
 print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 1.0"
+local versionString = "VERSION 1.1"
+local DEBUG_VERSION = "14!03"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -681,7 +682,16 @@ local Data = {
 	["Target"] = nil,
 	["RegeningStamina"] = false,
 	["IsUpdateRunCooldown"] = false,
+	["HelpOtherSurvivor"] = {
+		["Helping"] = nil,
+	},
+	["SurvivorState"] = "Idle"
 }
+local SupportedCharacters = {
+	["Jason"] = true,
+	["Elliot"] = true, 
+}
+
 local ForsakenModules = {
 	["Systems"] = {
 		["Sprinting"] = require(game.ReplicatedStorage:WaitForChild("Systems"):WaitForChild("Character"):WaitForChild("Game"):WaitForChild("Sprinting"))
@@ -694,6 +704,11 @@ game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
 end)
 local function onMapStart()
 	task.wait(1.5)
+	Data.Goal = nil
+	Data.Target = nil
+	Data.RegeningStamina = false
+	Data.IsUpdateRunCooldown = false
+	Data.HelpOtherSurvivor.Helping = nil
 end
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(function(kid)
 	if kid.Name == "Map" then
@@ -716,6 +731,26 @@ local function useAbility(ability:string)
 		ability
 	}
 	game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("Network"):FindFirstChild("RemoteEvent"):FireServer(unpack(args))
+end
+local function IsAbilityOnCooldown(Ability:string)
+	local abContainer = Client.PlayerGui:WaitForChild("MainUI"):WaitForChild("AbilityContainer")
+	if abContainer:FindFirstChild(Ability) and tonumber(abContainer:FindFirstChild(Ability).CooldownTime) == nil then
+		return false
+	else
+		return true
+	end
+end
+local function getClosestPartFromTo(from:{BasePart},part:Part)
+	local closest = {
+		["Magnitude"] = math.huge,
+		["Part"] = nil
+	}
+	for i,port in from do
+		if (port.Position-part.Position).Magnitude<closest.Magnitude then
+			closest.Part = port
+			closest.Magnitude = (port.Position-part.Position).Magnitude
+		end
+	end
 end
 task.spawn(function() --main update loop
 	while true do
@@ -756,52 +791,109 @@ task.spawn(function() --main update loop
 				else
 					Data.Goal = nil
 				end
-				if Data.Target and Data.Goal then
-					if (Data.Goal.Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude < 10 then
-						if readOnlyValues.Stamina < 20 then
-							FINAL.Sprint = false
-						else
-							FINAL.Sprint = true
-						end
-						local c = true
-						local useGashing = false
-						local enemy:Model = Data.Target
-						if Data.Target.Name == "Guest1337" then
-							if enemy:FindFirstChild("SpeedMultipliers"):FindFirstChild("GuestBlocking") and enemy:FindFirstChild("ResistanceMultipliers"):FindFirstChild("ResistanceStatus") then
-								c = false
-							elseif enemy:FindFirstChild("SpeedMultipliers"):FindFirstChild("GuestBlocking") and not enemy:FindFirstChild("ResistanceMultipliers"):FindFirstChild("ResistanceStatus") then
-								useGashing = true
-							end
-						end
-
-						if c == true then
-							if useGashing == true and Data.Target:FindFirstChildWhichIsA("Humanoid").Health > 22 then
-								useAbility("GashingWound")
+				if Client.Character.Parent.Name == "Killers" then
+					if Data.Target and Data.Goal then
+						if (Data.Goal.Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude < 10 then
+							if readOnlyValues.Stamina < 20 then
+								FINAL.Sprint = false
 							else
-								if Data.Target.Name ~= "Builderman" and Data.Target.Name ~= "Taph" then
-									useAbility("Behead")
+								FINAL.Sprint = true
+							end
+							local Abilities = {
+								["General"] = {
+									["M1"] = false,
+								},
+								["Jason"] = {
+									["GashingWound"] = false,
+								}
+							}
+							local can = true
+							local enemy:Model = Data.Target
+							if Data.Target.Name == "Guest1337" then
+								if enemy:FindFirstChild("SpeedMultipliers"):FindFirstChild("GuestBlocking") and enemy:FindFirstChild("ResistanceMultipliers"):FindFirstChild("ResistanceStatus") then
+									can = false
+								elseif enemy:FindFirstChild("SpeedMultipliers"):FindFirstChild("GuestBlocking") and not enemy:FindFirstChild("ResistanceMultipliers"):FindFirstChild("ResistanceStatus") then
+									if Client.Character.Name == "Jason" then
+										Abilities.Jason.GashingWound = true
+									end
 								end
-								useAbility("Slash")										
+							end
+
+							if can == true then
+								if Client.Character.Name == "Jason" then
+									if Abilities.Jason.GashingWound == true and Data.Target:FindFirstChildWhichIsA("Humanoid").Health > 22 then
+										useAbility("GashingWound")
+									else
+										if Data.Target.Name ~= "Builderman" and Data.Target.Name ~= "Taph" and Data.Target.Name ~= "Elliot" then
+											useAbility("Behead")
+										end
+										useAbility("Slash")										
+									end									
+								end
+							end
+						end
+						if (Data.Goal.Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude < 30 then
+							local enemy = Data.Target
+							if Data.Target.Name == "Shedletsky" then
+								if enemy:FindFirstChild("Sword").Transparency < 0.03 then
+									local op:CFrame = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame
+									local rev = op * CFrame.new(0,0,10)
+									Data.Goal = Vector3.new(rev.X,rev.Y,rev.Z)
+									FINAL.Sprint = true
+								end					
+							end						
+						end
+					end
+					if not Data.Target or not Data.Target.Parent or not Data.Target:FindFirstChildWhichIsA("Humanoid") or Data.Target:FindFirstChildWhichIsA("Humanoid").Health<=0 then
+						Data.Target = GetClosestSurvivor(false)
+					end
+				elseif Client.Character.Parent.Name == "Survivors" then
+					local Abilities = {
+						["Elliot"] = {
+							["ThrowPizza"] = false,
+						}
+					}
+					if Client.Character.Name == "Elliot" then
+						if Data.SurvivorState == "Idle" then
+							local canditates = {}
+							for i,survivor in workspace:FindFirstChild("Players"):FindFirstChild("Survivors"):GetChildren() do
+								if not IsAbilityOnCooldown("ThrowPizza") and survivor:FindFirstChildWhichIsA("Humanoid") and survivor:FindFirstChild("HumanoidRootPart") then
+									if survivor:FindFirstChildWhichIsA("Humanoid").MaxHealth-survivor:FindFirstChildWhichIsA("Humanoid").Health>40 then
+										table.insert(canditates,survivor:FindFirstChild("HumanoidRootPart"))
+									end
+								end
+							end
+							if #canditates>0 then
+								Data.HelpOtherSurvivor = getClosestPartFromTo(canditates,Client.Character:FindFirstChild("HumanoidRootPart"))
+								if Data.HelpOtherSurvivor.Helping then
+									Data.SurvivorState = "Helping"
+								end								
+							end
+						end
+						if Client.PlayerGui:FindFirstChild("TemporaryUI") and not IsAbilityOnCooldown("ThrowPizza") then
+							local closest = {
+								["Health"] = math.huge,
+								["Survivor"] = nil
+							}
+							for i,request:BillboardGui in Client.PlayerGui:FindFirstChild("TemporaryUI"):GetChildren() do
+								if request.Name == "RequestUI" and request:FindFirstChildWhichIsA("TextLabel") and request.Adornee.Parent and request.Adornee.Parent:FindFirstChildWhichIsA("Humanoid") and request.Adornee.Parent:FindFirstChildWhichIsA("Humanoid").MaxHealth-request.Adornee.Parent:FindFirstChildWhichIsA("Humanoid").Health>25 then
+									if closest.Health>request.Adornee.Parent:FindFirstChildWhichIsA("Humanoid").Health then
+										closest.Health = request.Adornee.Parent:FindFirstChildWhichIsA("Humanoid").Health
+										closest.Survivor = request.Adornee.Parent
+									end
+								end
+							end
+							if closest.Survivor then
+								workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position,closest.Survivor:FindFirstChild("HumanoidRootPart").Position)
+								useAbility("ThrowPizza")
+								task.wait(0.1)
 							end
 						end
 					end
-					if (Data.Goal.Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude < 30 then
-						local enemy = Data.Target
-						if Data.Target.Name == "Shedletsky" then
-							if enemy:FindFirstChild("Sword").Transparency < 0.03 then
-								local op:CFrame = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame
-								local rev = op * CFrame.new(0,0,10)
-								Data.Goal = Vector3.new(rev.X,rev.Y,rev.Z)
-								FINAL.Sprint = true
-							end					
-						end						
-					end
 				end
-				if not Data.Target or not Data.Target.Parent or not Data.Target:FindFirstChildWhichIsA("Humanoid") or Data.Target:FindFirstChildWhichIsA("Humanoid").Health<=0 then
-					Data.Target = GetClosestSurvivor(false)
-				end
-				if workspace.CurrentCamera and Data.Target and Data.Target:FindFirstChild("HumanoidRootPart") then
-					local at:Vector3 = Data.Target:FindFirstChild("HumanoidRootPart").Position
+				
+				if workspace.CurrentCamera and Data.Goal then
+					local at:Vector3 = Data.Goal
 					workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position,at)
 				end
 				setSprintingTo(FINAL.Sprint)
@@ -883,7 +975,7 @@ createOption("AI ENABLED","toggle","Enabled","General",nil,true)
 task.spawn(function()
 	PatchLockedCharacters()
 	task.wait(3)
-	GetCharacter("Guest13",math.random(0,18000),true)
+	GetCharacter(DEBUG_VERSION,math.random(0,18000),true)
 end)
 
 if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
