@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!50"
+local DEBUG_VERSION = "16!57"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -812,7 +812,7 @@ local function plrChatted(message:string,plr:Player)
 			local function hasKeywords(keywords)
 				local found = 0
 				for i,keyword:string in keywords do
-					if string.find(message:lower(),keyword:lower()) then
+					if string.find(message:lower(),keyword) then
 						found+=1
 					end
 				end
