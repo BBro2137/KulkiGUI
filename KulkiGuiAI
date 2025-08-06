@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "15!35"
+local DEBUG_VERSION = "15!42"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -908,9 +908,11 @@ task.spawn(function() --main update loop
 					
 					if Data.SurvivorState == "Idle" then
 						Data.SurvivorState = "GeneratorFind"
-						if getClosestGenerator() then
+						local g = getClosestGenerator()
+						if g then
 							print("goin for da generator lulz")
-							Data.Goal = getClosestGenerator().Positions.Center.Position
+							Data.Goal = g.Positions.Center.Position
+							Data.GoingForGenerator = g
 						end
 					end
 				end
@@ -938,9 +940,9 @@ task.spawn(function() --main update loop
 					end
 				end
 				if Data.SurvivorState == "GeneratorFind" and Data.GoingForGenerator then
-					if (Client.Character:FindFirstChild("HumanoidRootPart").Position-Data.GoingForGenerator.Positions.Center.Position).Magnitude<8 then
+					if (Client.Character:FindFirstChild("HumanoidRootPart").Position-Data.GoingForGenerator.Positions.Center.Position).Magnitude<20 then
 						print("close enough")
-						fireproximityprompt(Data.GoingForGenerator.Main.Prompt,8)
+						fireproximityprompt(Data.GoingForGenerator.Main.Prompt,15)
 						task.wait(1.5)
 						if Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("FixingGenerator") then
 							Data.SurvivorState = "GeneratorFix"
