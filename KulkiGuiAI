@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!41"
+local DEBUG_VERSION = "16!45"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -844,11 +844,15 @@ local function plrChatted(message:string,plr:Player)
 	print("end of warudo")
 end
 for i,plr in game.Players:GetPlayers() do
-	plr.Chatted:Connect(plrChatted)
+	plr.Chatted:Connect(function(msg)
+		plrChatted(msg,plr)
+	end)
 end
 
 game.Players.PlayerAdded:Connect(function(plr)
-	plr.Chatted:Connect(plrChatted)
+	plr.Chatted:Connect(function(msg)
+		plrChatted(msg,plr)
+	end)
 end)
 task.spawn(function() --main update loop
 	while true do
