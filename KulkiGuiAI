@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "15!42"
+local DEBUG_VERSION = "16!37"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -766,6 +766,85 @@ local function getClosestGenerator():Model
 	end
 	return nil
 end
+local function sayInChat(text:string)
+	game:GetService("TextChatService"):WaitForChild("TextChannels"):WaitForChild("RBXGeneral"):SendAsync(text)
+end
+local chatText = {
+	["Reset"] = {
+		["Responses"] = {"You're the boss!","okay!","why do you want this..?","alright.","is there a specific thing i have done that resulted in this situation?","im not gonna question this.","alright!","see you next round!","ok","i hope you can win after my death!",":sob:"},
+		["Keywords"] = {"u","reset"}
+	},
+	["SaidHi"] = {
+		["Responses"] = {"hello!","hi!","hi :D","hello :D"},
+	},
+	["ConfrontedIfAI"] = {
+		["Responses"] = {"did u ask if im ai? no..","brother im just bad im not ai!","dude im not ai","bro im not ai seriously","THIS IS JUST TOXICITY IM NOT AN AI!","i swear i will target you if youre gonna keep saying that im an artificial intellegence!"},
+		["Keywords"] = {"u","ai"}
+	},
+	["ConfrontedIfBot"] = {
+		["Responses"] = {"IM NOT A BOT IM JUST BAD STOP BEING TOXIC!","i have no answer to this question","im just new, not a bot",":sob: im not a bot","are you here to ask people if they are bots or are you here to play forsaken?","im not a bot"},
+		["Keywords"] = {"u","bot"}
+	},
+	["ConfrontedOfkulkiGui"] = {
+		["Responses"] = {"uhhh","...","i have no words",".....","do you know?","???","what...","seriously?","i cant confirm nor deny existence of such thing.","will i get banned..?","for real?","dont bring this topic here.","ask someone else.","if you know then keep it to yourself","what","truly a mystery...","im not associated with any of what you just said.","please stop talking about that","stop talking about it now.","lets talk about something else! im listening just i wont reply because im too lazy...","dont say that again.","stop talking or i will target you until the end of time","just keep playing the game bro"},
+		["Keywords"] = {"kulki","gui"}
+	},
+	["AskedOfkulkiGui"] = {
+		["Responses"] = {"i have no idea.","what are you talking about?","even i dont know the answer lolz","maybe lets play forsaken!","huh?","brother i have no idea lol","its a weird name xD","maybe its an ability of 007n7.","seems like its something about cool kid!","say that again?","ask somebody with high intellegence. hint: not me"},
+		["Keywords"] = {"what","kulki","gui"}
+	},
+	["GenHack"] = {
+		["Responses"] = {"my brain is very advanced my cursor moves at the speed of light, of course i will do generators fast!","im just this good.","dont make a ticket on me!","want me to teach you? alright! connect me and join your private server!","im just this good","why do you think so?"},
+		["Keywords"] = {"gen","hack"}
+	},
+	["GenExploit"] = {
+		["Responses"] = {"exploiters are dumb, unlike me!","i really want to be killer tho","maybe because im better than you? lol"},
+		["Keywords"] = {"gen","exploi"}
+	},
+}
+
+local function plrChatted(message:string,plr:Player)
+	if plr ~= Client and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid")>0 and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildWhichIsA("Humanoid") and (plr.Character:FindFirstChild("HumanoidRootPart")-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<30 then
+		if Client.Character.Parent.Name==plr.Character.Parent.Name then
+			local function hasKeywords(keywords)
+				local found = 0
+				for i,keyword:string in keywords do
+					if string.find(message:lower(),keyword:lower()) then
+						found+=1
+					end
+				end
+				if found==#keywords then
+					return true
+				else
+					return false
+				end
+			end
+			
+			if hasKeywords(chatText.Reset.Keywords) then
+				sayInChat(chatText.Reset.Responses[math.random(1,#chatText.Reset.Responses)])
+			elseif hasKeywords(chatText.ConfrontedIfAI.Keywords) then
+				sayInChat(chatText.ConfrontedIfAI.Responses[math.random(1,#chatText.ConfrontedIfAI.Responses)])
+			elseif hasKeywords(chatText.AskedOfkulkiGui) then
+				sayInChat(chatText.AskedOfkulkiGui.Responses[math.random(1,#chatText.AskedOfkulkiGui.Responses)])
+			elseif hasKeywords(chatText.ConfrontedOfkulkiGui) then
+				sayInChat(chatText.ConfrontedOfkulkiGui.Responses[math.random(1,#chatText.ConfrontedOfkulkiGui.Responses)])
+			elseif hasKeywords(chatText.GenHack) then
+				sayInChat(chatText.GenHack.Responses[math.random(1,#chatText.GenHack.Responses)])
+			elseif hasKeywords(chatText.GenExploit) then
+				sayInChat(chatText.GenExploit.Responses[math.random(1,#chatText.GenExploit.Responses)])
+			elseif message:lower() == "hi" or string.lower(message):find("hello") then
+				sayInChat(chatText.SaidHi.Responses[math.random(1,#chatText.SaidHi.Responses)])
+			end
+		end	
+	end
+end
+for i,plr in game.Players:GetPlayers() do
+	plr.Chatted:Connect(plrChatted)
+end
+
+game.Players.PlayerAdded:Connect(function(plr)
+	plr.Chatted:Connect(plrChatted)
+end)
 task.spawn(function() --main update loop
 	while true do
 		task.wait()
