@@ -240,6 +240,7 @@ local options = {
 	["ServerLagButton"] = false,
 	["AntiEntaglement"] = false,
 	["NoHallucinations"] = false,
+	["ObviouslyFakeGenerators"] = false,
 }
 
 local DEBUGoptions = {
@@ -1264,14 +1265,8 @@ task.spawn(function() --main update loop
 					end
 				end
 			end
-			if options.GeneratorESP == true then
-				for i,bil in GENDISPLAYS do
-					if bil and bil.Parent and bil:FindFirstChildWhichIsA("TextLabel") and bil.Parent:IsA("Model") and bil ~= nil and bil.Parent.Name == "Generator" and bil.Parent:FindFirstChild("Progress") then
-						bil:FindFirstChildWhichIsA("TextLabel").Text = bil.Parent:FindFirstChild("Progress").Value .. "%"
-					else
-						table.remove(GENDISPLAYS,i)
-					end
-				end
+			if options.GeneratorESP == false then
+				options.GeneratorESP = true
 				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
 					for i,gen in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
 						if gen.Name == "Generator" and not gen:FindFirstChild("FilthyESP99") then
@@ -1284,6 +1279,19 @@ task.spawn(function() --main update loop
 						end
 					end			
 				end
+			else
+				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
+					for i,gen in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
+						if gen.Name == "Generator" and gen:FindFirstChild("FilthyESP99") then
+							gen:FindFirstChild("FilthyESP99"):Destroy()
+							if gen:FindFirstChild("FilthyDisplay99") then
+								gen:FindFirstChild("FilthyDisplay99"):Destroy()
+							end
+							table.remove(GENDISPLAYS,i)				
+						end
+					end				
+				end
+				options.GeneratorESP = false
 			end
 			local cam = workspace.CurrentCamera
 			if options.AAK == true and cam then
@@ -1460,6 +1468,29 @@ task.spawn(function() --main update loop
 				end
 				if not options.NoHallucinations and game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects"):FindFirstChild("KillerExclusive"):FindFirstChild("Hallucination67") then
 					game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects"):FindFirstChild("KillerExclusive"):FindFirstChild("Hallucination67").Name = "Hallucination"
+				end
+			end
+			if options.ObviouslyFakeGenerators then
+				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
+					for i,FakeGoonator in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
+						if FakeGoonator.Name == "FakeGenerator" then
+							local Highlight = Instance.new("Highlight")
+							Highlight.Name = "FakeGoonatorHighlight"
+							Highlight.OutlineColor = Color3.fromRGB(118, 0, 186)
+							Highlight.FillColor = Color3.fromRGB(217, 0, 255)
+							Highlight.DepthMode = Enum.HighlightDepthMode.Occluded
+							Highlight.OutlineTransparency = 0.5
+							Highlight.FillTransparency = 0.5
+						end
+					end
+				end
+			else
+				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
+					for i,FakeGoonator in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
+						if FakeGoonator.Name == "FakeGenerator" and FakeGoonator:FindFirstChild("FakeGoonatorHighlight") then
+							FakeGoonator:FindFirstChild("FakeGoonatorHighlight"):Destroy()
+						end
+					end
 				end
 			end
 		end)
@@ -1688,36 +1719,7 @@ local function MovePrediction()
 	end
 end
 
-local function GeneratorESP()
-	if options.GeneratorESP == false then
-		options.GeneratorESP = true
-		if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
-			for i,gen in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
-				if gen.Name == "Generator" and not gen:FindFirstChild("FilthyESP99") then
-					spawnGenDataDisplay(gen)
-					local high = Instance.new("Highlight")
-					high.FillColor = Color3.fromRGB(0,255,255)
-					high.OutlineColor = Color3.fromRGB(0,255,255)
-					high.Parent = gen
-					high.Name = "FilthyESP99"
-				end
-			end			
-		end
-	else
-		if  workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
-			for i,gen in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
-				if gen.Name == "Generator" and gen:FindFirstChild("FilthyESP99") then
-					gen:FindFirstChild("FilthyESP99"):Destroy()
-					if gen:FindFirstChild("FilthyDisplay99") then
-						gen:FindFirstChild("FilthyDisplay99"):Destroy()
-					end
-					table.remove(GENDISPLAYS,i)				
-				end
-			end				
-		end
-		options.GeneratorESP = false
-	end
-end
+
 
 
 
@@ -1923,6 +1925,7 @@ createOption("NO HALLUCINATIONS","toggle","NoHallucinations","GeneralCheats",nil
 createOption("FAST GENERATORS (USE AT YOUR OWN RISK,works only if auto-gen is on,recommended to be used with adaptive gens)","toggle","FastGen","GenCheats",nil,true)
 createOption("AUTO GENERATOR","toggle","AutoGen","GenCheats",nil,true)
 createOption("ADAPTIVE FAST GENS(works only if Fast Gens is on and is recomenned to be used with it.)","toggle","AdaptiveFastGen","GenCheats",nil,true)
+createOption("Obviously FakeG enerators","toggle","ObviouslyFakeGenerators","GenCheats",nil,true)
 
 --exploits
 --createOption("ABG","AUTO BLOCK GUEST (WIP)",ABGF,"AutoBlockGuest1337")
