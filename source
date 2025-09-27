@@ -1,6 +1,6 @@
 print("loading kulki GUI......")
 
-local DebugTime = "11!43"
+local DebugTime = "16!43"
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.1"
 local SavedCommunicator:BindableEvent = nil
@@ -238,7 +238,8 @@ local options = {
 	["NoFallSlowness"] = false,
 	["AutoEatPizza"] = false,
 	["ServerLagButton"] = false,
-	["AntiEntaglement"] = false
+	["AntiEntaglement"] = false,
+	["NoHallucinations"] = false,
 }
 
 local DEBUGoptions = {
@@ -1447,6 +1448,13 @@ task.spawn(function() --main update loop
 			else
 				LagButton.Visible = false
 			end
+			if game.ReplicatedStorage:FindFirstChild("Modules") and game.ReplicatedStorage:FindFirstChild("StatusEffects") then
+				if options.NoHallucinations then
+					game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects"):FindFirstChild("KillerExclusive"):FindFirstChild("Hallucination").Name = "Hallucination67"
+				else
+					game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects"):FindFirstChild("KillerExclusive"):FindFirstChild("Hallucination67").Name = "Hallucination"
+				end
+			end
 		end)
 		if err then
 			warn("OH MY GOOOOOOOD!!!!, WADAFAK!!!!! , " .. tostring(err))
@@ -1899,7 +1907,7 @@ createOption("DISABLE JOHN DOES TRAIL","toggle","DisableTrail","GeneralCheats",n
 createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
 createOption("Auto Eat Pizza","toggle","AutoEatPizza","GeneralCheats",nil,true)
 createOption("ANTI ENTAGLEMENT","toggle","AntiEntaglement","GeneralCheats",nil,true)
-
+createOption("NO HALLUCINATIONS","toggle","NoHallucinations","GeneralCheats",nil,true)
 
 --warning config buttons
 --createOption("AJW","ALEK JOIN WARNING",AlekWarning,"AlekWarning",false,"WarningConfig")
@@ -1974,62 +1982,6 @@ if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNe
 	FULLSTOP()
 end
 
---[[UIS.InputBegan:Connect(function(input,gpe)
-	if not gpe then
-		if input.KeyCode == Enum.KeyCode.X then --AAS keybind
-			local btt = nil
-			for i,bot in optionButtons do
-				if bot.Name == "AimAtSurvivor" then
-					btt = bot
-				end
-			end
-			AAS()
-			local set = " ON"
-			if options.AAS == false then
-				set = " OFF"
-			end
-			btt.Text = "AIM AT NEAREST SURVIVOR" .. set
-		end
-		if input.KeyCode == Enum.KeyCode.Z then --AAK keybind
-			local btt = nil
-			for i,bot in optionButtons do
-				if bot.Name == "AimAtKiller" then
-					btt = bot
-				end
-			end
-			AAK()
-			local set = " ON"
-			if options.AAK == false then
-				set = " OFF"
-			end
-			btt.Text = "AIM AT KILLER" .. set
-		end
-	end
-end)
-mouse.Button1Down:Connect(function()
-	mouseIsBeingHeld = true
-	if options.RotatedHit == true and rotatedHitHappening == false then
-		rotatedHitHappening = true
-		local hum = Client.Character:FindFirstChildWhichIsA("Humanoid")
-		local hrp = Client.Character:FindFirstChild("HumanoidRootPart")
-		local savedRotation = hrp.Orientation
-		local cam = workspace.CurrentCamera
-		if hum and cam then
-			task.wait(0.6)
-			hum.AutoRotate = false
-			hrp.CFrame = hrp.CFrame*CFrame.Angles(0,math.rad(hrp.CFrame.Rotation.Y+25) ,0)
-			task.wait(0.1)
-			hrp.CFrame = hrp.CFrame*CFrame.Angles(0,math.rad(hrp.CFrame.Rotation.Y-50),0)
-			task.wait(0.1)
-			print("don")
-			hum.AutoRotate = true
-		end
-		rotatedHitHappening = false
-	end
-end)
-mouse.Button1Up:Connect(function()
-	mouseIsBeingHeld = false
-end)]]
 
 for i,tab in MainFrame:GetChildren() do
 	if tab:HasTag("Tab") and tab:IsA("ScrollingFrame") then
