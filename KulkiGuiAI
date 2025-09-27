@@ -689,7 +689,7 @@ local Data = {
 	["GoingForGenerator"] = nil,
 }
 local SupportedCharacters = {
-	["Jason"] = true,
+	["Slasher"] = true,
 	["Elliot"] = true, 
 }
 
@@ -905,7 +905,7 @@ task.spawn(function() --main update loop
 								["General"] = {
 									["M1"] = false,
 								},
-								["Jason"] = {
+								["Slasher"] = {
 									["GashingWound"] = false,
 								}
 							}
@@ -915,15 +915,15 @@ task.spawn(function() --main update loop
 								if enemy:FindFirstChild("SpeedMultipliers"):FindFirstChild("GuestBlocking") and enemy:FindFirstChild("ResistanceMultipliers"):FindFirstChild("ResistanceStatus") then
 									can = false
 								elseif enemy:FindFirstChild("SpeedMultipliers"):FindFirstChild("GuestBlocking") and not enemy:FindFirstChild("ResistanceMultipliers"):FindFirstChild("ResistanceStatus") then
-									if Client.Character.Name == "Jason" then
-										Abilities.Jason.GashingWound = true
+									if Client.Character.Name == "Slasher" then
+										Abilities.Slasher.GashingWound = true
 									end
 								end
 							end
 
 							if can == true then
-								if Client.Character.Name == "Jason" then
-									if Abilities.Jason.GashingWound == true and Data.Target:FindFirstChildWhichIsA("Humanoid").Health > 22 then
+								if Client.Character.Name == "Slasher" then
+									if Abilities.Slasher.GashingWound == true and Data.Target:FindFirstChildWhichIsA("Humanoid").Health > 22 then
 										useAbility("GashingWound")
 									else
 										if Data.Target.Name ~= "Builderman" and Data.Target.Name ~= "Taph" and Data.Target.Name ~= "Elliot" then
@@ -1145,4 +1145,4 @@ task.wait(3)
 --rbxassetid://101199185291628 --1x
 --rbxassetid://140242176732868 --john doe
 --rbxassetid://102228729296384 --coolkid
---rbxassetid://112809109188560 --jason
+--rbxassetid://112809109188560 --Slasher
