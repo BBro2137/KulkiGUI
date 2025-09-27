@@ -1,6 +1,6 @@
 print("loading kulki GUI......")
 
-local DebugTime = "18!22"
+local DebugTime = "18!30"
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.2"
 local SavedCommunicator:BindableEvent = nil
@@ -1389,41 +1389,26 @@ task.spawn(function() --main update loop
 				end
 			end
 			if options.NOHIDDEN == true then
-				task.spawn(function()
-					if Client:FindFirstChild("PlayerGui") and Client.PlayerGui:FindFirstChild("TemporaryUI") then
-						for i,fr in Client.PlayerGui:FindFirstChild("TemporaryUI"):GetChildren() do
-							if game.Players:FindFirstChild(fr.Name) and fr:FindFirstChild("TimePlayed") then
-								local txt = fr:FindFirstChild("WinInfo"):FindFirstChild("KillerWins"):FindFirstChild("Wins").Text
-								if not tonumber(txt) then --hidden killer wins
-									local wins = game.Players:FindFirstChild(fr.Name).PlayerData.Stats.KillerStats.KillerWins.Value
-									if wins < 30 then
-										fr:FindFirstChild("WinInfo"):FindFirstChild("KillerWins"):FindFirstChild("Wins").Text = wins .. " BOT!"
-									else
-										fr:FindFirstChild("WinInfo"):FindFirstChild("KillerWins"):FindFirstChild("Wins").Text = wins
-									end
-								end
-								txt = fr:FindFirstChild("WinInfo"):FindFirstChild("SurvivorWins"):FindFirstChild("Wins").Text
-								if not tonumber(txt) then --hidden survivor wins
-									local wins = game.Players:FindFirstChild(fr.Name).PlayerData.Stats.SurvivorStats.SurvivorWins.Value
-									fr:FindFirstChild("WinInfo"):FindFirstChild("SurvivorWins"):FindFirstChild("Wins").Text = wins
-								end
-								
-								local label = fr:FindFirstChild("TimePlayed")
-								if label.Text == 'Time Played: <font color="rgb(125,125,125)"><i>(Hidden)</i></font>' then
-									local playtime = game.Players:FindFirstChild(fr.Name).PlayerData.Stats.General.TimePlayed.Value
-									local days = math.floor(playtime/86400)
-									playtime = playtime % 86400
-									local hours = math.floor(playtime/3600)
-									playtime = playtime % 3600
-									local minutes = math.floor(playtime/60)
-									local seconds = playtime % 60
-									local format = string.format("%02d:%02d:%02d:%02d",days,hours,minutes,seconds)
-									label.Text = "Time Played: " .. format
-								end
+				for i,plr in game.Players:GetPlayers() do
+					if plr:FindFirstChild("PlayerData") and plr:FindFirstChild("PlayerData"):FindFirstChild("Settings") and plr:FindFirstChild("PlayerData"):FindFirstChild("Settings"):FindFirstChild("Privacy") then
+						for i, v in plr:FindFirstChild("PlayerData"):FindFirstChild("Settings"):FindFirstChild("Privacy"):GetChildren() do
+							if v:IsA("BoolValue") and v.Value == true then
+								v:SetAttribute("OG",v.Value)
+								v.Value = false
 							end
 						end
 					end
-				end)
+				end
+			else
+				for i,plr in game.Players:GetPlayers() do
+					if plr:FindFirstChild("PlayerData") and plr:FindFirstChild("PlayerData"):FindFirstChild("Settings") and plr:FindFirstChild("PlayerData"):FindFirstChild("Settings"):FindFirstChild("Privacy") then
+						for i, v in plr:FindFirstChild("PlayerData"):FindFirstChild("Settings"):FindFirstChild("Privacy"):GetChildren() do
+							if v:IsA("BoolValue") and v:GetAttribute("OG") then
+								v.Value = v:GetAttribute("OG",v.Value)
+							end
+						end
+					end
+				end
 			end
 			if options.NoStun == true and Client.Character and Client.Character:FindFirstChild("SpeedMultipliers") then
 				for i,kid in Client.Character.SpeedMultipliers:GetChildren() do
@@ -1506,8 +1491,7 @@ task.spawn(function() --main update loop
 				end
 			end
 			if options.SneakyBuffs then
-				HackedModules.Sprinting.StaminaGain = 26
-				HackedModules.Sprinting.StaminaLoss = 9
+				HackedModules.Sprinting.StaminaGain = 24
 				HackedModules.Sprinting.StaminaLoss = 9
 			end
 		end)
