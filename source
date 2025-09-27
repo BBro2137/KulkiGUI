@@ -1,8 +1,8 @@
 print("loading kulki GUI......")
 
-local DebugTime = "17!40"
+local DebugTime = "18!22"
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 3.1"
+local versionString = "VERSION 3.2"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -182,6 +182,10 @@ local function keyHoldRelease(key) --key has to be enum!
 end
 --keyHold(Enum.KeyCode.LeftShift,5)
 
+local HackedModules = {
+	["Sprinting"] = require(game:GetService("ReplicatedStorage").Systems.Character.Game.Sprinting)
+}
+
 local function WTDE()
 	while true do end
 end
@@ -241,6 +245,7 @@ local options = {
 	["AntiEntaglement"] = false,
 	["NoHallucinations"] = false,
 	["ObviouslyFakeGenerators"] = false,
+	["SneakyBuffs"] = false,
 }
 
 local DEBUGoptions = {
@@ -1429,7 +1434,7 @@ task.spawn(function() --main update loop
 				Client.Character:FindFirstChild("HumanoidRootPart").Anchored = false
 			end
 			if options.InfSprint == true and Client.Character and game.ReplicatedStorage:FindFirstChild("Systems") and game.ReplicatedStorage:FindFirstChild("Systems"):FindFirstChild("Character") then
-				require(game:GetService("ReplicatedStorage").Systems.Character.Game.Sprinting).Stamina = 100
+				HackedModules.Sprinting.Stamina = 100
 			end
 			if options.DisableFootprint == true then
 				for i,foot in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
@@ -1453,10 +1458,8 @@ task.spawn(function() --main update loop
 				end
 			end
 			if options.AutoEatPizza then
-				print("i love this docter")
-				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza") and Client.Character and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid").Health<70 and Client.Character:FindFirstChild("HumanoidRootPart") then
+				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza") and Client.Character and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid").Health<70 and (Client.Character:FindFirstChild("HumanoidRootPart") and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza").Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<=15 then
 					workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza").CFrame = Client.Character:FindFirstChild("HumanoidRootPart").CFrame
-					print("eat it dawg")
 				end
 			end
 			if options.ServerLagButton == true then
@@ -1501,6 +1504,11 @@ task.spawn(function() --main update loop
 						end
 					end
 				end
+			end
+			if options.SneakyBuffs then
+				HackedModules.Sprinting.StaminaGain = 26
+				HackedModules.Sprinting.StaminaLoss = 9
+				HackedModules.Sprinting.StaminaLoss = 9
 			end
 		end)
 		if err then
@@ -1945,6 +1953,7 @@ createOption("INFINITE STAMINA","toggle","InfSprint","Exploits",nil,true)
 createOption("WALKSPEED OVERRIDE NO STOP","toggle","WalkspeedNoStop","Exploits",nil,true)
 createOption("WALKSPEED OVERRIDE INSTA HIT","toggle","WalkspeedHit","Exploits",nil,true)
 createOption("DISABLE DIGITAL FOOTPRINT","toggle","DisableFootprint","Exploits",nil,true)
+createOption("SNEAKY BUFFS","toggle","SneakyBuffs","Exploits",nil,true)
 --createOption("SERVER LAG BUTTON (DOESNT WORK IN LOBBY)","toggle","ServerLagButton","Exploits",nil,true) --patched :sob: :sob: D:
 
 --misc
