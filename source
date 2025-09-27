@@ -1453,6 +1453,7 @@ task.spawn(function() --main update loop
 				end
 			end
 			if options.AutoEatPizza then
+				print("i love this docter")
 				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza") and Client.Character and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid").Health<70 and Client.Character:FindFirstChild("HumanoidRootPart") then
 					workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza").CFrame = Client.Character:FindFirstChild("HumanoidRootPart").CFrame
 					print("eat it dawg")
