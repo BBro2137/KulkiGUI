@@ -1,6 +1,6 @@
 print("loading kulki GUI......")
 
-local DebugTime = "17!27"
+local DebugTime = "17!40"
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.1"
 local SavedCommunicator:BindableEvent = nil
@@ -1275,7 +1275,6 @@ task.spawn(function() --main update loop
 								else
 									table.remove(GENDISPLAYS,i)
 								end
-								spawnGenDataDisplay(gen)
 							end
 							if not gen:FindFirstChild("FilthyESP99")  then
 								local high = Instance.new("Highlight")
@@ -1283,6 +1282,7 @@ task.spawn(function() --main update loop
 								high.OutlineColor = Color3.fromRGB(0,255,255)
 								high.Name = "FilthyESP99"
 								high.Parent = gen
+								spawnGenDataDisplay(gen)
 							end
 						end
 					end			
@@ -1452,9 +1452,10 @@ task.spawn(function() --main update loop
 					end
 				end
 			end
-			if options.AutoEatPizza == true then
+			if options.AutoEatPizza then
 				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza") and Client.Character and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid").Health<70 and Client.Character:FindFirstChild("HumanoidRootPart") then
 					workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza").CFrame = Client.Character:FindFirstChild("HumanoidRootPart").CFrame
+					print("eat it dawg")
 				end
 			end
 			if options.ServerLagButton == true then
@@ -1479,7 +1480,7 @@ task.spawn(function() --main update loop
 			if options.ObviouslyFakeGenerators then
 				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
 					for i,FakeGoonator in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
-						if FakeGoonator.Name == "FakeGenerator" then
+						if FakeGoonator.Name == "FakeGenerator" and not FakeGoonator:FindFirstChild("FakeGoonatorHighlight") then
 							local Highlight = Instance.new("Highlight")
 							Highlight.Name = "FakeGoonatorHighlight"
 							Highlight.OutlineColor = Color3.fromRGB(118, 0, 186)
