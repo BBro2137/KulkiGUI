@@ -1,6 +1,6 @@
 print("loading kulki GUI......")
 
-local DebugTime = "17!18"
+local DebugTime = "17!27"
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.1"
 local SavedCommunicator:BindableEvent = nil
@@ -1265,16 +1265,25 @@ task.spawn(function() --main update loop
 					end
 				end
 			end
-			if options.GeneratorESP == false then
+			if options.GeneratorESP then
 				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
 					for i,gen in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
 						if gen.Name == "Generator" and not gen:FindFirstChild("FilthyESP99") then
-							spawnGenDataDisplay(gen)
-							local high = Instance.new("Highlight")
-							high.FillColor = Color3.fromRGB(0,255,255)
-							high.OutlineColor = Color3.fromRGB(0,255,255)
-							high.Parent = gen
-							high.Name = "FilthyESP99"
+							for i,bil in GENDISPLAYS do
+								if bil and bil.Parent and bil:FindFirstChildWhichIsA("TextLabel") and bil.Parent:IsA("Model") and bil ~= nil and bil.Parent.Name == "Generator" and bil.Parent:FindFirstChild("Progress") then
+									bil:FindFirstChildWhichIsA("TextLabel").Text = bil.Parent:FindFirstChild("Progress").Value .. "%"
+								else
+									table.remove(GENDISPLAYS,i)
+								end
+								spawnGenDataDisplay(gen)
+							end
+							if not gen:FindFirstChild("FilthyESP99")  then
+								local high = Instance.new("Highlight")
+								high.FillColor = Color3.fromRGB(0,255,255)
+								high.OutlineColor = Color3.fromRGB(0,255,255)
+								high.Name = "FilthyESP99"
+								high.Parent = gen
+							end
 						end
 					end			
 				end
@@ -1285,8 +1294,7 @@ task.spawn(function() --main update loop
 							gen:FindFirstChild("FilthyESP99"):Destroy()
 							if gen:FindFirstChild("FilthyDisplay99") then
 								gen:FindFirstChild("FilthyDisplay99"):Destroy()
-							end
-							table.remove(GENDISPLAYS,i)				
+							end		
 						end
 					end				
 				end
@@ -1479,6 +1487,7 @@ task.spawn(function() --main update loop
 							Highlight.DepthMode = Enum.HighlightDepthMode.Occluded
 							Highlight.OutlineTransparency = 0.5
 							Highlight.FillTransparency = 0.5
+							Highlight.Parent = FakeGoonator
 						end
 					end
 				end
@@ -1895,7 +1904,6 @@ createOption("SENTRY ESP","toggle","SeeSentry","Visual")
 createOption("KILLER ESP","toggle","KillerESP","Visual",nil,true)
 createOption("ITEM ESP","toggle","ItemESP","Visual",nil,true)
 createOption("MOVE PREDICTOR","toggle","MovePredictor","Visual",nil,true)
-createOption("GENERATOR ESP","toggle","GeneratorESP","Visual",nil,true)
 createOption("007n7 TP PREDICTION","toggle","OO7n7tpPrediction","Visual",nil,true)
 createOption("MINIONS ESP","toggle","showMinions","Visual",nil,true)
 createOption("SHOW CHAT","toggle","ShowChat","Visual",nil,true)
@@ -1924,6 +1932,8 @@ createOption("FAST GENERATORS (USE AT YOUR OWN RISK,works only if auto-gen is on
 createOption("AUTO GENERATOR","toggle","AutoGen","GenCheats",nil,true)
 createOption("ADAPTIVE FAST GENS(works only if Fast Gens is on and is recomenned to be used with it.)","toggle","AdaptiveFastGen","GenCheats",nil,true)
 createOption("Obviously FakeG enerators","toggle","ObviouslyFakeGenerators","GenCheats",nil,true)
+createOption("GENERATOR ESP","toggle","GeneratorESP","GenCheats",nil,true)
+
 
 --exploits
 --createOption("ABG","AUTO BLOCK GUEST (WIP)",ABGF,"AutoBlockGuest1337")
