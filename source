@@ -1,6 +1,6 @@
 print("loading kulki GUI......")
 
-local DebugTime = "16!59"
+local DebugTime = "17!18"
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.1"
 local SavedCommunicator:BindableEvent = nil
@@ -1266,7 +1266,6 @@ task.spawn(function() --main update loop
 				end
 			end
 			if options.GeneratorESP == false then
-				options.GeneratorESP = true
 				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
 					for i,gen in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
 						if gen.Name == "Generator" and not gen:FindFirstChild("FilthyESP99") then
@@ -1291,7 +1290,6 @@ task.spawn(function() --main update loop
 						end
 					end				
 				end
-				options.GeneratorESP = false
 			end
 			local cam = workspace.CurrentCamera
 			if options.AAK == true and cam then
