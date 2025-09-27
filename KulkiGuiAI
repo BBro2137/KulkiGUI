@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!57"
+local DEBUG_VERSION = "17!51"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -727,12 +727,18 @@ local function setSprintingTo(value:boolean)
 	end
 end
 local function useAbility(ability:string)
-	local args = {
+	--thx sigma spy for fixing this
+	local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+	-- Remote
+	local RemoteEvent = ReplicatedStorage.Modules.Network.RemoteEvent -- RemoteEvent 
+
+	RemoteEvent:FireServer(
 		"UseActorAbility",
-		ability
-	}
-	game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("Network"):FindFirstChild("RemoteEvent"):FireServer(unpack(args))
-end
+		{
+			buffer.fromstring("\"" .. ability .. "\"") --[[buffer: 0x975653beb1a23db4]]
+		}
+	)end
 local function IsAbilityOnCooldown(Ability:string)
 	local abContainer = Client.PlayerGui:WaitForChild("MainUI"):WaitForChild("AbilityContainer")
 	if abContainer:FindFirstChild(Ability) and tonumber(abContainer:FindFirstChild(Ability).CooldownTime) == nil then
