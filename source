@@ -1,6 +1,6 @@
 print("loading kulki GUI......")
 
-local DebugTime = "16!55"
+local DebugTime = "16!59"
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 3.1"
 local SavedCommunicator:BindableEvent = nil
