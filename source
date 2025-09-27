@@ -1449,11 +1449,16 @@ task.spawn(function() --main update loop
 				LagButton.Visible = false
 			end
 			if game.ReplicatedStorage:FindFirstChild("Modules") and game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects") then
-				print("lol")
 				if options.NoHallucinations then
-					print('ok boi')
-					game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects"):FindFirstChild("KillerExclusive"):FindFirstChild("Hallucination").Name = "Hallucination67"
+					if game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects"):FindFirstChild("KillerExclusive"):FindFirstChild("Hallucination") then
+						game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects"):FindFirstChild("KillerExclusive"):FindFirstChild("Hallucination").Name = "Hallucination67"
+					end
 				else
+					if game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects"):FindFirstChild("KillerExclusive"):FindFirstChild("Hallucination67") then
+						game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects"):FindFirstChild("KillerExclusive"):FindFirstChild("Hallucination67").Name = "Hallucination"
+					end
+				end
+				if not options.NoHallucinations and game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects"):FindFirstChild("KillerExclusive"):FindFirstChild("Hallucination67") then
 					game.ReplicatedStorage:FindFirstChild("Modules"):FindFirstChild("StatusEffects"):FindFirstChild("KillerExclusive"):FindFirstChild("Hallucination67").Name = "Hallucination"
 				end
 			end
