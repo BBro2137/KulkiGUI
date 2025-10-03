@@ -844,6 +844,10 @@ local chatText = {
 		["Responses"] = {"exploiters are dumb, unlike me!","i really want to be killer tho","maybe because im better than you? lol","ever considered a skill issue?"},
 		["Keywords"] = {"gen","exploi"}
 	},
+	["waiter"] = {
+		["Responses"] = {"get the hell out of here","i will commit esc+r","my brain cannot handle this","WHYYY"},
+		["Keywords"] = {"waiter","steak"}
+	},
 }
 
 local function plrChatted(message:string,plr:Player)
@@ -880,6 +884,8 @@ local function plrChatted(message:string,plr:Player)
 				sayInChat(chatText.GenHack.Responses[math.random(1,#chatText.GenHack.Responses)])
 			elseif hasKeywords(chatText.GenExploit) then
 				sayInChat(chatText.GenExploit.Responses[math.random(1,#chatText.GenExploit.Responses)])
+			elseif hasKeywords(chatText.waiter) then
+				sayInChat(chatText.waiter.Responses[math.random(1,#chatText.waiter.Responses)])
 			elseif message:lower() == "hi" or string.lower(message):find("hello") then
 				sayInChat(chatText.SaidHi.Responses[math.random(1,#chatText.SaidHi.Responses)])
 			end
