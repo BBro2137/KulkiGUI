@@ -814,7 +814,7 @@ end
 if game.Players:FindFirstChild("pro_sigmaGamer1337") then warn("yo whats good my fellow ni####") sayInChat("i love forsaken") end
 local chatText = {
 	["Reset"] = {
-		["Responses"] = {"You're the boss!","okay!","why do you want this..?","alright.","is there a specific thing i have done that resulted in this situation?","im not gonna question this.","alright!","see you next round!","ok","i hope you can win after my death!",":sob:","it was nice playing this round!"},
+		["Responses"] = {"i got this guys!"}, --[[{"You're the boss!","okay!","why do you want this..?","alright.","is there a specific thing i have done that resulted in this situation?","im not gonna question this.","alright!","see you next round!","ok","i hope you can win after my death!",":sob:","it was nice playing this round!"},]]
 		["Keywords"] = {"u","reset"}
 	},
 	["SaidHi"] = {
