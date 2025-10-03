@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "17!51"
+local DEBUG_VERSION = "15!59"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -687,10 +687,12 @@ local Data = {
 	},
 	["SurvivorState"] = "Idle",
 	["GoingForGenerator"] = nil,
+	["ChaseStart"] = -1
 }
 local SupportedCharacters = {
 	["Slasher"] = true,
-	["Elliot"] = true, 
+	["Elliot"] = true,
+	["1x1x1x1"] = true,
 }
 
 local ForsakenModules = {
@@ -710,6 +712,9 @@ local function onMapStart()
 	Data.RegeningStamina = false
 	Data.IsUpdateRunCooldown = false
 	Data.HelpOtherSurvivor.Helping = nil
+	Data.SurvivorState = "Idle"
+	Data.GoingForGenerator = nil
+	Data.ChaseStart = -1
 end
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(function(kid)
 	if kid.Name == "Map" then
@@ -913,6 +918,10 @@ task.spawn(function() --main update loop
 								},
 								["Slasher"] = {
 									["GashingWound"] = false,
+								},
+								["1x1x1x1"] = {
+									["MassInfection"] = false,
+									["Entaglement"] = false,
 								}
 							}
 							local can = true
@@ -929,30 +938,38 @@ task.spawn(function() --main update loop
 
 							if can == true then
 								if Client.Character.Name == "Slasher" then
-									if Abilities.Slasher.GashingWound == true and Data.Target:FindFirstChildWhichIsA("Humanoid").Health > 22 then
+									if Abilities.General.M1 then
+										useAbility("Slash")
+									elseif Abilities.Slasher.GashingWound == true and Data.Target:FindFirstChildWhichIsA("Humanoid").Health > 27 then
 										useAbility("GashingWound")
 									else
 										if Data.Target.Name ~= "Builderman" and Data.Target.Name ~= "Taph" and Data.Target.Name ~= "Elliot" then
 											useAbility("Behead")
 										end
 										useAbility("Slash")										
-									end									
+									end
+								elseif Client.Character.Name == "1x1x1x1" then
+									if Abilities.General.M1 then
+										useAbility("Slash")
+									else
+										useAbility("Slash")	
+									end
 								end
 							end
 						end
 						if (Data.Goal.Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude < 30 then
 							local enemy = Data.Target
 							if Data.Target.Name == "Shedletsky" then
-								if enemy:FindFirstChild("Sword").Transparency < 0.03 then
+								if enemy:FindFirstChild("Sword").Transparency < 0.06 then
 									local op:CFrame = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame
-									local rev = op * CFrame.new(0,0,10)
+									local rev = op * CFrame.new(0,0,17)
 									Data.Goal = Vector3.new(rev.X,rev.Y,rev.Z)
 									FINAL.Sprint = true
 								end					
 							end						
 						end
 					end
-					if not Data.Target or not Data.Target.Parent or not Data.Target:FindFirstChildWhichIsA("Humanoid") or Data.Target:FindFirstChildWhichIsA("Humanoid").Health<=0 then
+					if not Data.Target or tick()-Data.ChaseStart >=35 or not Data.Target.Parent or not Data.Target:FindFirstChildWhichIsA("Humanoid") or Data.Target:FindFirstChildWhichIsA("Humanoid").Health<=0 then
 						Data.Target = GetClosestSurvivor(false)
 					end
 				elseif Client.Character.Parent.Name == "Survivors" then
@@ -972,7 +989,7 @@ task.spawn(function() --main update loop
 								end
 							end
 							if #canditates>0 then
-								Data.HelpOtherSurvivor.Helping = getClosestPartFromTo(canditates,Client.Character:FindFirstChild("HumanoidRootPart"))
+								Data.HelpOtherSurvivor.Helping = getClosestPartFromTo(canditates,Client.Character:FindFirstChild("HumanoidRootPart")).Parent --the hrp was returned instead of the character this was a bug for a long time D:
 								if Data.HelpOtherSurvivor.Helping then
 									Data.SurvivorState = "Helping"
 									Data.Goal = Data.HelpOtherSurvivor.Helping:FindFirstChild("HumanoidRootPart").Position
@@ -1035,12 +1052,10 @@ task.spawn(function() --main update loop
 				end
 				if Data.SurvivorState == "GeneratorFind" and Data.GoingForGenerator then
 					if (Client.Character:FindFirstChild("HumanoidRootPart").Position-Data.GoingForGenerator.Positions.Center.Position).Magnitude<20 then
-						print("close enough")
 						fireproximityprompt(Data.GoingForGenerator.Main.Prompt,15)
 						task.wait(1.5)
 						if Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("FixingGenerator") then
 							Data.SurvivorState = "GeneratorFix"
-							print("mi bombogyat")
 							repeat
 								task.wait()
 								Data.GoingForGenerator.Remotes.RE:FireServer()
@@ -1051,7 +1066,6 @@ task.spawn(function() --main update loop
 							Data.SurvivorState = "Idle"
 						end
 						Data.GoingForGenerator = nil
-						print("THIS IS THE END!")
 					end
 				end
 			elseif poth and poth._status and poth._status ~= "Idle" then
