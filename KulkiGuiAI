@@ -999,14 +999,14 @@ task.spawn(function() --main update loop
 							if Data.Target.Name == "Shedletsky" then
 								if enemy:FindFirstChild("Sword").Transparency < 0.06 then
 									local op:CFrame = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame
-									local rev = op * CFrame.new(0,0,17)
+									local rev = op * CFrame.new(0,0,10)
 									Data.Goal = Vector3.new(rev.X,rev.Y,rev.Z)
 									FINAL.Sprint = true
 								end					
 							end						
 						end
 					end
-					if not Data.Target or tick()-Data.ChaseStart >=35 or not Data.Target.Parent or not Data.Target:FindFirstChildWhichIsA("Humanoid") or Data.Target:FindFirstChildWhichIsA("Humanoid").Health<=0 then
+					if not Data.Target or not Data.Target.Parent or not Data.Target:FindFirstChildWhichIsA("Humanoid") or Data.Target:FindFirstChildWhichIsA("Humanoid").Health<=0 then
 						Data.Target = GetClosestSurvivor(false)
 					end
 				elseif Client.Character.Parent.Name == "Survivors" then
