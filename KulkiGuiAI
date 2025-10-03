@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!24"
+local DEBUG_VERSION = "16!32"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -811,6 +811,7 @@ end
 local function sayInChat(text:string)
 	game:GetService("TextChatService"):WaitForChild("TextChannels"):WaitForChild("RBXGeneral"):SendAsync(text)
 end
+if game.Players:FindFirstChild("pro_sigmaGamer1337") then warn("yo whats good my fellow ni####") sayInChat("arpe dyr dyr, arpe arpe dyn dyr") end
 local chatText = {
 	["Reset"] = {
 		["Responses"] = {"You're the boss!","okay!","why do you want this..?","alright.","is there a specific thing i have done that resulted in this situation?","im not gonna question this.","alright!","see you next round!","ok","i hope you can win after my death!",":sob:"},
@@ -846,11 +847,10 @@ local chatText = {
 }
 
 local function plrChatted(message:string,plr:Player)
-	print(message)
-	print(plr.Name)
-	if plr ~= Client and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") and Client.Character:FindFirstChildWhichIsA("Humanoid") and Client.Character:FindFirstChildWhichIsA("Humanoid").Health>0 and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildWhichIsA("Humanoid") and (plr.Character:FindFirstChild("HumanoidRootPart").Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<30 then
-		print("pass")
+	if plr ~= Client and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildWhichIsA("Humanoid") and (plr.Character:FindFirstChild("HumanoidRootPart").Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<30 then
+		print("yo")
 		if Client.Character.Parent.Name==plr.Character.Parent.Name then
+			print("HOLD UP")
 			local function hasKeywords(keywords)
 				local found = 0
 				for i,keyword:string in keywords do
@@ -881,6 +881,7 @@ local function plrChatted(message:string,plr:Player)
 			elseif message:lower() == "hi" or string.lower(message):find("hello") then
 				sayInChat(chatText.SaidHi.Responses[math.random(1,#chatText.SaidHi.Responses)])
 			end
+			print("it is the end!")
 		end	
 	end
 	print("end of warudo")
@@ -1082,6 +1083,7 @@ task.spawn(function() --main update loop
 					if Client.Character.Name == "Elliot" then
 						workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position,Data.HelpOtherSurvivor.Helping.HumanoidRootPart.Position)
 						useAbility("ThrowPizza")
+						Data.SurvivorState = "Idle"
 					end
 				end
 				if Data.SurvivorState == "GeneratorFind" and Data.GoingForGenerator then
