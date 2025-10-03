@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "15!59"
+local DEBUG_VERSION = "16!24"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -705,8 +705,8 @@ game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
 		poth = SimplePath.new(char)
 	end
 end)
-local function onMapStart()
-	task.wait(1.5)
+local function ResetData()
+	task.wait(0.5)
 	Data.Goal = nil
 	Data.Target = nil
 	Data.RegeningStamina = false
@@ -718,11 +718,11 @@ local function onMapStart()
 end
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(function(kid)
 	if kid.Name == "Map" then
-		onMapStart()
+		ResetData()
 	end
 end)
 if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
-	onMapStart()
+	ResetData()
 end
 local function setSprintingTo(value:boolean)
 	if ForsakenModules.Systems.Sprinting.IsSprinting ~= value then
@@ -777,6 +777,37 @@ local function getClosestGenerator():Model
 	end
 	return nil
 end
+
+local function GetPartMovingSpeed(Part:BasePart):number --yields until the answer is found.
+	local foundSpeed = 0
+	local su,err = pcall(function()
+		local target = Part
+
+		local lastPos = target.Position
+		local lastTime = tick()
+		local teleportSpeed = nil
+
+		local connection:RBXScriptConnection = target:GetPropertyChangedSignal("CFrame"):Connect(function()
+			local newPos = target.CFrame.Position
+			local now = tick()
+
+			local dist = (newPos - lastPos).Magnitude
+			local dt = now - lastTime
+
+			-- Calculate speed in studs per second
+			if dt > 0 then
+				teleportSpeed = dist / dt
+			end
+
+			lastPos = newPos
+			lastTime = now
+		end) 
+		repeat wait() until teleportSpeed
+		connection:Disconnect()
+	end)
+	return foundSpeed
+end
+
 local function sayInChat(text:string)
 	game:GetService("TextChatService"):WaitForChild("TextChannels"):WaitForChild("RBXGeneral"):SendAsync(text)
 end
@@ -864,6 +895,9 @@ game.Players.PlayerAdded:Connect(function(plr)
 	plr.Chatted:Connect(function(msg)
 		plrChatted(msg,plr)
 	end)
+end)
+Client.CharacterAdded:Connect(function(Character)
+	ResetData()
 end)
 task.spawn(function() --main update loop
 	while true do
