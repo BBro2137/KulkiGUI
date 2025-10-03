@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!37"
+local DEBUG_VERSION = "16!44"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -814,7 +814,7 @@ end
 if game.Players:FindFirstChild("pro_sigmaGamer1337") then warn("yo whats good my fellow ni####") sayInChat("i love forsaken") end
 local chatText = {
 	["Reset"] = {
-		["Responses"] = {"You're the boss!","okay!","why do you want this..?","alright.","is there a specific thing i have done that resulted in this situation?","im not gonna question this.","alright!","see you next round!","ok","i hope you can win after my death!",":sob:"},
+		["Responses"] = {"You're the boss!","okay!","why do you want this..?","alright.","is there a specific thing i have done that resulted in this situation?","im not gonna question this.","alright!","see you next round!","ok","i hope you can win after my death!",":sob:","it was nice playing this round!"},
 		["Keywords"] = {"u","reset"}
 	},
 	["SaidHi"] = {
@@ -829,11 +829,11 @@ local chatText = {
 		["Keywords"] = {"u","bot"}
 	},
 	["ConfrontedOfkulkiGui"] = {
-		["Responses"] = {"uhhh","...","i have no words",".....","do you know?","???","what...","seriously?","i cant confirm nor deny existence of such thing.","will i get banned..?","for real?","dont bring this topic here.","ask someone else.","if you know then keep it to yourself","what","truly a mystery...","im not associated with any of what you just said.","please stop talking about that","stop talking about it now.","lets talk about something else! im listening just i wont reply because im too lazy...","dont say that again.","stop talking or i will target you until the end of time","just keep playing the game bro"},
+		["Responses"] = {"uhhh","...","i have no words",".....","do you know?","???","what...","seriously?","i cant confirm nor deny existence of such thing.","for real?","ask someone else.","what","truly a mystery...","just keep playing the game bro"},
 		["Keywords"] = {"kulki","gui"}
 	},
 	["AskedOfkulkiGui"] = {
-		["Responses"] = {"i have no idea.","what are you talking about?","even i dont know the answer lolz","maybe lets play forsaken!","huh?","brother i have no idea lol","its a weird name xD","maybe its an ability of 007n7.","seems like its something about cool kid!","say that again?","ask somebody with high intellegence. hint: not me"},
+		["Responses"] = {"i have no idea.","what are you talking about?","even i dont know the answer lolz","maybe lets play forsaken!","huh?","brother i have no idea lol","its a weird name xD","maybe its an ability of 007n7.","seems like its something about cool kid!","say that again?"},
 		["Keywords"] = {"what","kulki","gui"}
 	},
 	["GenHack"] = {
@@ -841,7 +841,7 @@ local chatText = {
 		["Keywords"] = {"gen","hack"}
 	},
 	["GenExploit"] = {
-		["Responses"] = {"exploiters are dumb, unlike me!","i really want to be killer tho","maybe because im better than you? lol"},
+		["Responses"] = {"exploiters are dumb, unlike me!","i really want to be killer tho","maybe because im better than you? lol","ever considered a skill issue?"},
 		["Keywords"] = {"gen","exploi"}
 	},
 }
@@ -860,7 +860,7 @@ local function plrChatted(message:string,plr:Player)
 						found+=1
 					end
 				end
-				if found~=0 then
+				if found>=1 then
 					return true
 				else return false
 				end
