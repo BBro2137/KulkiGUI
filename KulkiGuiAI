@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!32"
+local DEBUG_VERSION = "16!37"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -811,7 +811,7 @@ end
 local function sayInChat(text:string)
 	game:GetService("TextChatService"):WaitForChild("TextChannels"):WaitForChild("RBXGeneral"):SendAsync(text)
 end
-if game.Players:FindFirstChild("pro_sigmaGamer1337") then warn("yo whats good my fellow ni####") sayInChat("arpe dyr dyr, arpe arpe dyn dyr") end
+if game.Players:FindFirstChild("pro_sigmaGamer1337") then warn("yo whats good my fellow ni####") sayInChat("i love forsaken") end
 local chatText = {
 	["Reset"] = {
 		["Responses"] = {"You're the boss!","okay!","why do you want this..?","alright.","is there a specific thing i have done that resulted in this situation?","im not gonna question this.","alright!","see you next round!","ok","i hope you can win after my death!",":sob:"},
@@ -851,17 +851,18 @@ local function plrChatted(message:string,plr:Player)
 		print("yo")
 		if Client.Character.Parent.Name==plr.Character.Parent.Name then
 			print("HOLD UP")
-			local function hasKeywords(keywords)
+			local function hasKeywords(kwords)
 				local found = 0
-				for i,keyword:string in keywords do
+				for i,keyword:string in ipairs(kwords) do
+					print(typeof(keyword))
+					if typeof(keyword) ~= "string" then continue end
 					if string.find(message:lower(),keyword) then
 						found+=1
 					end
 				end
-				if found==#keywords then
+				if found~=0 then
 					return true
-				else
-					return false
+				else return false
 				end
 			end
 			
