@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!44"
+local DEBUG_VERSION = "16!47"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -847,6 +847,7 @@ local chatText = {
 }
 
 local function plrChatted(message:string,plr:Player)
+	if not canRunUpdateLoop then return end
 	if plr ~= Client and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildWhichIsA("Humanoid") and (plr.Character:FindFirstChild("HumanoidRootPart").Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<30 then
 		print("yo")
 		if Client.Character.Parent.Name==plr.Character.Parent.Name then
@@ -860,7 +861,7 @@ local function plrChatted(message:string,plr:Player)
 						found+=1
 					end
 				end
-				if found>=1 then
+				if found>1 then
 					return true
 				else return false
 				end
