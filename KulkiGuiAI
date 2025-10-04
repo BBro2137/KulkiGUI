@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "21!49"
+local DEBUG_VERSION = "10!54"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -853,7 +853,6 @@ local chatText = {
 local function hasKeywords(message:string,kwords)
 	local found = 0
 	for i,keyword:string in ipairs(kwords) do
-		print(typeof(keyword))
 		if typeof(keyword) ~= "string" then continue end
 		if string.find(message:lower(),keyword) then
 			found+=1
@@ -865,16 +864,18 @@ local function hasKeywords(message:string,kwords)
 	end
 end
 
-local function SpawnChatCheck(KeywordIndex:string)
-	if hasKeywords(chatText[KeywordIndex].Keywords) then
-		sayInChat(chatText[KeywordIndex].Responses[math.random(1,#chatText[KeywordIndex].Responses)])
-	end
-end
+
 
 local function plrChatted(message:string,plr:Player)
 	if not canRunUpdateLoop then return end
 	if plr ~= Client and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildWhichIsA("Humanoid") and (plr.Character:FindFirstChild("HumanoidRootPart").Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<30 then
 		if Client.Character.Parent.Name==plr.Character.Parent.Name then
+			
+			local function SpawnChatCheck(KeywordIndex:string)
+				if hasKeywords(message,chatText[KeywordIndex].Keywords) then
+					sayInChat(chatText[KeywordIndex].Responses[math.random(1,#chatText[KeywordIndex].Responses)])
+				end
+			end
 			
 			SpawnChatCheck("ConfrontedIfAI")
 			SpawnChatCheck("AskedOfkulkiGui")
@@ -882,7 +883,7 @@ local function plrChatted(message:string,plr:Player)
 			SpawnChatCheck("GenExploit")
 			SpawnChatCheck("waiter")
 
-			if hasKeywords(chatText.Reset.Keywords) then
+			if hasKeywords(message,chatText.Reset.Keywords) then
 				sayInChat(chatText.Reset.Responses[math.random(1,#chatText.Reset.Responses)])
 				task.wait(2.5)
 				Client.Character:FindFirstChildWhichIsA("Humanoid").Health = 0
