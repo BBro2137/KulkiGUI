@@ -814,11 +814,11 @@ end
 if game.Players:FindFirstChild("pro_sigmaGamer1337") then warn("yo whats good my fellow ni####") sayInChat("i love forsaken") end
 local chatText = {
 	["Reset"] = {
-		["Responses"] = {"i got this guys!"}, --[[{"You're the boss!","okay!","why do you want this..?","alright.","is there a specific thing i have done that resulted in this situation?","im not gonna question this.","alright!","see you next round!","ok","i hope you can win after my death!",":sob:","it was nice playing this round!"},]]
+		["Responses"] = {"You're the boss!","okay!","why do you want this..?","alright.","is there a specific thing i have done that resulted in this situation?","im not gonna question this.","alright!","see you next round!","ok","i hope you can win after my death!",":sob:","it was nice playing this round!","i got this guys!","watch and learn.","this is how the pros do it! wanna be a pro yourself? do that!"},
 		["Keywords"] = {"u","reset"}
 	},
 	["SaidHi"] = {
-		["Responses"] = {"hello!","hi!","hi :D","hello :D"},
+		["Responses"] = {"hello!","hi!","hi :D","hello :D","hey!","hi :3","hello!!","hey :D"},
 	},
 	["ConfrontedIfAI"] = {
 		["Responses"] = {"did u ask if im ai? no..","brother im just bad im not ai!","dude im not ai","bro im not ai seriously","THIS IS JUST TOXICITY IM NOT AN AI!","i swear i will target you if youre gonna keep saying that im an artificial intellegence!"},
@@ -850,49 +850,47 @@ local chatText = {
 	},
 }
 
+local function hasKeywords(message:string,kwords)
+	local found = 0
+	for i,keyword:string in ipairs(kwords) do
+		print(typeof(keyword))
+		if typeof(keyword) ~= "string" then continue end
+		if string.find(message:lower(),keyword) then
+			found+=1
+		end
+	end
+	if found>1 then
+		return true
+	else return false
+	end
+end
+
+local function SpawnChatCheck(KeywordIndex:string)
+	if hasKeywords(chatText[KeywordIndex].Keywords) then
+		sayInChat(chatText[KeywordIndex].Responses[math.random(1,#chatText[KeywordIndex].Responses)])
+	end
+end
+
 local function plrChatted(message:string,plr:Player)
 	if not canRunUpdateLoop then return end
 	if plr ~= Client and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildWhichIsA("Humanoid") and (plr.Character:FindFirstChild("HumanoidRootPart").Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<30 then
-		print("yo")
 		if Client.Character.Parent.Name==plr.Character.Parent.Name then
-			print("HOLD UP")
-			local function hasKeywords(kwords)
-				local found = 0
-				for i,keyword:string in ipairs(kwords) do
-					print(typeof(keyword))
-					if typeof(keyword) ~= "string" then continue end
-					if string.find(message:lower(),keyword) then
-						found+=1
-					end
-				end
-				if found>1 then
-					return true
-				else return false
-				end
-			end
 			
+			SpawnChatCheck("ConfrontedIfAI")
+			SpawnChatCheck("AskedOfkulkiGui")
+			SpawnChatCheck("GenHack")
+			SpawnChatCheck("GenExploit")
+			SpawnChatCheck("waiter")
+
 			if hasKeywords(chatText.Reset.Keywords) then
 				sayInChat(chatText.Reset.Responses[math.random(1,#chatText.Reset.Responses)])
+				task.wait(2.5)
 				Client.Character:FindFirstChildWhichIsA("Humanoid").Health = 0
-			elseif hasKeywords(chatText.ConfrontedIfAI.Keywords) then
-				sayInChat(chatText.ConfrontedIfAI.Responses[math.random(1,#chatText.ConfrontedIfAI.Responses)])
-			elseif hasKeywords(chatText.AskedOfkulkiGui) then
-				sayInChat(chatText.AskedOfkulkiGui.Responses[math.random(1,#chatText.AskedOfkulkiGui.Responses)])
-			elseif hasKeywords(chatText.ConfrontedOfkulkiGui) then
-				sayInChat(chatText.ConfrontedOfkulkiGui.Responses[math.random(1,#chatText.ConfrontedOfkulkiGui.Responses)])
-			elseif hasKeywords(chatText.GenHack) then
-				sayInChat(chatText.GenHack.Responses[math.random(1,#chatText.GenHack.Responses)])
-			elseif hasKeywords(chatText.GenExploit) then
-				sayInChat(chatText.GenExploit.Responses[math.random(1,#chatText.GenExploit.Responses)])
-			elseif hasKeywords(chatText.waiter) then
-				sayInChat(chatText.waiter.Responses[math.random(1,#chatText.waiter.Responses)])
-			elseif message:lower() == "hi" or string.lower(message):find("hello") then
+			elseif message:lower():find("hi") or message:lower():find("hello") or message:lower():find("hey") or message:lower():find("sup") then
 				sayInChat(chatText.SaidHi.Responses[math.random(1,#chatText.SaidHi.Responses)])
 			end
-			print("it is the end!")
 		end	
 	end
-	print("end of warudo")
 end
 for i,plr in game.Players:GetPlayers() do
 	plr.Chatted:Connect(function(msg)
@@ -935,7 +933,7 @@ task.spawn(function() --main update loop
 				else
 					FINAL.Sprint = false
 				end
-				if readOnlyValues.Stamina < 15 and Data.RegeningStamina == false then
+				if readOnlyValues.Stamina < 13 and Data.RegeningStamina == false then
 					Data.RegeningStamina = true
 					task.spawn(function()
 						task.wait(2.5)
@@ -1039,6 +1037,9 @@ task.spawn(function() --main update loop
 								end								
 							end
 						end
+						if Data.SurvivorState == "Helping" and Data.HelpOtherSurvivor.Helping then
+							Data.Goal = Data.HelpOtherSurvivor.Helping:FindFirstChild("HumanoidRootPart").Position
+						end
 						if Client.PlayerGui:FindFirstChild("TemporaryUI") and not IsAbilityOnCooldown("ThrowPizza") then
 							local closest = {
 								["Health"] = math.huge,
@@ -1092,6 +1093,7 @@ task.spawn(function() --main update loop
 						workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position,Data.HelpOtherSurvivor.Helping.HumanoidRootPart.Position)
 						useAbility("ThrowPizza")
 						Data.SurvivorState = "Idle"
+						Data.HelpOtherSurvivor.Helping = nil
 					end
 				end
 				if Data.SurvivorState == "GeneratorFind" and Data.GoingForGenerator then
