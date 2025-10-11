@@ -1,8 +1,8 @@
 print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!17"
+local versionString = "VERSION 1.3"
+local DEBUG_VERSION = "16!24"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -754,6 +754,7 @@ local function LoadMovementPoints(Map:Model) --loads all possible movement optio
 	task.wait(0.5)
 	local Visuals = {} --all vis parts stored here
 	
+	local newTable = {}
 	for _,point:Vector3 in MovementPoints[Map:GetAttribute("MapName")] do --loop troguh all points
 		for _,vec3 in MovementPoints[Map:GetAttribute("MapName")] do --check if the points connect
 			local direction = (point-vec3)
@@ -768,11 +769,12 @@ local function LoadMovementPoints(Map:Model) --loads all possible movement optio
 						MovementPointVis.Position = direction.Unit*dec --move vis to the movement point
 						table.insert(Visuals,vis) 
 					end
-					table.insert(MovementPoints[Map:GetAttribute("MapName")],direction.Unit*dec) --add movement point
+					table.insert(newTable,direction.Unit*dec) --add movement point
 				end
 			end
 		end
 	end
+	MovementPoints[Map:GetAttribute("MapName")] = newTable
 	for _,vis in Visuals do --load all visuals
 		vis.Parent = VisualMovementPointStore
 	end
