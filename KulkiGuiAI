@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!10"
+local DEBUG_VERSION = "16!13"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -37,7 +37,7 @@ else
 	SavedData.Name = "GameNetworkingDebuggerV2" -- shhhhh, its a disguise.
 	SavedData.Parent = game	
 end
-
+warn("Kulki gui AI Version: " .. DEBUG_VERSION)
 local MovementPoints = {
 	["HorrorHotel"] = {
 		-211.46743774414062, 5465.0654296875, -283.5267333984375,
@@ -1278,7 +1278,7 @@ for i,tab in MainFrame:GetChildren() do
 end
 
 print("loaded kulki GUI AI!")
-warn("Kulki gui AI Version: " .. DEBUG_VERSION)
+
 sGUI.Parent = Client.PlayerGui
 task.wait(3)
 
