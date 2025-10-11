@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.3"
-local DEBUG_VERSION = "16!57"
+local DEBUG_VERSION = "17!14"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -151,6 +151,16 @@ subtitle.Size = UDim2.new(0.799, 0,0.045, 0)
 subtitle.Position = UDim2.new(0.201, 0,0.139, 0)
 subtitle.Parent = MainFrame
 subtitle.Font = Enum.Font.SourceSansBold
+
+local AIState = Instance.new("TextLabel")
+AIState.Size = UDim2.new(0.204, 0,0.102, 0)
+AIState.Position = UDim2.new(0, 0,0.244, 0)
+AIState.Text = "State: nil"
+AIState.BackgroundColor3 = Color3.fromRGB(255,255,255)
+AIState.TextScaled = true
+AIState.TextColor3 = Color3.fromRGB(0,0,0)
+AIState.BackgroundTransparency = 0.3
+AIState.Parent = sGUI
 
 --actual kulki gui code below
 
@@ -1022,6 +1032,7 @@ task.spawn(function() --main update loop
 		local su,err = nil
 		su,err = pcall(function()
 			if options.Enabled == true and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+				AIState.Text = "State: ".. Data.SurvivorState
 				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Slowdown")  then
 					if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Slowdown"):FindFirstChild("Arms") then
 						workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Slowdown"):FindFirstChild("Arms"):Destroy()
@@ -1227,13 +1238,15 @@ task.spawn(function() --main update loop
 							["Point"] = Vector3.new(0,0,0)
 						}
 						for i,Point:Vector3 in MovementPoints[workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetAttribute("MapName")] do
-							if (Point-UserHRP.Position).Magnitude < (Point-KillerHRP.Position).Magnitude and (Point-UserHRP.Position).Magnitude<BestPoint.UserDistance and (Point-KillerHRP.Position).Magnitude>BestPoint.KillerDistance then
+							if (Point-UserHRP.Position).Magnitude < (Point-KillerHRP.Position).Magnitude and (Point-UserHRP.Position).Magnitude<=BestPoint.UserDistance and (Point-KillerHRP.Position).Magnitude>=BestPoint.KillerDistance and (Point-KillerHRP.Position).Magnitude>=10 then
 								BestPoint.KillerDistance = (Point-KillerHRP.Position).Magnitude
 								BestPoint.UserDistance = (Point-UserHRP.Position).Magnitude
 								BestPoint.Point = Point
 							end 
 						end
-						Data.Goal = BestPoint.Point
+						if BestPoint.Point ~= Vector3.new(0,0,0) then
+							Data.Goal = BestPoint.Point 
+						end
 					end
 				end
 				
