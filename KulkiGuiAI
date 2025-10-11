@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!13"
+local DEBUG_VERSION = "16!17"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -40,10 +40,10 @@ end
 warn("Kulki gui AI Version: " .. DEBUG_VERSION)
 local MovementPoints = {
 	["HorrorHotel"] = {
-		-211.46743774414062, 5465.0654296875, -283.5267333984375,
-		-250.4258575439453, 5465.06591796875, -288.9687194824219,
-		-237.18484497070312, 5465.0654296875, -338.50299072265625,
-		-213.2086944580078, 5465.0654296875, -338.12542724609375,
+		Vector3.new(-211.46743774414062, 5465.0654296875, -283.5267333984375),
+		Vector3.new(-250.4258575439453, 5465.06591796875, -288.9687194824219),
+		Vector3.new(-237.18484497070312, 5465.0654296875, -338.50299072265625),
+		Vector3.new(-213.2086944580078, 5465.0654296875, -338.12542724609375),
 	}
 }
 local LoadedMovementDumps = {}
