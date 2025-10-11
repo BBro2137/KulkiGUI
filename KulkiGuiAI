@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!04"
+local DEBUG_VERSION = "16!05"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -747,9 +747,10 @@ local function ResetData()
 	Data.GoingForGenerator = nil
 	Data.ChaseStart = -1
 end
+
 local function LoadMovementPoints(Map:Model) --loads all possible movement options for a map (added comments so its more readable in the future)
-	if not  MovementPoints[Map.Name] then return end --doesnt run function if no points were saved with the map's index.
-	if LoadedMovementDumps[MovementPoints[Map.Name]] then return end --if the map's name is indexed in the table map wont be loaded again.
+	if not  MovementPoints[Map:GetAttribute("MapName")] then return end --doesnt run function if no points were saved with the map's index.
+	if LoadedMovementDumps[MovementPoints[Map:GetAttribute("MapName")]] then return end --if the map's name is indexed in the table map wont be loaded again.
 	task.wait(0.5)
 	local Visuals = {} --all vis parts stored here
 	
@@ -775,8 +776,8 @@ local function LoadMovementPoints(Map:Model) --loads all possible movement optio
 	for _,vis in Visuals do --load all visuals
 		vis.Parent = VisualMovementPointStore
 	end
-	LoadedMovementDumps[MovementPoints[Map.Name]] = true --set the map as loaded
-	print("KGUI AI: Successfully loaded ".. Map.Name .. " Movement points.")
+	LoadedMovementDumps[MovementPoints[Map:GetAttribute("MapName")]] = true --set the map as loaded
+	print("KGUI AI: Successfully loaded ".. Map:GetAttribute("MapName") .. " Movement points.")
 end
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(function(kid)
 	if kid.Name == "Map" then
@@ -1212,14 +1213,13 @@ task.spawn(function() --main update loop
 						Data.SurvivorState = "Idle"
 					end
 					
-					if Data.SurvivorState == "RunFromKiller" then
-						
+					if Data.SurvivorState == "RunFromKiller" and MovementPoints[workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetAttribute("MapName")] then
 						local BestPoint = {
 							["KillerDistance"] = 0,
 							["UserDistance"] = math.huge,
 							["Point"] = Vector3.new(0,0,0)
 						}
-						for i,Point:Vector3 in MovementPoints[workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map").Name] do
+						for i,Point:Vector3 in MovementPoints[workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetAttribute("MapName")] do
 							if (Point-UserHRP.Position).Magnitude < (Point-KillerHRP.Position).Magnitude and (Point-UserHRP.Position).Magnitude<BestPoint.UserDistance and (Point-KillerHRP.Position).Magnitude>BestPoint.KillerDistance then
 								BestPoint.KillerDistance = (Point-KillerHRP.Position).Magnitude
 								BestPoint.UserDistance = (Point-UserHRP.Position).Magnitude
