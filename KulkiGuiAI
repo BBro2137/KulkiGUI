@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "11!09"
+local DEBUG_VERSION = "16!01"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -643,6 +643,7 @@ end
 
 local optionButtons = {}
 local VisualMovementPointStore = Instance.new("Folder")
+VisualMovementPointStore.Name = "VisualMovementPointStore"
 local limiter = nil
 
 VisualMovementPointStore.Parent = workspace
@@ -730,6 +731,7 @@ MovementPointVis.CanQuery = false
 MovementPointVis.CanTouch = false
 MovementPointVis.CanCollide = false
 MovementPointVis.CastShadow = false
+MovementPointVis.Anchored = true
 MovementPointVis.Color = Color3.fromRGB(255,0,0)
 MovementPointVis.Transparency = 0.5
 MovementPointVis.Size = Vector3.new(1.5,1.5,1.5)
@@ -1217,7 +1219,7 @@ task.spawn(function() --main update loop
 							["UserDistance"] = math.huge,
 							["Point"] = Vector3.new(0,0,0)
 						}
-						for i,Point:Vector3 in MovementPoints[workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map")] do
+						for i,Point:Vector3 in MovementPoints[workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map").Name] do
 							if (Point-UserHRP.Position).Magnitude < (Point-KillerHRP.Position).Magnitude and (Point-UserHRP.Position).Magnitude<BestPoint.UserDistance and (Point-KillerHRP.Position).Magnitude>BestPoint.KillerDistance then
 								BestPoint.KillerDistance = (Point-KillerHRP.Position).Magnitude
 								BestPoint.UserDistance = (Point-UserHRP.Position).Magnitude
