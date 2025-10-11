@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.3"
-local DEBUG_VERSION = "18!07"
+local DEBUG_VERSION = "18!11"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -1063,7 +1063,7 @@ task.spawn(function() --main update loop
 				if readOnlyValues.Stamina < 13 and Data.RegeningStamina == false then
 					Data.RegeningStamina = true
 					task.spawn(function()
-						task.wait(2.5)
+						task.wait(0.7)
 						Data.RegeningStamina = false
 					end)
 				end
