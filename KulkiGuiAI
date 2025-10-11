@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!01"
+local DEBUG_VERSION = "16!04"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -1182,7 +1182,7 @@ task.spawn(function() --main update loop
 						end
 					end
 					if Data.SurvivorState == "GeneratorFind" and Data.GoingForGenerator then
-						if (Client.Character:FindFirstChild("HumanoidRootPart").Position-Data.GoingForGenerator.Positions.Center.Position).Magnitude<20 then
+						if (Client.Character:FindFirstChild("HumanoidRootPart").Position-Data.GoingForGenerator.Positions.Center.Position).Magnitude<10 then
 							fireproximityprompt(Data.GoingForGenerator.Main.Prompt,15)
 							task.wait(1.5)
 							if Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("FixingGenerator") then
@@ -1278,6 +1278,7 @@ for i,tab in MainFrame:GetChildren() do
 end
 
 print("loaded kulki GUI!")
+warn(DEBUG_VERSION)
 sGUI.Parent = Client.PlayerGui
 task.wait(3)
 
