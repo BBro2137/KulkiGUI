@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.3"
-local DEBUG_VERSION = "18!03"
+local DEBUG_VERSION = "18!06"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -1247,7 +1247,7 @@ task.spawn(function() --main update loop
 						}
 						
 						for i,Point:Vector3 in MovementPoints[workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetAttribute("MapName")] do
-							if (Point-UserHRP.Position).Magnitude < (Point-KillerHRP.Position).Magnitude and (Point-UserHRP.Position).Magnitude<=BestPoint.UserDistance and (Point-KillerHRP.Position).Magnitude>=BestPoint.KillerDistance then
+							if (Point-UserHRP.Position).Magnitude < (Point-KillerHRP.Position).Magnitude and (Point-UserHRP.Position).Magnitude<=BestPoint.UserDistance and (Point-KillerHRP.Position).Magnitude>=BestPoint.KillerDistance and (Point-KillerHRP.Position).Magnitude>=40 then
 								BestPoint.KillerDistance = (Point-KillerHRP.Position).Magnitude
 								BestPoint.UserDistance = (Point-UserHRP.Position).Magnitude
 								BestPoint.Point = Point
