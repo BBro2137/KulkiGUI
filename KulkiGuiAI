@@ -37,6 +37,17 @@ else
 	SavedData.Name = "GameNetworkingDebuggerV2" -- shhhhh, its a disguise.
 	SavedData.Parent = game	
 end
+
+local MovementPoints = {
+	["HorrorHotel"] = {
+		-211.46743774414062, 5465.0654296875, -283.5267333984375,
+		-250.4258575439453, 5465.06591796875, -288.9687194824219,
+		-237.18484497070312, 5465.0654296875, -338.50299072265625,
+		-213.2086944580078, 5465.0654296875, -338.12542724609375,
+	}
+}
+local LoadedMovementDumps = {}
+
 local Client = game.Players.LocalPlayer
 local UIS =  game:GetService("UserInputService")
 local mouse = Client:GetMouse()
@@ -143,6 +154,8 @@ subtitle.Font = Enum.Font.SourceSansBold
 
 --actual kulki gui code below
 
+
+
 --SIMPLEPATH MODULE
 --[[
 -------------------------------------------------------------------
@@ -181,6 +194,8 @@ local Path = {
 		ComputationError = "ComputationError";
 		AgentStuck = "AgentStuck";
 	};
+	["COMPILER_SEARCH_INDEX"] = "local SimplePath",
+	["RETURN_INDEX"] = "return Path",
 }
 Path.__index = function(table, index)
 	if index == "Stopped" and not table._humanoid then
@@ -492,6 +507,7 @@ function Path:Run(target)
 	end
 	return true
 end
+
 local SimplePath = Path
 
 --KULKI GUI ai
@@ -626,10 +642,10 @@ end
 
 
 local optionButtons = {}
-
+local VisualMovementPointStore = Instance.new("Folder")
 local limiter = nil
 
-
+VisualMovementPointStore.Parent = workspace
 
 local function FULLSTOP()
 	canQuit = true
@@ -638,6 +654,8 @@ local function FULLSTOP()
 	end
 	canRunUpdateLoop = false
 	sGUI:Destroy()
+	table.clear(MovementPoints)
+	VisualMovementPointStore:Destroy()
 	task.wait(99999999)
 end
 
@@ -705,6 +723,17 @@ game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
 		poth = SimplePath.new(char)
 	end
 end)
+
+local VisualizeMovementPoints = true
+local MovementPointVis = Instance.new("Part")
+MovementPointVis.CanQuery = false
+MovementPointVis.CanTouch = false
+MovementPointVis.CanCollide = false
+MovementPointVis.CastShadow = false
+MovementPointVis.Color = Color3.fromRGB(255,0,0)
+MovementPointVis.Transparency = 0.5
+MovementPointVis.Size = Vector3.new(1.5,1.5,1.5)
+
 local function ResetData()
 	task.wait(0.5)
 	Data.Goal = nil
@@ -716,13 +745,46 @@ local function ResetData()
 	Data.GoingForGenerator = nil
 	Data.ChaseStart = -1
 end
+local function LoadMovementPoints(Map:Model) --loads all possible movement options for a map (added comments so its more readable in the future)
+	if not  MovementPoints[Map.Name] then return end --doesnt run function if no points were saved with the map's index.
+	if LoadedMovementDumps[MovementPoints[Map.Name]] then return end --if the map's name is indexed in the table map wont be loaded again.
+	task.wait(0.5)
+	local Visuals = {} --all vis parts stored here
+	
+	for _,point:Vector3 in MovementPoints[Map.Name] do --loop troguh all points
+		for _,vec3 in MovementPoints[Map.Name] do --check if the points connect
+			local direction = (point-vec3)
+			local mag = (point-vec3).Magnitude
+			local raycast = workspace:Raycast(vec3,direction)
+			
+			if not raycast then
+				for count=1,math.floor(mag*10) do
+					local dec = count*0.1
+					if VisualizeMovementPoints then --if vis option then add to memory
+						local vis = MovementPointVis:Clone()
+						MovementPointVis.Position = direction.Unit*dec --move vis to the movement point
+						table.insert(Visuals,vis) 
+					end
+					table.insert(MovementPoints[Map.Name],direction.Unit*dec) --add movement point
+				end
+			end
+		end
+	end
+	for _,vis in Visuals do --load all visuals
+		vis.Parent = VisualMovementPointStore
+	end
+	LoadedMovementDumps[MovementPoints[Map.Name]] = true --set the map as loaded
+	print("KGUI AI: Successfully loaded ".. Map.Name .. " Movement points.")
+end
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(function(kid)
 	if kid.Name == "Map" then
 		ResetData()
+		LoadMovementPoints(kid)
 	end
 end)
 if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
 	ResetData()
+	LoadMovementPoints(workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"))
 end
 local function setSprintingTo(value:boolean)
 	if ForsakenModules.Systems.Sprinting.IsSprinting ~= value then
@@ -811,7 +873,7 @@ end
 local function sayInChat(text:string)
 	game:GetService("TextChatService"):WaitForChild("TextChannels"):WaitForChild("RBXGeneral"):SendAsync(text)
 end
-if game.Players:FindFirstChild("pro_sigmaGamer1337") then warn("yo whats good my fellow ni####") sayInChat("i love forsaken") end
+
 local chatText = {
 	["Reset"] = {
 		["Responses"] = {"You're the boss!","okay!","why do you want this..?","alright.","is there a specific thing i have done that resulted in this situation?","im not gonna question this.","alright!","see you next round!","ok","i hope you can win after my death!",":sob:","it was nice playing this round!","i got this guys!","watch and learn.","this is how the pros do it! wanna be a pro yourself? do that!"},
@@ -880,35 +942,38 @@ local function hasKeywords(message:string,kwords)
 	end
 end
 
-
+local function SpawnChatCheck(KeywordIndex:string,message:string,dont:boolean)
+	if dont then return true end
+	if hasKeywords(message,chatText[KeywordIndex].Keywords) then
+		sayInChat(chatText[KeywordIndex].Responses[math.random(1,#chatText[KeywordIndex].Responses)])
+		return true
+	end
+end
 
 local function plrChatted(message:string,plr:Player)
 	if not canRunUpdateLoop then return end
 	if plr ~= Client and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildWhichIsA("Humanoid") and (plr.Character:FindFirstChild("HumanoidRootPart").Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<30 then
 		if Client.Character.Parent.Name==plr.Character.Parent.Name then
 			
-			local function SpawnChatCheck(KeywordIndex:string)
-				if hasKeywords(message,chatText[KeywordIndex].Keywords) then
-					sayInChat(chatText[KeywordIndex].Responses[math.random(1,#chatText[KeywordIndex].Responses)])
-				end
-			end
+			local Chatted = false
 			
-			SpawnChatCheck("ConfrontedIfAI")
-			SpawnChatCheck("AskedOfkulkiGui")
-			SpawnChatCheck("ConfrontedIfBot")
-			SpawnChatCheck("GenHack")
-			SpawnChatCheck("GenExploit")
-			SpawnChatCheck("waiter")
-			SpawnChatCheck("insulted1")
-			SpawnChatCheck("insulted2")
-			SpawnChatCheck("called")
-			SpawnChatCheck("WhatYouLike")
+			Chatted = SpawnChatCheck("AskedOfkulkiGui",message,Chatted)
+			Chatted = SpawnChatCheck("ConfrontedOfkulkiGui",message,Chatted)
+			Chatted = SpawnChatCheck("insulted1",message,Chatted)
+			Chatted = SpawnChatCheck("insulted2",message,Chatted)
+			Chatted = SpawnChatCheck("called",message,Chatted)
+			Chatted = SpawnChatCheck("ConfrontedIfAI",message,Chatted)
+			Chatted = SpawnChatCheck("ConfrontedIfBot",message,Chatted)
+			Chatted = SpawnChatCheck("waiter",message,Chatted)
+			Chatted = SpawnChatCheck("GenHack",message,Chatted)
+			Chatted = SpawnChatCheck("GenExploit",message,Chatted)
+			Chatted = SpawnChatCheck("WhatYouLike",message,Chatted)
 
-			if hasKeywords(message,chatText.Reset.Keywords) then
+			if not Chatted and hasKeywords(message,chatText.Reset.Keywords) then
 				sayInChat(chatText.Reset.Responses[math.random(1,#chatText.Reset.Responses)])
 				task.wait(2.5)
 				Client.Character:FindFirstChildWhichIsA("Humanoid").Health = 0
-			elseif message:lower():find("hi") or message:lower():find("hello") or message:lower():find("hey") or message:lower():find("sup") then
+			elseif not Chatted and message:lower():find("hi") or message:lower():find("hello") or message:lower():find("hey") or message:lower():find("sup") then
 				sayInChat(chatText.SaidHi.Responses[math.random(1,#chatText.SaidHi.Responses)])
 			end
 		end	
@@ -928,6 +993,16 @@ end)
 Client.CharacterAdded:Connect(function(Character)
 	ResetData()
 end)
+
+local function GeneratorFixCooldown(Cooldown:number)
+	if Data.GoingForGenerator:GetAttribute("CD") then return end
+	task.spawn(function()
+		Data.GoingForGenerator:SetAttribute("CD",true)
+		task.wait(Cooldown)
+		Data.GoingForGenerator:SetAttribute("CD",false)
+	end)
+end
+
 task.spawn(function() --main update loop
 	while true do
 		task.wait()
@@ -942,6 +1017,7 @@ task.spawn(function() --main update loop
 						workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Slowdown"):FindFirstChild("Arms"):Destroy()
 					end
 				end
+				local UserHRP:Part = Client.Character:FindFirstChild("HumanoidRootPart")
 				local readOnlyValues = {
 					["Stamina"] = ForsakenModules.Systems.Sprinting.Stamina,
 					["IsSprinting"] = ForsakenModules.Systems.Sprinting.IsSprinting
@@ -969,7 +1045,7 @@ task.spawn(function() --main update loop
 				end
 				if Client.Character.Parent.Name == "Killers" then
 					if Data.Target and Data.Goal then
-						if (Data.Goal.Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude < 10 then
+						if (Data.Goal.Position-UserHRP.Position).Magnitude < 10 then
 							if readOnlyValues.Stamina < 20 then
 								FINAL.Sprint = false
 							else
@@ -1020,11 +1096,11 @@ task.spawn(function() --main update loop
 								end
 							end
 						end
-						if (Data.Goal.Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude < 30 then
+						if (Data.Goal.Position-UserHRP.Position).Magnitude < 30 then
 							local enemy = Data.Target
 							if Data.Target.Name == "Shedletsky" then
 								if enemy:FindFirstChild("Sword").Transparency < 0.06 then
-									local op:CFrame = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame
+									local op:CFrame =UserHRP.CFrame
 									local rev = op * CFrame.new(0,0,10)
 									Data.Goal = Vector3.new(rev.X,rev.Y,rev.Z)
 									FINAL.Sprint = true
@@ -1032,8 +1108,9 @@ task.spawn(function() --main update loop
 							end						
 						end
 					end
-					if not Data.Target or not Data.Target.Parent or not Data.Target:FindFirstChildWhichIsA("Humanoid") or Data.Target:FindFirstChildWhichIsA("Humanoid").Health<=0 then
+					if tick()-Data.ChaseStart>=25 or not Data.Target or not Data.Target.Parent or not Data.Target:FindFirstChildWhichIsA("Humanoid") or Data.Target:FindFirstChildWhichIsA("Humanoid").Health<=0 or (Data.Target:FindFirstChild("HumanoidRootPart").Position-UserHRP.Position).Magnitude>=75 or (GetClosestSurvivor(false):FindFirstChild("HumanoidRootPart").Position-UserHRP.Position).Magnitude<=15 then
 						Data.Target = GetClosestSurvivor(false)
+						Data.ChaseStart = tick()
 					end
 				elseif Client.Character.Parent.Name == "Survivors" then
 					local Abilities = {
@@ -1041,6 +1118,9 @@ task.spawn(function() --main update loop
 							["ThrowPizza"] = false,
 						}
 					}
+					local KillerHRP:Part = workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren()[1]:FindFirstChild("HumanoidRootPart")
+					
+					
 					if Client.Character.Name == "Elliot" then
 						if Data.SurvivorState == "Idle" or Data.SurvivorState == "GeneratorFind" then
 							local canditates = {}
@@ -1087,10 +1167,64 @@ task.spawn(function() --main update loop
 						Data.SurvivorState = "GeneratorFind"
 						local g = getClosestGenerator()
 						if g then
-							print("goin for da generator lulz")
 							Data.Goal = g.Positions.Center.Position
 							Data.GoingForGenerator = g
 						end
+					end
+					if Data.SurvivorState == "Helping" and (Data.HelpOtherSurvivor.Helping.HumanoidRootPart.Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<15 then
+						if Client.Character.Name == "Elliot" then
+							workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position,Data.HelpOtherSurvivor.Helping.HumanoidRootPart.Position)
+							useAbility("ThrowPizza")
+							Data.SurvivorState = "Idle"
+							Data.HelpOtherSurvivor.Helping = nil
+						end
+					end
+					if Data.SurvivorState == "GeneratorFind" and Data.GoingForGenerator then
+						if (Client.Character:FindFirstChild("HumanoidRootPart").Position-Data.GoingForGenerator.Positions.Center.Position).Magnitude<20 then
+							fireproximityprompt(Data.GoingForGenerator.Main.Prompt,15)
+							task.wait(1.5)
+							if Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("FixingGenerator") then
+								Data.SurvivorState = "GeneratorFix"
+								GeneratorFixCooldown(math.random(450,545)/100)
+							else
+								Data.SurvivorState = "Idle"
+								Data.GoingForGenerator = nil
+							end
+						end
+					end
+					if Data.SurvivorState == "GeneratorFix" and Data.GoingForGenerator and Data.GoingForGenerator.Parent then
+						if not Data.GoingForGenerator:GetAttribute("CD") then
+							Data.GoingForGenerator.Remotes.RE:FireServer()
+							GeneratorFixCooldown(math.random(390,510)/100)
+						end 
+
+						if not Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("FixingGenerator") then
+							Data.SurvivorState = "Idle"	
+							Data.GoingForGenerator = nil
+						end
+					end
+					if (KillerHRP.Position-UserHRP.Position).Magnitude<=100 then
+						Data.ChaseStart = tick()
+						Data.SurvivorState = "RunFromKiller"
+					elseif (KillerHRP.Position-UserHRP.Position).Magnitude>100 and tick()-Data.ChaseStart>10 and Data.SurvivorState == "RunFromKiller" then
+						Data.SurvivorState = "Idle"
+					end
+					
+					if Data.SurvivorState == "RunFromKiller" then
+						
+						local BestPoint = {
+							["KillerDistance"] = 0,
+							["UserDistance"] = math.huge,
+							["Point"] = Vector3.new(0,0,0)
+						}
+						for i,Point:Vector3 in MovementPoints[workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map")] do
+							if (Point-UserHRP.Position).Magnitude < (Point-KillerHRP.Position).Magnitude and (Point-UserHRP.Position).Magnitude<BestPoint.UserDistance and (Point-KillerHRP.Position).Magnitude>BestPoint.KillerDistance then
+								BestPoint.KillerDistance = (Point-KillerHRP.Position).Magnitude
+								BestPoint.UserDistance = (Point-UserHRP.Position).Magnitude
+								BestPoint.Point = Point
+							end 
+						end
+						Data.Goal = BestPoint.Point
 					end
 				end
 				
@@ -1110,32 +1244,7 @@ task.spawn(function() --main update loop
 						Data.IsUpdateRunCooldown = false
 					end)
 				end	
-				if Data.SurvivorState == "Helping" and (Data.HelpOtherSurvivor.Helping.HumanoidRootPart.Position-Client.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude<15 then
-					if Client.Character.Name == "Elliot" then
-						workspace.CurrentCamera.CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position,Data.HelpOtherSurvivor.Helping.HumanoidRootPart.Position)
-						useAbility("ThrowPizza")
-						Data.SurvivorState = "Idle"
-						Data.HelpOtherSurvivor.Helping = nil
-					end
-				end
-				if Data.SurvivorState == "GeneratorFind" and Data.GoingForGenerator then
-					if (Client.Character:FindFirstChild("HumanoidRootPart").Position-Data.GoingForGenerator.Positions.Center.Position).Magnitude<20 then
-						fireproximityprompt(Data.GoingForGenerator.Main.Prompt,15)
-						task.wait(1.5)
-						if Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("FixingGenerator") then
-							Data.SurvivorState = "GeneratorFix"
-							repeat
-								task.wait()
-								Data.GoingForGenerator.Remotes.RE:FireServer()
-								task.wait(math.random(230,270)/100)
-							until not Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("FixingGenerator")
-							Data.SurvivorState = "Idle"
-						else
-							Data.SurvivorState = "Idle"
-						end
-						Data.GoingForGenerator = nil
-					end
-				end
+				
 			elseif poth and poth._status and poth._status ~= "Idle" then
 				poth:Stop()
 			end
@@ -1146,68 +1255,14 @@ task.spawn(function() --main update loop
 	end
 end)
 
-local packed = false
-local function HasCharacter(char:string)
-	local returnin = false
-	if game:GetService("Players").LocalPlayer.PlayerData.Purchased.Killers:FindFirstChild(char) or game:GetService("Players").LocalPlayer.PlayerData.Purchased.Survivors:FindFirstChild(char) then
-		returnin = true
-	end
-	return returnin
-end
-local function PatchLockedCharacters()
-	if packed == false then
-		options.UnUsedValue = false
-		local f = false
-		for i,char in game:GetService("ReplicatedStorage").Assets.Killers:GetChildren() do
-			if string.find(char.Name,"#")  then
-				f = true
-				break
-			end
-		end
-		if f == true then	
-			for i,char in game:GetService("ReplicatedStorage").Assets.Killers:GetChildren() do
-				if string.find(char.Name,"#")  then
-					char.Name = string.gsub(char.Name, "#", "")
-				end
-			end
-			for i,char in game:GetService("ReplicatedStorage").Assets.Survivors:GetChildren() do
-				if string.find(char.Name,"#")  then
-					char.Name = string.gsub(char.Name, "#", "")
-				end
-			end	
-		end
-		packed = true
-	end
-end	
 
-local function GetCharacter(char:string,xp:number,killer:boolean)
-	local int = Instance.new("IntValue")
-	int.Value = xp
-	int.Name = char
-	if killer then
-		int.Parent = game:GetService("Players").LocalPlayer.PlayerData.Purchased.Killers	
-	else
-		int.Parent = game:GetService("Players").LocalPlayer.PlayerData.Purchased.Survivors
-	end
-end
-
-local function giveSkin(skinName)
-	local int = Instance.new("IntValue")
-	int.Value = 0
-	int.Name = skinName
-	int.Parent = game.Players.LocalPlayer.PlayerData.Purchased.Skins	
-end
 
 addTabToUI(1,Color3.fromRGB(255,255,255),"General","General")
 --visual
 createOption("AI ENABLED","toggle","Enabled","General",nil,true)
 
 
-task.spawn(function()
-	PatchLockedCharacters()
-	task.wait(3)
-	GetCharacter(DEBUG_VERSION,math.random(0,18000),true)
-end)
+
 
 if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
 	FULLSTOP()
