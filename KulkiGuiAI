@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.1"
-local DEBUG_VERSION = "16!05"
+local DEBUG_VERSION = "16!09"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -1277,8 +1277,8 @@ for i,tab in MainFrame:GetChildren() do
 	end
 end
 
-print("loaded kulki GUI!")
-warn(DEBUG_VERSION)
+print("loaded kulki GUI AI!")
+warn("Kulki gui AI Version: " .. DEBUG_VERSION)
 sGUI.Parent = Client.PlayerGui
 task.wait(3)
 
