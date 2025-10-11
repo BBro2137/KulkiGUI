@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.3"
-local DEBUG_VERSION = "17!50"
+local DEBUG_VERSION = "18!03"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -47,6 +47,11 @@ local MovementPoints = {
 		Vector3.new(-284.0425720214844, 5465.0654296875, -356.2630920410156),
 		Vector3.new(-266.5928649902344, 5465.0654296875, -292.9674377441406),
 		Vector3.new(-277.38653564453125, 5465.0654296875, -373.27386474609375),
+		Vector3.new(-257.987548828125, 5465.0654296875, -295.0694274902344),
+		Vector3.new(-278.9834289550781, 5465.0654296875, -367.1278076171875),
+		Vector3.new(-355.6177673339844, 5465.06591796875, -464.68048095703125),
+		Vector3.new(-379.55511474609375, 5465.06591796875, -425.609130859375),
+		Vector3.new(-369.9344787597656, 5464.56591796875, -367.9456481933594),
 	}
 }
 local LoadedMovementDumps = {}
@@ -1242,7 +1247,7 @@ task.spawn(function() --main update loop
 						}
 						
 						for i,Point:Vector3 in MovementPoints[workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetAttribute("MapName")] do
-							if (Point-UserHRP.Position).Magnitude < (Point-KillerHRP.Position).Magnitude and (Point-UserHRP.Position).Magnitude<=BestPoint.UserDistance and (Point-KillerHRP.Position).Magnitude>=BestPoint.KillerDistance and (Point-KillerHRP.Position).Magnitude>=10 then
+							if (Point-UserHRP.Position).Magnitude < (Point-KillerHRP.Position).Magnitude and (Point-UserHRP.Position).Magnitude<=BestPoint.UserDistance and (Point-KillerHRP.Position).Magnitude>=BestPoint.KillerDistance then
 								BestPoint.KillerDistance = (Point-KillerHRP.Position).Magnitude
 								BestPoint.UserDistance = (Point-UserHRP.Position).Magnitude
 								BestPoint.Point = Point
