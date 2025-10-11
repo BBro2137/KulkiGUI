@@ -2,7 +2,7 @@ print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
 local versionString = "VERSION 1.3"
-local DEBUG_VERSION = "17!32"
+local DEBUG_VERSION = "17!41"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -40,17 +40,10 @@ end
 warn("Kulki gui AI Version: " .. DEBUG_VERSION)
 local MovementPoints = {
 	["HorrorHotel"] = {
-		Vector3.new(-250.4258575439453, 5465.06591796875, -288.9687194824219),
-		Vector3.new(-237.18484497070312, 5465.0654296875, -338.50299072265625),
-		Vector3.new(-213.2086944580078, 5465.0654296875, -338.12542724609375),
-		Vector3.new(-289.1830749511719, 5465.0654296875, -303.863525390625),
-		Vector3.new(-290.97412109375, 5465.0654296875, -387.9805603027344),
-		Vector3.new(-384.0238037109375, 5464.5654296875, -366.1555480957031),
-		Vector3.new(-379.5226135253906, 5465.0654296875, -420.34051513671875),
-		Vector3.new(-307.09716796875, 5464.56591796875, -437.9195251464844),
-		Vector3.new(-246.32696533203125, 5465.0654296875, -381.10284423828125),
-		Vector3.new(-266.230347, 5465.06543, -466.542145),
-		Vector3.new(-337.58447265625, 5465.0654296875, -281.75482177734375),
+		Vector3.new(-241.1602325439453, 5465.06591796875, -320.12744140625),
+		Vector3.new(-299.4893798828125, 5466.46337890625, -348.9783935546875),
+		Vector3.new(-270.9489440917969, 5464.9658203125, -464.8081970214844),
+		Vector3.new(-341.23138427734375, 5465.0654296875, -503.21893310546875),
 	}
 }
 local LoadedMovementDumps = {}
@@ -1244,6 +1237,7 @@ task.spawn(function() --main update loop
 							["UserDistance"] = math.huge,
 							["Point"] = Vector3.new(0,0,0)
 						}
+						
 						for i,Point:Vector3 in MovementPoints[workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetAttribute("MapName")] do
 							if (Point-UserHRP.Position).Magnitude < (Point-KillerHRP.Position).Magnitude and (Point-UserHRP.Position).Magnitude<=BestPoint.UserDistance and (Point-KillerHRP.Position).Magnitude>=BestPoint.KillerDistance and (Point-KillerHRP.Position).Magnitude>=10 then
 								BestPoint.KillerDistance = (Point-KillerHRP.Position).Magnitude
