@@ -2,7 +2,7 @@ print("loading kulki GUI......")
 
 local DebugTime = "18!30"
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 3.2"
+local versionString = "VERSION 3.3"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -257,40 +257,7 @@ local skinStatus = {
 	["GyatCoolkid"] = false,
 	["NaziChance"] = false,
 }
-local explainText = {
-	["NoFog"] = "Disables Fog.",
-	["NoBlur"] = "Screen will never blur.",
-	["Fullbright"] = "The game brightness is always high.",
-	["AntiColorCorrect"] = "Disables color correction / disables weird color override like subspace tripmine explosion",
-	["SeeSubSpace"] = "Highlights every subspace tripmine",
-	["SurvivorESP"] = "Highlights survivors.",
-	["SeeTrip"] = "Highlights tripwires",
-	["SeeSentry"] = "Highlights sentries",
-	["KillerESP"] = "Highlights the killer",
-	["ItemESP"] = "Highlights every item",
-	["Xray"] = "makes every part half transparent / makes every block see-trough (this lags the game a lot, not recommended because its kinda pointless)",
-	["MovePredictor"] = "shows a red line of where mass infection/entaglement etc is gonna hit",
-	["GeneratorESP"] = "Highlights generators",
-	["AAK"] = "aims at killer (better if used with shiftlock)",
-	["AAS"] = "aims at the nearest survivor, (better if used with shiftlock)",
-	["infZ"] = "removes the zoom limit.",
-	["SNK"] = "displays the next killer in a dragable box.",
-	["SIOC"] = "unknown",
-	["ShowChat"] = "makes chat always visible",
-	["Easy1x4Popups"] = "makes 1x4's popups the same size as your screen so they are easy to click",
-	["AssetLoadReplacement"] = "makes some of the game assets be replaced by blocks (should not be used as my problem with assets has been resolved to it will not get any further attention.)",
-	["UltraEZ1x4Popups"] = "makes 1x4's popups require 1 mouse click to be closed for all of em (works only if easy 1x4 popup is ON)",
-	["OO7n7tpPrediction"] = "displays text of where a 007n7 is gonna teleport.",
-	["AnchoredLockOn"] = "anchors you and locks onto the position of your mouse. (PATCHED)",
-	["RotatedHit"] = "flings your character by 50 degrees in left and right after clicking your mouse to hit survivors easier.",
-	["FastGen"] = "generators are real fast (works only if autogen is on)",
-	["AutoGen"] = "completes generators",
-	["AdaptiveFastGen"] = "changes fast generator speed depending on how close survivors are.",
-	["AlekWarning"] = "warns when alek(the fucking snitch) joins",
-	["NOHIDDEN"] = "playtime,killer wins,survivor wins are no longer hidden",
-	["showMinions"] = "shows minios of coolkid and 1x4 etc",
-	["JesusMode"] = "kulki GUI is now jesus",
-}
+
 local function createOption(displayed:string,OptionType:string,OptionIndex:string,ForTab:string,default:string,FunctionToggle:boolean,Func,onlyOnMap:string,arg1:any)
 	local relbt = nil
 	local function can()
@@ -339,9 +306,7 @@ local function createOption(displayed:string,OptionType:string,OptionIndex:strin
 		btt.TextScaled = true
 		btt.MouseButton1Click:Connect(function()
 			if can() == true then
-				print("YES")
 				if Func then
-					print("HOLDUP")
 					Func(arg1)
 				end				
 			end
@@ -389,7 +354,6 @@ HMcolorcorrect.Contrast = -2
 HMcolorcorrect.Name = "HARDMODEcolorcorrect"
 
 LBH.MouseButton1Click:Connect(function()
-	print("lagging")
 	local x = 0
 	repeat
 		x+=1
@@ -432,10 +396,7 @@ end
 
 
 local PLRESP = {}
-local PLRESPDISPLAYS = {}
-local SURVIVORESP = {}
 local KILLERESP = {}
-local GENDISPLAYS = {}
 
 local optionButtons = {}
 
@@ -460,14 +421,15 @@ local function spawnDataDisplay(Humanoid)
 	bil.Size = UDim2.new(0, 150,0, 50)
 	bil.Name = "FilthyDisplay77"
 	bil.AlwaysOnTop = true
+	
 	txt.Parent = bil
 	txt.BackgroundTransparency = 1
 	txt.TextColor3 = Color3.fromRGB(255,0,0)
 	txt.TextScaled = true
 	txt.FontFace.Bold = true
 	txt.Size = UDim2.new(1,0,1,0)
-	bil.Parent = Humanoid.Parent
-	table.insert(PLRESPDISPLAYS,bil)
+	
+	bil.Parent = Humanoid.Parent:FindFirstChild("HumanoidRootPart")
 end
 local function spawnGenDataDisplay(gen)
 	local bil = Instance.new("BillboardGui")
@@ -483,7 +445,7 @@ local function spawnGenDataDisplay(gen)
 	txt.FontFace.Bold = true
 	txt.Size = UDim2.new(1,0,1,0)
 	bil.Parent = gen
-	table.insert(GENDISPLAYS,bil)
+
 end
 local function FULLSTOP()
 	canQuit = true
@@ -597,7 +559,6 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 				local ogPos = hitbox.Position		
 				local parts = workspace:GetPartBoundsInBox(hitbox.CFrame + hitbox.CFrame.LookVector*500,Vector3.new(hitbox.Size.X,hitbox.Size.Y,hitbox.Size.Z+1000))
 				local floor = nil
-				print(parts)
 				for i,part in parts do
 					if part.Parent == Client.Character then
 						floor = Instance.new("Part")
@@ -609,7 +570,6 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 						if floor.Position.Y > Client.Character:FindFirstChild("HumanoidRootPart").Position.Y then
 							Client.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(Client.Character:FindFirstChild("HumanoidRootPart").Position.X,floor.Position.Y+7,Client.Character:FindFirstChild("HumanoidRootPart").Position.Z)
 						end
-						print("SPAWNING FLOOOOOOOOR")
 						floor.Parent = workspace
 						break
 					end
@@ -646,7 +606,6 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 				local hitbox = cl.Core
 				local ogPos = hitbox.Position		
 				local parts = workspace:GetPartBoundsInBox(hitbox.CFrame + hitbox.CFrame.LookVector*500,Vector3.new(hitbox.Size.X,hitbox.Size.Y,hitbox.Size.Z+1000))
-				print(parts)
 				local floor = nil
 				for i,part in parts do
 					if part.Parent == Client.Character then
@@ -720,7 +679,7 @@ end)
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").DescendantAdded:Connect(function(coolkid)
 	if canRunUpdateLoop == true then
 		if DEBUGoptions.IngameDESCENDANTADDED == true then
-			print(coolkid.Name .. "   " .. coolkid:GetFullName())
+		
 		end	
 	end
 end)
@@ -835,13 +794,13 @@ workspace:FindFirstChild("Players"):FindFirstChild("Killers").ChildAdded:Connect
 						end
 					end
 					if c then
-						print('rah!')
+					
 						keyPress(Enum.KeyCode:FromName(game.Players.LocalPlayer.PlayerData.Settings.Keybinds.AltAbility1.Value))
 						break
 					end		
 					task.wait(0.01)
 				until x>= 60
-				print("end")
+				
 			end
 		end
 	end)
@@ -1047,7 +1006,6 @@ game.Players.PlayerAdded:Connect(function(plr)
 end)
 Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child)
 	if options.Easy1x4Popups == true and child.Name == "1x1x1x1Popup" and canRunUpdateLoop == true then
-		print("feeling entaglement")
 		child.ImageTransparency = 0.9
 		child.BackgroundTransparency = 0.9
 		child.Size = UDim2.new(1,0,1,0)
@@ -1114,28 +1072,19 @@ task.spawn(function() --main update loop
 			if options.HardMode == true and Client.PlayerGui:FindFirstChild("RoundTimer"):FindFirstChild("Main") then
 				Client.PlayerGui:FindFirstChild("RoundTimer"):FindFirstChild("Main").Visible = false
 			end
-			for i,plr in game.Players:GetPlayers() do
-				if plr.Character and plr.Character:FindFirstChildWhichIsA("Humanoid") and plr.Character:FindFirstChildWhichIsA("Humanoid").Health <= 0 and plr.Character:FindFirstChild("FilthyESP77") then
-					plr.Character:FindFirstChild("FilthyESP77"):Destroy()
-					if plr.Character:FindFirstChild("FilthyDisplay77") then
-						plr.Character:FindFirstChild("FilthyDisplay77"):Destroy()
+
+
+			for _,characterType:Folder in workspace:FindFirstChild("Players"):GetChildren() do
+				for i,character in characterType:GetChildren() do
+					if not character:FindFirstChild("HumanoidRootPart") then continue end
+					if character:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77") then
+						local display = character:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77")
+						local HealthTXT = tostring(math.floor(display.Parent.Parent:FindFirstChildWhichIsA("Humanoid").Health*10)/10)
+						display:FindFirstChildWhichIsA("TextLabel").Text = "HP:" .. HealthTXT .. "," .. display.Parent.Parent.Name
 					end
-				end
-			end				
-			for i,display in PLRESPDISPLAYS do
-				if display:FindFirstChildWhichIsA("TextLabel") and display.Parent:FindFirstChildWhichIsA("Humanoid") then
-					local HealthTXT = tostring(math.floor(display.Parent:FindFirstChildWhichIsA("Humanoid").Health*10)/10)
-					if options.SIOC == true then
-						local MagnitudeTXT = tostring(math.floor((display.Parent:FindFirstChildWhichIsA("Humanoid").Parent:FindFirstChildWhichIsA("BasePart").Position-Client.Character.PrimaryPart.Position).Magnitude*10)/10)
-						display:FindFirstChildWhichIsA("TextLabel").Text = "HP:" .. HealthTXT .. ", STUDS:" .. MagnitudeTXT
-					else
-						display:FindFirstChildWhichIsA("TextLabel").Text = "HP:" .. HealthTXT .. "," .. display.Parent.Name
-					end
-				else
-					display:Destroy()
-					table.remove(PLRESPDISPLAYS,i)
 				end
 			end
+			
 			if options.NoBlur == true then
 				for i,blur in game.Lighting:GetDescendants() do
 					if blur:IsA("BlurEffect") then
@@ -1170,20 +1119,23 @@ task.spawn(function() --main update loop
 						high.Parent = plr
 						high.Name = "FilthyESP77"
 						spawnDataDisplay(plr:FindFirstChildWhichIsA("Humanoid"))
-						table.insert(SURVIVORESP,high)
 					elseif plr:FindFirstChildWhichIsA("Humanoid") and plr:FindFirstChildWhichIsA("Humanoid").Health <= 0 then
 						if plr:FindFirstChild("FilthyESP77") then
 							plr:FindFirstChild("FilthyESP77"):Destroy()
 						end
-						if plr:FindFirstChild("FilthyDisplay77") then
-							plr:FindFirstChild("FilthyDisplay77"):Destroy()
+						if plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77") then
+							plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77"):Destroy()
 						end
 					end
 				end
 			else
 				for i,plr in workspace:FindFirstChild("Players"):FindFirstChild("Survivors"):GetChildren() do
-					if plr:FindFirstChild("FilthyDisplay77") then
-						plr:FindFirstChild("FilthyDisplay77"):Destroy()
+					if not plr:FindFirstChild("HumanoidRootPart") then continue end
+					if plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77") then
+						plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77"):Destroy()
+					end
+					if plr:FindFirstChild("FilthyESP77") then
+						plr:FindFirstChild("FilthyESP77"):Destroy()
 					end
 				end				
 			end
@@ -1220,20 +1172,23 @@ task.spawn(function() --main update loop
 			end
 			if options.KillerESP == true then
 				for i,plr in workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren() do
-					if plr:FindFirstChildWhichIsA("Humanoid") and plr:FindFirstChildWhichIsA("Humanoid").Health > 0 and not plr:FindFirstChild("FilthyDisplay77") then
+					if plr:FindFirstChildWhichIsA("Humanoid") and plr:FindFirstChildWhichIsA("Humanoid").Health > 0 and not plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77") then
 						local high = Instance.new("Highlight")
 						high.FillColor = Color3.fromRGB(255,0,0)
 						high.OutlineColor = Color3.fromRGB(255,0,0)
 						high.Parent = plr
 						high.Name = "FilthyESP77"
 						spawnDataDisplay(plr:FindFirstChildWhichIsA("Humanoid"))
-						table.insert(KILLERESP,high)
 					end
 				end
 			else
-				for i,plr in workspace:FindFirstChild("Players"):FindFirstChild("Survivors"):GetChildren() do
-					if plr:FindFirstChild("FilthyDisplay77") then
-						plr:FindFirstChild("FilthyDisplay77"):Destroy()
+				for i,plr in workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren() do
+					if not plr:FindFirstChild("HumanoidRootPart") then continue end
+					if plr:FindFirstChild("FilthyESP77") then
+						plr:FindFirstChild("FilthyESP77"):Destroy()
+					end
+					if plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77") then
+						plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77"):Destroy()
 					end
 				end	
 			end
@@ -1264,7 +1219,6 @@ task.spawn(function() --main update loop
 			end
 			if options.AutoItemPickup == true then
 				for i,model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
-					print(model.Name)
 					if model:IsA("Tool") and model:FindFirstChild("ItemRoot") then
 						fireproximityprompt(model:FindFirstChild("ItemRoot"):FindFirstChildWhichIsA("ProximityPrompt"),50)
 					end
@@ -1274,13 +1228,6 @@ task.spawn(function() --main update loop
 				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
 					for i,gen in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
 						if gen.Name == "Generator" and not gen:FindFirstChild("FilthyESP99") then
-							for i,bil in GENDISPLAYS do
-								if bil and bil.Parent and bil:FindFirstChildWhichIsA("TextLabel") and bil.Parent:IsA("Model") and bil ~= nil and bil.Parent.Name == "Generator" and bil.Parent:FindFirstChild("Progress") then
-									bil:FindFirstChildWhichIsA("TextLabel").Text = bil.Parent:FindFirstChild("Progress").Value .. "%"
-								else
-									table.remove(GENDISPLAYS,i)
-								end
-							end
 							if not gen:FindFirstChild("FilthyESP99")  then
 								local high = Instance.new("Highlight")
 								high.FillColor = Color3.fromRGB(0,255,255)
@@ -1289,6 +1236,9 @@ task.spawn(function() --main update loop
 								high.Parent = gen
 								spawnGenDataDisplay(gen)
 							end
+						end
+						if gen.Name == "Generator"and gen:FindFirstChild("Progress") then
+							gen:FindFirstChildWhichIsA("BillboardGui"):FindFirstChildWhichIsA("TextLabel").Text =  gen:FindFirstChild("Progress").Value .. "%"
 						end
 					end			
 				end
@@ -1500,19 +1450,7 @@ task.spawn(function() --main update loop
 		end
 	end
 end)
-local function noBlur()
-	if options.NoBlur == false then
-		options.NoBlur = true
-		for i,blur in game.Lighting:GetDescendants() do
-			if blur:IsA("BlurEffect") then
-				blur.Size = 0
-				blur.Enabled = false
-			end
-		end
-	else
-		options.NoBlur = false
-	end
-end
+
 local catchedFog = {
 	["Density"] = 0,
 	["Offset"] = 0
@@ -1549,64 +1487,7 @@ local function FullBright()
 		options.FullBright = false
 	end
 end
-local function SurvivorESP()
-	if options.SurvivorESP == false then
-		options.SurvivorESP = true
-		for i,plr in workspace:FindFirstChild("Players"):FindFirstChild("Survivors"):GetChildren() do
-			if plr:FindFirstChildWhichIsA("Humanoid") and plr:FindFirstChildWhichIsA("Humanoid").Health > 0 and not plr:FindFirstChild("FilthyDisplay77") then
-				local high = Instance.new("Highlight")
-				high.FillColor = Color3.fromRGB(0,255,0)
-				high.OutlineColor = Color3.fromRGB(0,255,0)
-				high.Parent = plr
-				high.Name = "FilthyESP77"
-				spawnDataDisplay(plr:FindFirstChildWhichIsA("Humanoid"))
-				table.insert(SURVIVORESP,high)
-			end
-		end
-	else
-		options.SurvivorESP = false
-		for i,high in SURVIVORESP do
-			if high and high.Parent and high.Parent:FindFirstChild("FilthyDisplay77") then
-				high.Parent:FindFirstChild("FilthyDisplay77"):Destroy()
-			else
-				if high then
-					high:Destroy()
-				end
-				table.remove(SURVIVORESP,i)
-			end
-			high:Destroy()
-		end
-	end
-end
-local function KillerESP()
-	if options.KillerESP == false then
-		options.KillerESP = true
-		for i,plr in workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren() do
-			if plr:FindFirstChildWhichIsA("Humanoid") and plr:FindFirstChildWhichIsA("Humanoid").Health > 0 and not plr:FindFirstChild("FilthyDisplay77") then
-				local high = Instance.new("Highlight")
-				high.FillColor = Color3.fromRGB(255,0,0)
-				high.OutlineColor = Color3.fromRGB(255,0,0)
-				high.Parent = plr
-				high.Name = "FilthyESP77"
-				spawnDataDisplay(plr:FindFirstChildWhichIsA("Humanoid"))
-				table.insert(KILLERESP,high)
-			end
-		end
-	else
-		options.KillerESP = false
-		for i,high in KILLERESP do
-			if high and high.Parent and high.Parent:FindFirstChild("FilthyDisplay77") then
-				high.Parent:FindFirstChild("FilthyDisplay77"):Destroy()
-			else
-				if high then
-					high:Destroy()
-				end
-				table.remove(KILLERESP,i)
-			end
-			high:Destroy()
-		end
-	end
-end
+
 local itemESPS = {}
 
 local function ItemESP()
@@ -1677,22 +1558,7 @@ local function SeeTripwires()
 		options.SeeTrip = false
 	end
 end
-local function AntiColorCorrect()
-	if options.AntiColorCorrect == false then
-		options.AntiColorCorrect = true
-		for i,eff in game.Lighting:GetDescendants() do
-			if eff:IsA("ColorCorrectionEffect") then
-				eff.Enabled = false
-				eff.Contrast = 0
-				eff.Brightness = 0
-				eff.Saturation = 0
-				eff.TintColor = Color3.fromRGB(255,255,255)
-			end
-		end
-	else
-		options.AntiColorCorrect = false
-	end
-end
+
 local storedTransparencyPART = {}
 local storedTransparencyNUM = {}
 local function XRay()
@@ -1888,9 +1754,9 @@ addTabToUI(4,Color3.fromRGB(255,255,255),"Misc","Misc")
 addTabToUI(5,Color3.fromRGB(255,255,255),"Special Sentry Locations","SSL")
 addTabToUI(666,Color3.fromRGB(255,255,255),"Game Exploits","Exploits")
 --visual
-createOption("NO BLUR","toggle","noBlur","Visual",nil,true)
-createOption("NO FOG","toggle","noFog","Visual",nil,true)
-createOption("FULLBRIGHT","toggle","FullBright","Visual",nil,true)
+createOption("NO BLUR","toggle","NoBlur","Visual",nil,true)
+--createOption("NO FOG","toggle","noFog","Visual",nil,true)
+--createOption("FULLBRIGHT","toggle","FullBright","Visual",nil,true)
 createOption("ANTI-COLOR CORRECTION","toggle","AntiColorCorrect","Visual",nil,true)
 createOption("TAPH TRAP ESP","toggle","TaphTrapESP","Visual",nil,true)
 createOption("SURVIVOR ESP","toggle","SurvivorESP","Visual",nil,true)
@@ -1898,7 +1764,7 @@ createOption("SENTRY ESP","toggle","SeeSentry","Visual")
 createOption("KILLER ESP","toggle","KillerESP","Visual",nil,true)
 createOption("ITEM ESP","toggle","ItemESP","Visual",nil,true)
 createOption("MOVE PREDICTOR","toggle","MovePredictor","Visual",nil,true)
-createOption("007n7 TP PREDICTION","toggle","OO7n7tpPrediction","Visual",nil,true)
+--createOption("007n7 TP PREDICTION","toggle","OO7n7tpPrediction","Visual",nil,true)
 createOption("MINIONS ESP","toggle","showMinions","Visual",nil,true)
 createOption("SHOW CHAT","toggle","ShowChat","Visual",nil,true)
 createOption("INF ZOOM","toggle","infZ","Visual",nil,true)
@@ -1907,8 +1773,7 @@ createOption("INF ZOOM","toggle","infZ","Visual",nil,true)
 
 createOption("AIM AT KILLER","toggle","AAK","GeneralCheats",nil,true) --aim at killer
 createOption("AIM AT SURVIVOR","toggle","AAS","GeneralCheats",nil,true) --aim at survivor
---createOption("NEXTKILLER","SHOW NEXT KILLER",SNKfunction,"SNK") --make just player tab visible
---createOption("STUDSINSTEAD","STUDS INSTEAD OF CLASS",SIOC,"SIOC") --Studs instead of class
+
 createOption("EASY 1x4 POP-UPS","toggle","Easy1x4Popups","GeneralCheats",nil,true)
 createOption("MASS INFECTION AUTO DODGE","toggle","AutoDodge1x","GeneralCheats",nil,true)
 createOption("JOHN DOE SPIKE NO-CLIP","toggle","SpikeNoclip","GeneralCheats",nil,true)
@@ -1925,7 +1790,7 @@ createOption("NO HALLUCINATIONS","toggle","NoHallucinations","GeneralCheats",nil
 createOption("FAST GENERATORS (USE AT YOUR OWN RISK,works only if auto-gen is on,recommended to be used with adaptive gens)","toggle","FastGen","GenCheats",nil,true)
 createOption("AUTO GENERATOR","toggle","AutoGen","GenCheats",nil,true)
 createOption("ADAPTIVE FAST GENS(works only if Fast Gens is on and is recomenned to be used with it.)","toggle","AdaptiveFastGen","GenCheats",nil,true)
-createOption("Obviously FakeG enerators","toggle","ObviouslyFakeGenerators","GenCheats",nil,true)
+createOption("Obviously Fake Generators","toggle","ObviouslyFakeGenerators","GenCheats",nil,true)
 createOption("GENERATOR ESP","toggle","GeneratorESP","GenCheats",nil,true)
 
 
@@ -1963,11 +1828,6 @@ createOption("HORROR_HOTEL BALLPIT ENTRANCE","use",nil,"SSL",nil,nil,placeOpSent
 createOption("HORROR_HOTEL HUGE ROOM MID","use",nil,"SSL",nil,nil,placeOpSentry,"HorrorHotel",CFrame.new(3192.94727, 75.5650787, -89.0336304, 0.998695493, -5.81161341e-10, -0.0510613248, 2.55399313e-10, 1, -6.3863439e-09, 0.0510613248, 6.36497166e-09, 0.998695493))
 
 
-task.spawn(function()
-	PatchLockedCharacters()
-	task.wait(2)
-	GetCharacter(DebugTime,math.random(0,18000),false)
-end)
 local hook;
 hook = hookmetamethod(game,"__namecall",function(self,...)
 	local args = {...}
@@ -1999,8 +1859,6 @@ end
 for i,tab in MainFrame:GetChildren() do
 	if tab:HasTag("Tab") and tab:IsA("ScrollingFrame") then
 		tab.CanvasSize = UDim2.new(0, 0,50, 0)
-		print(tab.Name)
-		print(tab.CanvasPosition)
 	end
 end
 
