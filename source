@@ -2,7 +2,7 @@ print("loading kulki GUI......")
 
 local DebugTime = "18!30"
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 3.4"
+local versionString = "VERSION 3.4.1"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -241,6 +241,7 @@ local options = {
 	["ObviouslyFakeGenerators"] = false,
 	["SneakyBuffs"] = false,
 	["CanAlwaysSprint"] = false,
+	["WalkspeedOverrideInstantHit"] = false,
 }
 
 if isfile and readfile and isfile("KulkiGuiOptions.txt") then
@@ -428,7 +429,7 @@ end)
 local function spawnDataDisplay(Humanoid)
 	local bil = Instance.new("BillboardGui")
 	local txt = Instance.new("TextLabel")
-	bil.Size = UDim2.new(0, 150,0, 50)
+	bil.Size = UDim2.new(0, 100,0, 50)
 	bil.Name = "FilthyDisplay77"
 	bil.AlwaysOnTop = true
 
@@ -1488,12 +1489,30 @@ task.spawn(function() --main update loop
 					sayInChat("BBro, i must confess my sins... i am kulki'ing my gui.")
 				end
 			end
+			
+			if options.WalkspeedOverrideInstantHit then
+				if Client.Character.Name == "c00lkidd" and Client.Character:FindFirstChild("c00lgui") and not Client.Character:GetAttribute("InstantHitting_KGUI") then
+					task.spawn(function()
+						Client.Character:SetAttribute("InstantHitting_KGUI",true)
+						repeat
+							task.wait()
+							local survivor = GetClosestSurvivor(false)
+							if survivor then
+								Client.Character:FindFirstChild("HumanoidRootPart").Position = survivor:FindFirstChild("HumanoidRootPart").Position
+							end
+						until not Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement")
+						Client.Character:SetAttribute("InstantHitting_KGUI",false)
+					end)
+				end
+			end
 		end)
 		if err then
 			warn("OH MY GOOOOOOOD!!!!, WADAFAK!!!!! , " .. tostring(err))
 		end
 	end
 end)
+
+
 
 local catchedFog = {
 	["Density"] = 0,
@@ -1603,38 +1622,6 @@ local function SeeTripwires()
 	end
 end
 
-local storedTransparencyPART = {}
-local storedTransparencyNUM = {}
-local function XRay()
-	if options.Xray == false and workspace:FindFirstChild("Map") and workspace:FindFirstChild("Map"):FindFirstChild("Ingame") then
-		options.Xray = true
-		for i,part in workspace:GetDescendants() do
-			if part:IsA("BasePart") and not part.Parent:FindFirstChildWhichIsA("Humanoid") then
-				table.insert(storedTransparencyPART,part)
-				table.insert(storedTransparencyNUM,part.Transparency)
-				part.Transparency = 0.7
-			end
-		end
-	else
-		for i,port in storedTransparencyPART do
-			port.Transparency = storedTransparencyNUM[i]
-		end
-		options.Xray = false
-	end
-end
-
-
-
-
-local function HModeF()
-	options.HardMode = true
-	game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value = true
-	HMblur.Parent = game.Lighting
-	HMcolorcorrect.Parent = game.Lighting
-	stayFunc(HMblur)
-	stayFunc(HMcolorcorrect)
-	MainFrame.Visible = false
-end
 local packed = false
 local function HasCharacter(char:string)
 	local returnin = false
@@ -1812,6 +1799,7 @@ createOption("DISABLE DIGITAL FOOTPRINT","toggle","DisableFootprint","Exploits",
 createOption("SNEAKY BUFFS","toggle","SneakyBuffs","Exploits",nil,true)
 createOption("CAN ALWAYS SPRINT","toggle","CanAlwaysSprint","Exploits",nil,true)
 --createOption("SERVER LAG BUTTON (DOESNT WORK IN LOBBY)","toggle","ServerLagButton","Exploits",nil,true) --patched :sob: :sob: D:
+createOption("Walkspeed Override Instant Hit","toggle","WalkspeedOverrideInstantHit","Exploits",nil,true)
 
 --misc
 createOption("X-RAY","toggle","XRay","Misc",nil,true)
