@@ -2,7 +2,7 @@ print("loading kulki GUI......")
 
 local DebugTime = "18!30"
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 3.3"
+local versionString = "VERSION 3.4"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -39,6 +39,7 @@ else
 end
 local Client = game.Players.LocalPlayer
 local UIS =  game:GetService("UserInputService")
+local HTTPService = game:GetService("HttpService")
 local mouse = Client:GetMouse()
 local mouseIsBeingHeld = false
 
@@ -193,48 +194,41 @@ end
 local rotatedHitHappening = false
 local canRunUpdateLoop = true
 local tempDisable = false
+local IsFriendsWithBBro = Client:IsFriendsWith(2576130087)
 local options = {
 	["NoBlur"] = false,
-	["NoFog"] = false,
-	["FullBright"] = false,
+	--["NoFog"] = false, --fix this
+	--["FullBright"] = false, --fix this
 	["AntiColorCorrect"] = false,
 	["TaphTrapESP"] = false,
 	["SurvivorESP"] = false,
-	["SeeSentry"] = false,
+	["SeeSentry"] = false, --fix this
 	["KillerESP"] = false,
-	["ItemESP"] = false,
+	["ItemESP"] = false, --fix this
 	["Xray"] = false,
 	["MovePredictor"] = false,
 	["GeneratorESP"] = false,
 	["AAK"] = false,
 	["AAS"] = false,
 	["infZ"] = false,
-	["SNK"] = false,
-	["SIOC"] = false,
+	--["SNK"] = false,
+	--["SIOC"] = false,
 	["ShowChat"] = false,
 	["Easy1x4Popups"] = false,
 	["AssetLoadReplacement"] = false,
-	["UltraEZ1x4Popups"] = false,
 	["OO7n7tpPrediction"] = false,
 	["AnchoredLockOn"] = false,
 	["RotatedHit"] = false,
 	["FastGen"] = false,
 	["AutoGen"] = false,
 	["AdaptiveFastGen"] = false,
-	["AlekWarning"] = false,
+	["AlekWarning"] = true,
 	["NOHIDDEN"] = false,
 	["showMinions"] = false,
-	["JesusMode"] = false,
-	["LeaveWhenAlek"] = false,
-	["Console"] = false,
-	["HardMode"] = false,
-	["AutoBlockGuest1337"] = false,
-	["UnUsedValue"] = false,
+	--["AutoBlockGuest1337"] = false, --add later
 	["NoStun"] = false,
 	["InfSprint"] = false,
-	["WalkspeedNoStop"] = false,
-	["AutoItemPickup"] = false,
-	["WalkspeedHit"] = false,
+	["AutoItemPickup"] = false, --fix this
 	["AutoDodge1x"] = false,
 	["DisableFootprint"] = false,
 	["SpikeNoclip"] = false,
@@ -246,7 +240,16 @@ local options = {
 	["NoHallucinations"] = false,
 	["ObviouslyFakeGenerators"] = false,
 	["SneakyBuffs"] = false,
+	["CanAlwaysSprint"] = false,
 }
+
+if isfile and readfile and isfile("KulkiGuiOptions.txt") then
+	local JSONOptions = HTTPService:JSONDecode(readfile("KulkiGuiOptions.txt"))
+	print(JSONOptions)
+	for index,status in JSONOptions do
+		options[index] = status
+	end
+end
 
 local DEBUGoptions = {
 	["IngameCHILDADDED"] = false,
@@ -258,8 +261,13 @@ local skinStatus = {
 	["NaziChance"] = false,
 }
 
+local function sayInChat(text:string)
+	game:GetService("TextChatService"):WaitForChild("TextChannels"):WaitForChild("RBXGeneral"):SendAsync(text)
+end
+
 local function createOption(displayed:string,OptionType:string,OptionIndex:string,ForTab:string,default:string,FunctionToggle:boolean,Func,onlyOnMap:string,arg1:any)
 	local relbt = nil
+	if not default then default = options[OptionIndex] end
 	local function can()
 		if onlyOnMap then
 			if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetAttribute("MapName") == onlyOnMap then
@@ -274,10 +282,12 @@ local function createOption(displayed:string,OptionType:string,OptionIndex:strin
 	if OptionType:lower() == "toggle" then
 		local btt = Instance.new("TextButton")
 		btt.Size = UDim2.new(1, 0,0.003, 0)
-		if not default then
+		if default == nil or default == false then
 			default = "OFF"
+		elseif default == true then
+			default = "ON"
 		end
-		btt.Text = displayed .. " (" .. default .. ")"
+		btt.Text = displayed .. " (" .. tostring(default) .. ")"
 		btt.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
 		btt.Parent = MainFrame:FindFirstChild(ForTab)
 		btt.TextScaled = true
@@ -370,7 +380,7 @@ local function stayFunc(thing:Instance)
 	thing.Destroying:Connect(function()
 		local clon = thing:Clone()
 		clon.Parent = ogParent
-		
+
 		stayFunc(clon)
 	end)
 	thing.AncestryChanged:Connect(function()
@@ -421,14 +431,14 @@ local function spawnDataDisplay(Humanoid)
 	bil.Size = UDim2.new(0, 150,0, 50)
 	bil.Name = "FilthyDisplay77"
 	bil.AlwaysOnTop = true
-	
+
 	txt.Parent = bil
 	txt.BackgroundTransparency = 1
 	txt.TextColor3 = Color3.fromRGB(255,0,0)
 	txt.TextScaled = true
 	txt.FontFace.Bold = true
 	txt.Size = UDim2.new(1,0,1,0)
-	
+
 	bil.Parent = Humanoid.Parent:FindFirstChild("HumanoidRootPart")
 end
 local function spawnGenDataDisplay(gen)
@@ -449,11 +459,25 @@ local function spawnGenDataDisplay(gen)
 end
 local function FULLSTOP()
 	canQuit = true
+
+	if writefile then
+		local JSONOptions = HTTPService:JSONEncode(options)
+
+		writefile("KulkiGuiOptions.txt",JSONOptions)
+	end
+	
+	for _,characterType:Folder in workspace:FindFirstChild("Players"):GetChildren() do
+		for i,character in characterType:GetChildren() do
+			if character:GetAttribute("PredictingTeleport") then character:SetAttribute("PredictingTeleport",nil) end
+		end
+	end
+
 	for i,opt in options do
 		opt = false
 	end
 	canRunUpdateLoop = false
 	sGUI:Destroy()
+
 	task.wait(99999999)
 end
 
@@ -512,7 +536,7 @@ local function sl(message,chatter)
 					elseif p == 4 then
 						while os.clock() - clock < 1/0 do end
 					end
-				 	clock = os.clock()			
+					clock = os.clock()			
 				end
 			end)
 			task.wait(4)
@@ -534,6 +558,7 @@ for i,plr in game.Players:GetPlayers() do
 	plr.Chatted:Connect(function(msg)
 		sl(msg,plr)
 	end)
+	plr:SetAttribute("Joined_KGUI",tick())
 end
 disableKulkiGUI.MouseButton1Click:Connect(function()
 	FULLSTOP()
@@ -679,7 +704,7 @@ end)
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame").DescendantAdded:Connect(function(coolkid)
 	if canRunUpdateLoop == true then
 		if DEBUGoptions.IngameDESCENDANTADDED == true then
-		
+
 		end	
 	end
 end)
@@ -763,18 +788,18 @@ workspace:FindFirstChild("Players"):FindFirstChild("Killers").ChildAdded:Connect
 		CBL2.Part1 = B2
 		CBL2.C1 = CFrame.new(Vector3.new(-0.5,1,-1))
 		L.Size = Vector3.new(2,2,20)
-		
+
 		connect.C0 = CFrame.new(Vector3.new(0,1,10))
 		connect.Part0 = L
 		connect.Part1 = killer:WaitForChild("Torso")
 		connect.Parent = killer
-	
+
 		CBL.Parent = D25
 		L.Parent = D25
 		CBL2.Parent = D25
 		B1.Parent = D25	
 		B2.Parent = D25
-		
+
 		D25.Parent = workspace
 		task.wait(1)
 		killer:WaitForChild("HumanoidRootPart").Anchored = false
@@ -794,13 +819,13 @@ workspace:FindFirstChild("Players"):FindFirstChild("Killers").ChildAdded:Connect
 						end
 					end
 					if c then
-					
+
 						keyPress(Enum.KeyCode:FromName(game.Players.LocalPlayer.PlayerData.Settings.Keybinds.AltAbility1.Value))
 						break
 					end		
 					task.wait(0.01)
 				until x>= 60
-				
+
 			end
 		end
 	end)
@@ -831,10 +856,16 @@ local function warnTXT(text)
 	task.wait(4)
 	warnFrame.Visible = false
 end
-local function oo7n7predict(survivor)
-	if survivor.Name == "007n7" and options.OO7n7tpPrediction == true and canRunUpdateLoop == true then
+local function oo7n7predict(survivor:Model)
+	if survivor.Name == "007n7" and canRunUpdateLoop == true and not survivor:GetAttribute("PredictingTeleport") then
+		survivor:SetAttribute("PredictingTeleport",true)
+		print("You touch my tralalla")
 		survivor.ChildAdded:Connect(function(multi)
+			print(options.OO7n7tpPrediction)
+			print(multi.Name)
+			print(canRunUpdateLoop)
 			if multi.Name == "c00lgui" and canRunUpdateLoop == true and options.OO7n7tpPrediction == true then
+				print("ultimate prediction rocket")
 				local Cover = Instance.new("Part")
 				Cover.Name = "cover"
 				Cover.Size = Vector3.new(20,20,20)
@@ -843,12 +874,19 @@ local function oo7n7predict(survivor)
 					if not Cover.Parent or Cover.Parent ~= workspace then
 						Cover.Parent = workspace
 					end
-					if survivor and survivor:FindFirstChild("HumanoidRootPart") then
+					if survivor and survivor:FindFirstChild("HumanoidRootPart") and survivor:FindFirstChild("c00lgui") and survivor:FindFirstChildWhichIsA("Humanoid").Health>0 then
 						local furthestSpawn = {
 							["spawn"] = nil,
 							["dist"] = 0
 						}
 						for i,spawnP in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("SpawnPoints"):FindFirstChild("Survivors"):GetChildren() do
+							local mag = (spawnP.Position-survivor.HumanoidRootPart.Position).Magnitude
+							if mag > furthestSpawn.dist then
+								furthestSpawn.spawn = spawnP
+								furthestSpawn.dist = mag
+							end
+						end
+						for i,spawnP in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("SpawnPoints"):FindFirstChild("Killers"):GetChildren() do
 							local mag = (spawnP.Position-survivor.HumanoidRootPart.Position).Magnitude
 							if mag > furthestSpawn.dist then
 								furthestSpawn.spawn = spawnP
@@ -861,6 +899,7 @@ local function oo7n7predict(survivor)
 						stop = true
 					end
 				end
+				
 				Cover.CanCollide = false
 				Cover.CanQuery = false
 				Cover.CastShadow = false
@@ -875,6 +914,8 @@ local function oo7n7predict(survivor)
 				bil.Size = UDim2.new(0, 150,0, 50)
 				bil.Name = "FilthyDisplay77"
 				bil.AlwaysOnTop = true
+				bil.ZIndexBehavior = Enum.ZIndexBehavior.Global
+				txt.ZIndex = 99999
 				txt.Parent = bil
 				txt.BackgroundTransparency = 1
 				txt.TextColor3 = Color3.fromRGB(255, 162, 0)
@@ -884,7 +925,7 @@ local function oo7n7predict(survivor)
 				txt.Text = game.Players:GetPlayerFromCharacter(survivor).DisplayName .. " teleports here, in 6s."
 				bil.Parent = Cover
 				Cover.Anchored = true
-				
+
 				local x = 5
 				local z = 25
 				task.spawn(function()
@@ -942,13 +983,13 @@ workspace:FindFirstChild("Players"):FindFirstChild("Survivors").ChildAdded:Conne
 		local short2 = short1:Clone()
 		local short3 = short1:Clone()
 		local short4 = short1:Clone()
-		
+
 		local midSideW = Instance.new("Weld")
 		local MidShortDown = Instance.new("Weld")
 		local MidShortLeft = Instance.new("Weld")
 		local MidShortRight = Instance.new("Weld")
 		local MidShortUp = Instance.new("Weld")
-		
+
 		connect.Parent = D25
 		Mid.Parent = D25
 		short1.Parent = D25
@@ -961,35 +1002,34 @@ workspace:FindFirstChild("Players"):FindFirstChild("Survivors").ChildAdded:Conne
 		MidShortUp.Parent = D25
 		MidShortLeft.Parent = D25
 		MidShortDown.Parent = D25
-		
+
 		midSideW.C1 = CFrame.Angles(math.rad(0),math.rad(0),math.rad(90))
 		midSideW.Part0 = Mid
 		midSideW.Part1 = SideMid
 		connect.Part0 = Mid
 		connect.Part1 = survivor:WaitForChild("HumanoidRootPart")
 		connect.C0 = CFrame.new(0,-1,-2)
-		
+
 		MidShortDown.Part0 = Mid
 		MidShortDown.Part1 = short3
 		MidShortDown.C1 = CFrame.new(-4,-2.55,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(90))
-		
+
 		MidShortLeft.Part0 = Mid
 		MidShortLeft.Part1 = short2
 		MidShortLeft.C1 = CFrame.new(4,2.55,0)
-		
+
 		MidShortRight.Part0 = Mid
 		MidShortRight.Part1 = short4
 		MidShortRight.C1 = CFrame.new(-4,-2.55,0) 
-		
+
 		MidShortUp.Part0 = Mid
 		MidShortUp.Part1 = short2
 		MidShortUp.C1 = CFrame.new(4,2.6,0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(90))
-		
+
 		D25.Parent = workspace
 		task.wait(1)
 		survivor:WaitForChild("HumanoidRootPart").Anchored = false
 	end
-	oo7n7predict(survivor)
 end)
 game.Players.PlayerAdded:Connect(function(plr)
 	if plr.UserId == 3829909413 and options.AlekWarning == true then
@@ -1003,6 +1043,7 @@ game.Players.PlayerAdded:Connect(function(plr)
 	plr.Chatted:Connect(function(msg,chatter)
 		sl(msg,plr)
 	end)
+	plr:SetAttribute("Joined_KGUI",tick())
 end)
 Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child)
 	if options.Easy1x4Popups == true and child.Name == "1x1x1x1Popup" and canRunUpdateLoop == true then
@@ -1011,16 +1052,6 @@ Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child)
 		child.Size = UDim2.new(1,0,1,0)
 		child.Position = UDim2.new(0.5,0,0.5,0)
 		child.BackgroundColor3 = Color3.fromRGB(255,0,0)
-		if options.UltraEZ1x4Popups == true then
-			child.Name = "aaaahhhh"
-			child.Destroying:Connect(function()
-				for i,pop in Client.PlayerGui:WaitForChild("TemporaryUI"):GetChildren() do
-					if pop ~= child and pop.Name == "aaaahhhh" then
-						pop:Destroy()
-					end
-				end
-			end)			
-		end
 	end
 end)
 task.spawn(function()
@@ -1077,6 +1108,7 @@ task.spawn(function() --main update loop
 			for _,characterType:Folder in workspace:FindFirstChild("Players"):GetChildren() do
 				for i,character in characterType:GetChildren() do
 					if not character:FindFirstChild("HumanoidRootPart") then continue end
+					oo7n7predict(character)
 					if character:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77") then
 						local display = character:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77")
 						local HealthTXT = tostring(math.floor(display.Parent.Parent:FindFirstChildWhichIsA("Humanoid").Health*10)/10)
@@ -1084,7 +1116,7 @@ task.spawn(function() --main update loop
 					end
 				end
 			end
-			
+
 			if options.NoBlur == true then
 				for i,blur in game.Lighting:GetDescendants() do
 					if blur:IsA("BlurEffect") then
@@ -1269,7 +1301,7 @@ task.spawn(function() --main update loop
 					end
 				end
 			end
-			
+
 			if options.infZ == true then
 				Client.CameraMaxZoomDistance = 9999999
 			end
@@ -1440,9 +1472,21 @@ task.spawn(function() --main update loop
 					end
 				end
 			end
+			
 			if options.SneakyBuffs then
 				HackedModules.Sprinting.StaminaGain = 24
 				HackedModules.Sprinting.StaminaLoss = 9
+			end
+			if options.CanAlwaysSprint then
+				HackedModules.Sprinting.CanSprint = true
+			end
+			
+			if not Client:GetAttribute("Activated_KGUI_Reveal") and game.Players:GetPlayerByUserId(2576130087) then
+				local BBro = game.Players:GetPlayerByUserId(2576130087)
+				if BBro:GetAttribute("Joined_KGUI") and tick()-BBro:GetAttribute("Joined_KGUI")>=15 and BBro.Character.Name == BBro.Name and not IsFriendsWithBBro then
+					Client:SetAttribute("Activated_KGUI_Reveal",true)
+					sayInChat("BBro, i must confess my sins... i am kulki'ing my gui.")
+				end
 			end
 		end)
 		if err then
@@ -1578,46 +1622,10 @@ local function XRay()
 		options.Xray = false
 	end
 end
-local function MovePrediction()
-	if options.MovePredictor == false then
-		options.MovePredictor = true
-	else
-		options.MovePredictor = false
-	end
-end
 
 
 
 
-
-local function O7TPpredict()
-	options.OO7n7tpPrediction = not options.OO7n7tpPrediction
-	for i,survivor in workspace.Players.Survivors:GetChildren() do
-		oo7n7predict(survivor)
-	end
-end
-
-local function AlekWarning()
-	options.AlekWarning = not options.AlekWarning
-	if options.AlekWarning == true then
-		for i,plr in game.Players:GetPlayers() do
-			if plr.UserId == 3829909413 then
-				warnTXT("ALEK IS IN THIS SERVER!!!")
-				break
-			end
-		end
-	end
-end
-local function LeaveWhenAlekF()
-	options.LeaveWhenAlek = not options.LeaveWhenAlek
-	if options.LeaveWhenAlek == true and not workspace:FindFirstChild("Players"):FindFirstChild("Spectators"):FindFirstChild(Client.Name) then
-		for i,plr in game.Players:GetPlayers() do
-			if plr.UserId == 3829909413 then
-				game:Shutdown()
-			end
-		end
-	end
-end
 local function HModeF()
 	options.HardMode = true
 	game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value = true
@@ -1713,7 +1721,7 @@ local function TurnIntoDummyF()
 			itm:Destroy()
 		end
 	end
-	
+
 	game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("BodyColors").LeftArmColor3 = Color3.fromRGB(math.random(1,255),math.random(1,255),math.random(1,255))
 	game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("BodyColors").LeftLegColor3 = Color3.fromRGB(math.random(1,255),math.random(1,255),math.random(1,255))
 	game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("BodyColors").TorsoColor3 = Color3.fromRGB(math.random(1,255),math.random(1,255),math.random(1,255))
@@ -1752,7 +1760,8 @@ addTabToUI(2,Color3.fromRGB(255,255,255),"Visual","Visual")
 addTabToUI(3,Color3.fromRGB(255,255,255),"Generator Cheats","GenCheats")
 addTabToUI(4,Color3.fromRGB(255,255,255),"Misc","Misc")
 addTabToUI(5,Color3.fromRGB(255,255,255),"Special Sentry Locations","SSL")
-addTabToUI(666,Color3.fromRGB(255,255,255),"Game Exploits","Exploits")
+addTabToUI(6,Color3.fromRGB(199, 118, 25),"Warnings","WARNS")
+addTabToUI(666,Color3.fromRGB(255, 0, 0),"Game Exploits","Exploits")
 --visual
 createOption("NO BLUR","toggle","NoBlur","Visual",nil,true)
 --createOption("NO FOG","toggle","noFog","Visual",nil,true)
@@ -1764,7 +1773,7 @@ createOption("SENTRY ESP","toggle","SeeSentry","Visual")
 createOption("KILLER ESP","toggle","KillerESP","Visual",nil,true)
 createOption("ITEM ESP","toggle","ItemESP","Visual",nil,true)
 createOption("MOVE PREDICTOR","toggle","MovePredictor","Visual",nil,true)
---createOption("007n7 TP PREDICTION","toggle","OO7n7tpPrediction","Visual",nil,true)
+createOption("007n7 TP PREDICTION","toggle","OO7n7tpPrediction","Visual",nil,true)
 createOption("MINIONS ESP","toggle","showMinions","Visual",nil,true)
 createOption("SHOW CHAT","toggle","ShowChat","Visual",nil,true)
 createOption("INF ZOOM","toggle","infZ","Visual",nil,true)
@@ -1784,7 +1793,7 @@ createOption("ANTI ENTAGLEMENT","toggle","AntiEntaglement","GeneralCheats",nil,t
 createOption("NO HALLUCINATIONS","toggle","NoHallucinations","GeneralCheats",nil,true)
 
 --warning config buttons
---createOption("AJW","ALEK JOIN WARNING",AlekWarning,"AlekWarning",false,"WarningConfig")
+createOption("ALEK JOIN WARNING","toggle","AlekWarning","WARNS",true,true)
 
 --generator cheats
 createOption("FAST GENERATORS (USE AT YOUR OWN RISK,works only if auto-gen is on,recommended to be used with adaptive gens)","toggle","FastGen","GenCheats",nil,true)
@@ -1799,10 +1808,9 @@ createOption("GENERATOR ESP","toggle","GeneratorESP","GenCheats",nil,true)
 createOption("NO STUN","toggle","NoStun","Exploits",nil,true)
 createOption("NO FALL SLOWNESS","toggle","NoFallSlowness","Exploits",nil,true)
 createOption("INFINITE STAMINA","toggle","InfSprint","Exploits",nil,true)
-createOption("WALKSPEED OVERRIDE NO STOP","toggle","WalkspeedNoStop","Exploits",nil,true)
-createOption("WALKSPEED OVERRIDE INSTA HIT","toggle","WalkspeedHit","Exploits",nil,true)
 createOption("DISABLE DIGITAL FOOTPRINT","toggle","DisableFootprint","Exploits",nil,true)
 createOption("SNEAKY BUFFS","toggle","SneakyBuffs","Exploits",nil,true)
+createOption("CAN ALWAYS SPRINT","toggle","CanAlwaysSprint","Exploits",nil,true)
 --createOption("SERVER LAG BUTTON (DOESNT WORK IN LOBBY)","toggle","ServerLagButton","Exploits",nil,true) --patched :sob: :sob: D:
 
 --misc
@@ -1828,29 +1836,6 @@ createOption("HORROR_HOTEL BALLPIT ENTRANCE","use",nil,"SSL",nil,nil,placeOpSent
 createOption("HORROR_HOTEL HUGE ROOM MID","use",nil,"SSL",nil,nil,placeOpSentry,"HorrorHotel",CFrame.new(3192.94727, 75.5650787, -89.0336304, 0.998695493, -5.81161341e-10, -0.0510613248, 2.55399313e-10, 1, -6.3863439e-09, 0.0510613248, 6.36497166e-09, 0.998695493))
 
 
-local hook;
-hook = hookmetamethod(game,"__namecall",function(self,...)
-	local args = {...}
-	local method = getnamecallmethod()
-	if canRunUpdateLoop then
-		if options.WalkspeedNoStop ==true and method == "FireServer" and args[1] == Client.Name .. "C00lkiddCollision" then
-			return nil
-		elseif options.WalkspeedHit == true and method == "FireServer" and args[2] == "WalkspeedOverride" then
-			task.spawn(function()
-				if Client.Character:FindFirstChild("SpeedMultipliers"):WaitForChild("HinderedMovement",2) then
-					repeat
-						wait()
-						local clos = GetClosestSurvivor(true)
-						if clos.Survivor and clos.Magnitude < 60 then
-							Client.Character:FindFirstChild("HumanoidRootPart").CFrame = clos.Survivor.HumanoidRootPart.CFrame
-						end
-					until not Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement") or Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("HinderedMovement").Value >=0.2				
-				end
-			end)
-		end		
-	end
-	return hook(self,unpack(args))
-end)
 if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
 	FULLSTOP()
 end
@@ -1859,6 +1844,7 @@ end
 for i,tab in MainFrame:GetChildren() do
 	if tab:HasTag("Tab") and tab:IsA("ScrollingFrame") then
 		tab.CanvasSize = UDim2.new(0, 0,50, 0)
+		tab.Visible = false
 	end
 end
 
