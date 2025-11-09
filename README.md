@@ -12,7 +12,8 @@
 > [!NOTE]
 > the only executors this was used and confirmed to be working on (that doesnt mean they bypass the new anticheat) were:
 > 
->[Delta](https://deltaexploits.gg)
+>[Delta](https://deltaexploits.gg) ,
+>[Velocity](https://getvelocity.lol)
 
 
 Q: is it safe?
