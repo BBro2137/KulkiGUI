@@ -1,11 +1,8 @@
-# The *CRAZY* [Forsaken](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjv39jahZyNAxVLRvEDHeCWLPEQFnoECCQQAQ&url=https%3A%2F%2Fwww.roblox.com%2Fgames%2F18687417158%2FForsaken&usg=AOvVaw3F_xm0t09E_fXe90F6IeOf&opi=89978449) exploit
+# The *CRAZY*  Open source [Forsaken](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjv39jahZyNAxVLRvEDHeCWLPEQFnoECCQQAQ&url=https%3A%2F%2Fwww.roblox.com%2Fgames%2F18687417158%2FForsaken&usg=AOvVaw3F_xm0t09E_fXe90F6IeOf&opi=89978449) exploit
 > dont exploit, its for educational purposes only.
 >
 > loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
 >
-> the robot/ai autoplay version of kulki gui (VERY EARLY BUILD,ONLY CAN PLAY AS KILLER JASON)
->
-> loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/KulkiGuiAI'))()
 
 
 
@@ -19,19 +16,14 @@
 Q: is it safe?
 
 
-A: unless i have dementia then there is no malicious code in this
+A: unless i have dementia then there is no malicious code in this (you can check the code yourself but youre most likely a random kid with delta and 0 programming knowledge)
 
 Q: can i get banned
 
 
-A:the obvious answer is yes, the same answer applies to every executor every script.
+A:the obvious answer is yes, the same answer applies to every executor and every script for them.
 
 
-
-Q: betrayed 1x big bombogyat?
-
-
-A:NO AND NEVER STFU
 
 
 > [!CAUTION]
