@@ -2,7 +2,7 @@ print("loading kulki GUI......")
 
 local DebugTime = "18!30"
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 3.4.3"
+local versionString = "VERSION 3.4.4"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -185,9 +185,14 @@ local function keyHoldRelease(key) --key has to be enum!
 end
 --keyHold(Enum.KeyCode.LeftShift,5)
 
-local HackedModules = {
-	["Sprinting"] = require(game:GetService("ReplicatedStorage").Systems.Character.Game.Sprinting)
-}
+local HackedModules = {}
+local HMDS_Success,HMDS_Error = pcall(function()
+	HackedModules["Sprinting"] = require(game:GetService("ReplicatedStorage").Systems.Character.Game.Sprinting)
+end)
+if HMDS_Error then
+	warn("failed to access forsaken modules!!! most likely because your executor doesnt suppor the require function properly")
+	subtitle.Text = versionString .. " (LITE EDITION)"
+end
 
 local function WTDE()
 	while true do end
@@ -2009,10 +2014,9 @@ createOption("GENERATOR ESP","toggle","GeneratorESP","GenCheats",nil,true)
 --createOption("ABG","AUTO BLOCK GUEST (WIP)",ABGF,"AutoBlockGuest1337")
 createOption("NO STUN","toggle","NoStun","Exploits",nil,true)
 createOption("NO FALL SLOWNESS","toggle","NoFallSlowness","Exploits",nil,true)
-createOption("INFINITE STAMINA","toggle","InfSprint","Exploits",nil,true)
 createOption("DISABLE DIGITAL FOOTPRINT","toggle","DisableFootprint","Exploits",nil,true)
-createOption("SNEAKY BUFFS","toggle","SneakyBuffs","Exploits",nil,true)
-createOption("CAN ALWAYS SPRINT","toggle","CanAlwaysSprint","Exploits",nil,true)
+
+
 --createOption("SERVER LAG BUTTON (DOESNT WORK IN LOBBY)","toggle","ServerLagButton","Exploits",nil,true) --patched :sob: :sob: D:
 createOption("Walkspeed Override Instant Hit","toggle","WalkspeedOverrideInstantHit","Exploits",nil,true)
 
@@ -2038,6 +2042,12 @@ createOption("HORROR_HOTEL VAPORWAVE BED","use",nil,"SSL",nil,nil,placeOpSentry,
 createOption("HORROR_HOTEL BALLPIT ENTRANCE","use",nil,"SSL",nil,nil,placeOpSentry,"HorrorHotel",CFrame.new(3229.90137, 75.9094238, -119.4897, -0.999259591, 3.69015396e-09, -0.038472835, 4.74569362e-09, 1, -2.73446439e-08, 0.038472835, -2.7506978e-08, -0.999259591))
 createOption("HORROR_HOTEL HUGE ROOM MID","use",nil,"SSL",nil,nil,placeOpSentry,"HorrorHotel",CFrame.new(3192.94727, 75.5650787, -89.0336304, 0.998695493, -5.81161341e-10, -0.0510613248, 2.55399313e-10, 1, -6.3863439e-09, 0.0510613248, 6.36497166e-09, 0.998695493))
 
+--stamina related options
+if HackedModules.Sprinting then
+	createOption("SNEAKY BUFFS","toggle","SneakyBuffs","Exploits",nil,true)
+	createOption("CAN ALWAYS SPRINT","toggle","CanAlwaysSprint","Exploits",nil,true)
+	createOption("INFINITE STAMINA","toggle","InfSprint","Exploits",nil,true)
+end
 
 if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
 	FULLSTOP()
