@@ -5,12 +5,16 @@
 >
 
 
-
 > [!NOTE]
 > the only executors this was used and confirmed to be working on (that doesnt mean they bypass the new anticheat) were:
-> 
+>
 >[Delta](https://deltaexploits.gg) ,
 >[Velocity](https://getvelocity.lol)
+>
+> 
+> executors that have been used and confirmed to not work on were:
+> 
+> [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor) ,
 
 
 Q: is it safe?
@@ -25,7 +29,9 @@ A:the obvious answer is yes, the same answer applies to every executor and every
 
 
 > [!TIP]
+> kulki gui was originally designed for stealth exploiting but i dont really care now, thats the same reason for all the options to help you hide (like alek join warning i hate that dude)
 > using sneaky buffs option inside "Game Exploits" section makes your stamina slightly better but so slightly so it helps you but is almost un-noticeable
+> also using every single option in this script doesnt help you with hiding your exploits
 
 > [!CAUTION]
 > you are using this under your own resposibility
@@ -35,6 +41,8 @@ A:the obvious answer is yes, the same answer applies to every executor and every
 >
 > 
 > this is made for educational purposes only so dont actually exploit will ya?
+>
+> i personally have stopped using this back in june so things might be broken/unstable
 
 
 "you're so done i just got wallhacks" - said everybody after executing kulki gui
