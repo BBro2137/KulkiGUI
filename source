@@ -2,7 +2,7 @@ print("loading kulki GUI......")
 
 local DebugTime = "18!30"
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 3.4.2"
+local versionString = "VERSION 3.4.3"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -1665,15 +1665,19 @@ task.spawn(function() --main update loop
 						
 						local start = tick()
 						repeat
-							ClientHRP.Position = (EnemyHRP.CFrame * CFrame.Angles(0,math.rad(180),0)).LookVector.Unit*30
+							ClientHRP.CFrame = ClientHRP.CFrame * CFrame.new(60,15,60)
 							task.wait()
-						until tick()-start>=0.4
+						until tick()-start>=0.75
 						
 						ClientHRP.AssemblyAngularVelocity = Vector3.new(0,0,0)
 						ClientHRP.AssemblyLinearVelocity = Vector3.new(0,0,0)
 						survivor:SetAttribute("AntiBlock",nil)
 						ClientHRP.CFrame = OG_Pos
 						workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+						task.wait(0.15)
+						if (OG_Pos.Position-ClientHRP.Position).Magnitude>=20 then
+							ClientHRP.CFrame = OG_Pos
+						end
 					end)
 				end
 			end
