@@ -12,7 +12,7 @@
 >[Velocity](https://getvelocity.lol)
 >
 > 
-> executors that have been used and confirmed to not work on were:
+> executors that will trigger the lite version of kulki gui are:
 > 
 > [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor) ,
 
