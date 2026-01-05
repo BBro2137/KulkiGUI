@@ -9,7 +9,7 @@
 > the only executors this was used and confirmed to be working on (that doesnt mean they bypass the new anticheat) were:
 >
 >[Delta](https://deltaexploits.gg) ,
->[Velocity](https://getvelocity.lol)
+>[Velocity](https://realvelocity.xyz/)
 >
 > 
 > executors that are known to trigger the lite version of kulki gui are:
