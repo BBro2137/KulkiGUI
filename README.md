@@ -51,6 +51,3 @@ A:the obvious answer is yes, the same answer applies to every executor and every
 
 (if you are fucking braindead deaf and blind and for some reason you dont get the name kulki gui it comes from coolkid's cool gui you absolute wall of concrete eater)
 
-
-
-> if alek is reading this then congratulations on finding this but theres nothing you can do about it :3
