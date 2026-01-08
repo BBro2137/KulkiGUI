@@ -1,8 +1,7 @@
 print("loading kulki GUI......")
 
-local DebugTime = "18!30"
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 3.4.4"
+local versionString = "VERSION 3.5"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -89,6 +88,13 @@ FR_options.ScrollBarImageTransparency = 0.5
 FR_options.CanvasSize = UDim2.new(0, 0,50, 0)
 layout:Clone().Parent = FR_options
 
+local stroke = Instance.new("UIStroke")
+stroke.Thickness = 0.005
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+stroke.LineJoinMode = Enum.LineJoinMode.Round
+stroke.StrokeSizingMode = Enum.StrokeSizingMode.ScaledSize
+stroke.BorderStrokePosition = Enum.BorderStrokePosition.Outer
+
 local KGM = Instance.new("TextLabel")
 KGM.Text = "K"
 KGM.TextTransparency = 0.5
@@ -160,6 +166,59 @@ local LBH = hitbox:Clone()
 LBH.Parent = LagButton
 LagButton.Parent = sGUI
 
+local InputTypeFrame = Instance.new("Frame")
+local ITF_input = Instance.new("TextBox")
+local ITF_text = Instance.new("TextLabel")
+
+InputTypeFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+InputTypeFrame.Size = UDim2.new(1, 0,0.003, 0)
+
+ITF_text.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+ITF_text.Size = UDim2.new(0.878, 0,1, 0)
+ITF_text.Text = "<nil>:"
+ITF_text.Parent = InputTypeFrame
+ITF_text.TextScaled = true
+
+ITF_input.Size = UDim2.new(0.113, 0,1, 0)
+ITF_input.Position = UDim2.new(0.878, 0,0, 0)
+ITF_input.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+ITF_input.Text = ""
+ITF_input.PlaceholderText = "Input an"
+ITF_input.Parent = InputTypeFrame
+ITF_input.TextScaled = true
+
+local KulkiGuiDebug = Instance.new("Frame")
+local KG_DEBUG_title = Instance.new("TextLabel")
+local KG_DEBUG_OptionScroll = Instance.new("ScrollingFrame")
+local KG_DEBUG_ListLayout = Instance.new("UIListLayout")
+UIdrag:Clone().Parent = KulkiGuiDebug
+
+KG_DEBUG_title.Text = "DEBUG"
+KG_DEBUG_title.TextScaled = true
+KG_DEBUG_title.BackgroundTransparency = 0.7
+KG_DEBUG_title.BackgroundColor3 = Color3.fromRGB(255,255,255)
+KG_DEBUG_title.Size = UDim2.new(1, 0,0.057, 0)
+KG_DEBUG_title.Parent = KulkiGuiDebug
+
+KG_DEBUG_OptionScroll.Size = UDim2.new(1, 0,0.911, 0)
+KG_DEBUG_OptionScroll.Position = UDim2.new(0, 0,0.089, 0)
+KG_DEBUG_OptionScroll.BackgroundTransparency = 1
+KG_DEBUG_OptionScroll.CanvasSize = UDim2.new(0, 0,10, 0)
+KG_DEBUG_OptionScroll.ScrollBarThickness = 5
+KG_DEBUG_OptionScroll.Parent = KulkiGuiDebug
+KG_DEBUG_ListLayout.Wraps = true
+KG_DEBUG_ListLayout.Padding = UDim.new(0.001, 0)
+KG_DEBUG_ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+KG_DEBUG_ListLayout.FillDirection = Enum.FillDirection.Vertical
+KG_DEBUG_ListLayout.Parent = KG_DEBUG_OptionScroll
+
+KulkiGuiDebug.Visible = false
+KulkiGuiDebug.BackgroundTransparency = 0.5
+KulkiGuiDebug.BackgroundColor3 = Color3.fromRGB(255,255,255)
+KulkiGuiDebug.Size = UDim2.new(0.169, 0,0.49, 0)
+KulkiGuiDebug.Position = UDim2.new(0, 0,0.089, 0)
+KulkiGuiDebug.Parent = sGUI
+
 --actual kulki gui code below
 
 
@@ -190,7 +249,7 @@ local HMDS_Success,HMDS_Error = pcall(function()
 	HackedModules["Sprinting"] = require(game:GetService("ReplicatedStorage").Systems.Character.Game.Sprinting)
 end)
 if HMDS_Error then
-	warn("failed to access forsaken modules!!! most likely because your executor doesnt suppor the require function properly")
+	warn("failed to access forsaken modules!!! most likely because your executor doesnt support the require function properly")
 	subtitle.Text = versionString .. " (LITE EDITION)"
 end
 
@@ -251,13 +310,25 @@ local options = {
 	["WalkspeedOverrideInstantHit"] = false,
 	["NeverGetM1Parried"] = false,
 	["UniversalKillerWalls"] = false,
+	["SneakyAutoNosferatuBloodhook"] = false,
+	["AutoNosferatuBloodhook"] = false,
+	["DisableBloodhook"] = false,
+	["BloodhookMissChance"] = 1,
+	
+	
+	
+	
+	["STT_ChangeC00lGUIToKulkiGUI"] = false,
+	["KulkiGuiDebug"] = false,
 }
 
 if isfile and readfile and isfile("KulkiGuiOptions.txt") then
 	local JSONOptions = HTTPService:JSONDecode(readfile("KulkiGuiOptions.txt"))
-	print(JSONOptions)
-	for index,status in JSONOptions do
-		options[index] = status
+	if JSONOptions then
+		for index,status in JSONOptions do
+			if options[index] == nil then continue end
+			options[index] = status
+		end
 	end
 end
 
@@ -276,7 +347,8 @@ local function sayInChat(text:string)
 end
 
 local function createOption(displayed:string,OptionType:string,OptionIndex:string,ForTab:string,default:string,FunctionToggle:boolean,Func,onlyOnMap:string,arg1:any)
-	local relbt = nil
+	local realbtt = nil
+	
 	if not default then default = options[OptionIndex] end
 	local function can()
 		if onlyOnMap then
@@ -291,16 +363,12 @@ local function createOption(displayed:string,OptionType:string,OptionIndex:strin
 	end
 	if OptionType:lower() == "toggle" then
 		local btt = Instance.new("TextButton")
-		btt.Size = UDim2.new(1, 0,0.003, 0)
 		if default == nil or default == false then
 			default = "OFF"
 		elseif default == true then
 			default = "ON"
 		end
 		btt.Text = displayed .. " (" .. tostring(default) .. ")"
-		btt.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-		btt.Parent = MainFrame:FindFirstChild(ForTab)
-		btt.TextScaled = true
 		btt.MouseButton1Click:Connect(function()
 			if can() == true then
 				if FunctionToggle == true then
@@ -316,14 +384,10 @@ local function createOption(displayed:string,OptionType:string,OptionIndex:strin
 				btt.Text = displayed .. to				
 			end
 		end)
-		relbt = btt
+		realbtt = btt
 	elseif OptionType:lower() == "use" then
 		local btt = Instance.new("TextButton")
-		btt.Size = UDim2.new(1, 0,0.003, 0)
 		btt.Text = displayed
-		btt.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-		btt.Parent = MainFrame:FindFirstChild(ForTab)
-		btt.TextScaled = true
 		btt.MouseButton1Click:Connect(function()
 			if can() == true then
 				if Func then
@@ -331,9 +395,46 @@ local function createOption(displayed:string,OptionType:string,OptionIndex:strin
 				end				
 			end
 		end)
-		relbt = btt
+		realbtt = btt
+	elseif OptionType:lower() == "inputnumber" then
+		local frame = InputTypeFrame:Clone()
+		local input = frame:FindFirstChildWhichIsA("TextBox")
+		local text = frame:FindFirstChildWhichIsA("TextLabel")
+		input.Text = tostring(options[OptionIndex])
+		input.PlaceholderText = "Input an number"
+		text.Text = displayed
+		input.FocusLost:Connect(function(enterPressed,IObject)
+			if not enterPressed or not tonumber(input.Text) or tonumber(input.Text) ~= math.floor(tonumber(input.Text)) then
+				input.Text = ""
+			else
+				options[OptionIndex] = tonumber(input.Text)
+			end
+		end)
+		frame.Parent = MainFrame:FindFirstChild(ForTab)
+	elseif OptionType:lower() == "inputtext" then
+		local frame = InputTypeFrame:Clone()
+		local input = frame:FindFirstChildWhichIsA("TextBox")
+		local text = frame:FindFirstChildWhichIsA("TextLabel")
+		input.PlaceholderText = "Input text"
+		text.Text = displayed
+		input.FocusLost:Connect(function(enterPressed,IObject)
+			if not enterPressed or not tostring(input.Text) then
+				input.Text = ""
+			else
+				options[OptionIndex] = tostring(input.Text)
+			end
+		end)
+		frame.Parent = MainFrame:FindFirstChild(ForTab)
 	end
+	if realbtt then
+		realbtt.TextScaled = true
+		realbtt.Size = UDim2.new(1, 0,0.003, 0)
+		realbtt.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+		realbtt.Parent = MainFrame:FindFirstChild(ForTab)
+	end
+	return realbtt
 end
+
 local function addTabToUI(layoutOrder:number,Background:Color3,text:string,SetsTo:string)
 	local btt = Instance.new("TextButton")
 	btt.LayoutOrder = layoutOrder
@@ -455,11 +556,51 @@ end
 
 --end
 
+local StringGen = {}
+StringGen.Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+StringGen.SpecialCharacters = "1234567890!@#$%^&*()~`-_=+[{]}\|;:,<.>/?"
+
+
+function StringGen.Generate(Length:number,IncludeSpecialCharacters:boolean):string
+	if not IncludeSpecialCharacters then IncludeSpecialCharacters=true end
+	assert(typeof(Length)=="number","The Provided string generation length isnt a number!")
+	Length = math.round(Length)
+
+	local generated = ""
+	for _=1,Length do
+		local char = ""
+		if math.random(1,2)==1 or not IncludeSpecialCharacters then
+			char = string.split(StringGen.Alphabet,"")[math.random(1,#StringGen.Alphabet)]
+		else
+			char = string.split(StringGen.SpecialCharacters,"")[math.random(1,#StringGen.SpecialCharacters)]
+		end
+		generated..=char
+	end
+	return generated
+end
+
+local CustomAttributes = {
+	["AttributesIndex"] = {}
+}
+
+function CustomAttributes.AddAttribute(Object:Instance,Attribute:string,Value:any)
+	if not CustomAttributes.AttributesIndex[Attribute] then
+		CustomAttributes.AttributesIndex[Attribute] = StringGen.Generate(6+os.date("!*t").month,true)
+	end
+	Object:SetAttribute(CustomAttributes.AttributesIndex[Attribute],Value)
+end
+function CustomAttributes.GetAttribute(Object:Instance,Attribute:string):any
+	return Object:GetAttribute(CustomAttributes.AttributesIndex[Attribute])
+end
+
+
 if RunService:IsStudio() then
-	addTabToUI(1,Color3.fromRGB(255,255,255),"General Cheats","GeneralCheats")
+	addTabToUI(1,Color3.fromRGB(255,255,255),"Tests","Tests")
 	addTabToUI(2,Color3.fromRGB(255,255,255),"Misc","Misc")
-	createOption("TEST 01","toggle","UnUsedValue","GeneralCheats",nil,true)
-	createOption("USE TEST","use",nil,"GeneralCheats",nil,nil,nil)
+	createOption("TEST 01","toggle","UnUsedValue","Tests",nil,true)
+	createOption("USE TEST","use",nil,"Tests",nil,nil,nil)
+	createOption("NUMBER INPUT TEST","InputNumber","UnUsedValue2","Tests",nil,nil,nil)
+	createOption("TEXT INPUT TEST","InputText","UnUsedValue3","Tests",nil,nil,nil)
 	sGUI.Parent = Client.PlayerGui
 	assert(false," rest of kulki gui code cannot run in studio!")
 end
@@ -476,7 +617,6 @@ local f =Decode(
 	Decode(
 	"1MYQqQ47lDVCq1xSqMdCg2dmjMh3sHFBdGpRsPcDoAdRqfpkgJpAmJFCcA9QrHVQkDN4r1RCqVsjq1xCgLl6tSICuE9RrgJCdIh4pgZ6rE1Ro21DkO1Rq3Nmc6p3sG9AgzBAgP0nkUs3qmxjdPJCi3lnhU5Qp9xSdABAh3dTp2h3p59krAh3pSwCj5hksex6lDNAlQc7q6dQrh9RkMdlehdChiJ6pQgSdE5neId7iM94pdF4dOB6q3dCkQgPsGFBdH1ldT0ThNUmtJFAdPd3rg5Dke5QqPgSkOV4cPc60"
 )))
-
 LBH.MouseButton1Click:Connect(function()
 	local x = 0
 	repeat
@@ -552,10 +692,7 @@ local function sd2()
 end
 
 
---[[createCustomSkin("BDJD","BIG D JOHN DOE","BigDjohnDoe")
-createCustomSkin("GCK","GYATT COOLKID","GyatCoolkid")
-createCustomSkin("NC","NAZI CHANCE","NaziChance")
-createCustomSkin("WTDE","BIG MELON BETRAYED 1x4","NaziChance",WTDE)]]
+--createCustomSkin("BDJD","BIG D JOHN DOE","BigDjohnDoe") createCustomSkin("GCK","GYATT COOLKID","GyatCoolkid") createCustomSkin("NC","NAZI CHANCE","NaziChance")
 
 game.Lighting.DescendantAdded:Connect(function(c00lkidd)
 	if c00lkidd:IsA("BlurEffect") and options.NoBlur == true then
@@ -613,13 +750,16 @@ local function FULLSTOP()
 		end
 	end
 
-	for i,opt in options do
-		opt = false
-	end
 	canRunUpdateLoop = false
 	sGUI:Destroy()
 	
-	task.wait(99999999)
+	table.clear(PLRESP)
+	table.clear(Listen)
+	table.clear(optionButtons)
+	table.clear(StringGen)
+	table.clear(CustomAttributes)
+	
+	limiter = nil
 end
 
 local function sl(message,chatter)
@@ -1196,6 +1336,11 @@ game.Players.PlayerAdded:Connect(function(plr)
 	end)
 	plr:SetAttribute("Joined_KGUI",tick())
 end)
+game.Players.PlayerRemoving:Connect(function(plr,exitReason)
+	if plr.UserId == Client.UserId then
+		FULLSTOP()
+	end
+end)
 Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child)
 	if options.Easy1x4Popups == true and child.Name == "1x1x1x1Popup" and canRunUpdateLoop == true then
 		child.ImageTransparency = 0.9
@@ -1235,6 +1380,11 @@ local function GetClosestSurvivor(returnFormated)
 		return nearest.Survivor
 	end
 end
+local function TriggerButton(Button:TextButton)
+	for i,v in pairs(getconnections(Button.MouseButton1Click)) do
+		v:Fire()
+	end
+end
 local clockL = os.clock()
 RunService.RenderStepped:Connect(function(delta)
 	if limiter ~= nil then
@@ -1242,6 +1392,8 @@ RunService.RenderStepped:Connect(function(delta)
 		clockL = os.clock()		
 	end
 end)
+
+local ViewingPlayerData = nil
 
 task.spawn(function() --main update loop
 	while true do
@@ -1694,12 +1846,99 @@ task.spawn(function() --main update loop
 					if part:IsA("BasePart") then part.CanCollide = false part.CanTouch = false part.CanQuery = false end
 				end
 			end
+			if options.AutoNosferatuBloodhook then
+				options.BloodhookMissChance = math.clamp(options.BloodhookMissChance,0,100)
+				local QTE = Client.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("QTE")
+				if QTE then
+					if QTE:GetAttribute("KGUI_USE") and QTE:GetAttribute("KGUI_CD") and tick()-QTE:GetAttribute("KGUI_USE")<QTE:GetAttribute("KGUI_CD") then
+					else
+						local closestToMiddle = {
+							["Closest"] = nil,
+							["Distance"] = math.huge,
+						}
+						local furthestToMiddle = {
+							["Furthest"] = nil,
+							["Distance"] = -math.huge,
+						}
+						for _,button:ImageButton in QTE:GetChildren() do
+							if not button:IsA("ImageButton") then continue end
+							local magnitude = (Vector2.new(button.Position.X.Scale,button.Position.Y.Scale)-Vector2.new(0.5, 0.748)).Magnitude
+							if button.Visible == true and magnitude<closestToMiddle.Distance then
+								closestToMiddle.Distance = magnitude
+								closestToMiddle.Closest = button
+							end
+						end
+						for _,button:ImageButton in QTE:GetChildren() do
+							if not button:IsA("ImageButton") then continue end
+							local magnitude = (Vector2.new(button.Position.X.Scale,button.Position.Y.Scale)-Vector2.new(0.5, 0.748)).Magnitude
+							if button.Visible == true and magnitude>furthestToMiddle.Distance then
+								furthestToMiddle.Distance = magnitude
+								furthestToMiddle.Furthest = button
+							end
+						end
+						
+						if closestToMiddle.Closest then
+							if options.BloodhookMissChance ~= 0 and math.random(1,math.round(100/options.BloodhookMissChance)) == 1 then
+								keyPress(Enum.KeyCode:FromName(furthestToMiddle.Furthest.TextLabel.Text))
+							else
+								keyPress(Enum.KeyCode:FromName(closestToMiddle.Closest.TextLabel.Text))
+							end
+							
+							QTE:SetAttribute("KGUI_USE",tick())
+							if options.SneakyAutoNosferatuBloodhook then
+								QTE:SetAttribute("KGUI_CD",math.random(210,600)/1000)
+							else
+								QTE:SetAttribute("KGUI_CD",math.random(60,105)/1000)
+							end
+						end
+					end
+				end
+			end
+			
+			
+			if options.STT_ChangeC00lGUIToKulkiGUI then
+				for _,CFolder in workspace:FindFirstChild("Players"):GetChildren() do for _,character in CFolder:GetChildren() do
+					if character:FindFirstChild("c00lgui") then
+						local coolgui:BasePart = character.c00lgui
+						coolgui:FindFirstChild("Back"):FindFirstChild("Frame"):FindFirstChild("UIStroke").Color = Color3.fromRGB(255,255,255)
+						coolgui:FindFirstChild("Front"):FindFirstChild("Frame"):FindFirstChild("UIStroke").Color = Color3.fromRGB(255,255,255)
+						if coolgui:FindFirstChild("Front"):FindFirstChild("Frame"):FindFirstChild("Label").Text == "cl1ck 4 SPEED!1!!" then
+							coolgui:FindFirstChild("Front"):FindFirstChild("Frame"):FindFirstChild("Label").Text = "KULK1 TYP3' SPEED???"
+						elseif coolgui:FindFirstChild("Front"):FindFirstChild("Frame"):FindFirstChild("Label").Text == "h4xxing in pr0gr3ss...!!1!" then
+							coolgui:FindFirstChild("Front"):FindFirstChild("Frame"):FindFirstChild("Label").Text = "US1NG EXP3R1MENT4L TELEPORT...!!0!"
+						elseif coolgui:FindFirstChild("Front"):FindFirstChild("Frame"):FindFirstChild("Label").Text == "click 2 h4x!!1!" then
+							coolgui:FindFirstChild("Front"):FindFirstChild("Frame"):FindFirstChild("Label").Text = "cl1ck 2 h4ck3r-m4st3r!!0101!"
+						end
+					end
+				end end
+			end
+			if options.KulkiGuiDebug then
+				KulkiGuiDebug.Visible = true
+				for option,value in pairs(options) do
+					pcall(function()
+						if not KG_DEBUG_OptionScroll:FindFirstChild(tostring(option)) then
+							local opt = Instance.new("TextLabel")
+							opt.Name = tostring(option)
+							opt.Text = tostring(option) .. " ~~ <wait for the next frame>"
+							opt.Size = UDim2.new(1, 0,0.005, 0)
+							opt.TextScaled = true
+							opt.BackgroundTransparency = 0.2
+							opt.BackgroundColor3 = Color3.fromRGB(255,255,255)
+							opt.Parent = KG_DEBUG_OptionScroll
+						end
+						KG_DEBUG_OptionScroll:FindFirstChild(tostring(option)).Text = tostring(option) .. " = " .. tostring(value)
+					end)
+				end
+			else
+				KulkiGuiDebug.Visible = false
+			end
 		end)
 		if err then
 			warn("OH MY GOOOOOOOD!!!!, WADAFAK!!!!! , " .. tostring(err))
 		end
 	end
 end)
+
 
 local function listen_pro(textmessage:TextChatMessage)
 	if not Listen["RBX_CHAT"] then Listen["RBX_CHAT"] = {} end
@@ -1944,8 +2183,8 @@ local function placeOpSentry(loc:CFrame)
 		local s = hrp.CFrame
 		local BV = Instance.new('BodyVelocity')
 		BV.Parent = Client.Character:FindFirstChild("HumanoidRootPart")
-		BV.velocity = Vector3.new(0, 0, 0)
-		BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
+		BV.Velocityelocity = Vector3.new(0, 0, 0)
+		BV.MaxForce = Vector3.new(9e9, 9e9, 9e9)
 		task.wait(1)
 		hrp.CFrame = loc
 		task.wait(1)
@@ -1967,6 +2206,8 @@ addTabToUI(4,Color3.fromRGB(255,255,255),"Misc","Misc")
 addTabToUI(5,Color3.fromRGB(255,255,255),"Special Sentry Locations","SSL")
 addTabToUI(6,Color3.fromRGB(199, 118, 25),"Warnings","WARNS")
 addTabToUI(666,Color3.fromRGB(255, 0, 0),"Game Exploits","Exploits")
+addTabToUI(1337,Color3.fromRGB(107, 107, 107),"Script Settings","Settings")
+
 --visual
 createOption("NO BLUR","toggle","NoBlur","Visual",nil,true)
 --createOption("NO FOG","toggle","noFog","Visual",nil,true)
@@ -1998,6 +2239,9 @@ createOption("ANTI ENTAGLEMENT","toggle","AntiEntaglement","GeneralCheats",nil,t
 createOption("NO HALLUCINATIONS","toggle","NoHallucinations","GeneralCheats",nil,true)
 createOption("NEVER GET M1 PARRIED","toggle","NeverGetM1Parried","GeneralCheats",nil,true)
 createOption("UNIVERSAL KILLER WALLS","toggle","UniversalKillerWalls","GeneralCheats",nil,true)
+createOption("AUTO NOSFERATU BLOODHOOK (Sneaky, enable normal auto nos-bloodhook to work)","toggle","SneakyAutoNosferatuBloodhook","GeneralCheats",nil,true)
+createOption("AUTO NOSFERATU BLOODHOOK (really fast reaction time, recommended to be used sneaky auto-nos bloodhook)","toggle","AutoNosferatuBloodhook","GeneralCheats",nil,true)
+createOption("NOSFERATU BLOODHOOK MISS CHANCE PERCENTAGE (requires the normal auto nos-bloodhook to work, min:1 max:100)","InputNumber","BloodhookMissChance","GeneralCheats",nil,true)
 
 --warning config buttons
 createOption("ALEK JOIN WARNING","toggle","AlekWarning","WARNS",true,true)
@@ -2015,6 +2259,7 @@ createOption("GENERATOR ESP","toggle","GeneratorESP","GenCheats",nil,true)
 createOption("NO STUN","toggle","NoStun","Exploits",nil,true)
 createOption("NO FALL SLOWNESS","toggle","NoFallSlowness","Exploits",nil,true)
 createOption("DISABLE DIGITAL FOOTPRINT","toggle","DisableFootprint","Exploits",nil,true)
+createOption("DISABLE NOSFERATU BLOODHOOK","toggle","DisableBloodhook","Exploits",nil,true)
 
 
 --createOption("SERVER LAG BUTTON (DOESNT WORK IN LOBBY)","toggle","ServerLagButton","Exploits",nil,true) --patched :sob: :sob: D:
@@ -2048,6 +2293,10 @@ if HackedModules.Sprinting then
 	createOption("CAN ALWAYS SPRINT","toggle","CanAlwaysSprint","Exploits",nil,true)
 	createOption("INFINITE STAMINA","toggle","InfSprint","Exploits",nil,true)
 end
+
+--settings
+createOption("CHANGE C00lGUI INTO KULKIGUI","toggle","STT_ChangeC00lGUIToKulkiGUI","Settings",nil,true)
+createOption("DEBUG MENU","toggle","KulkiGuiDebug","Settings",nil,true)
 
 if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
 	FULLSTOP()
