@@ -17,11 +17,6 @@
 > [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor) ,
 
 
-Q: is it safe?
-
-
-A: unless i have dementia then there is no malicious code in this (you can check the code yourself but youre most likely a random kid with delta and 0 programming knowledge)
-
 Q: can i get banned
 
 
