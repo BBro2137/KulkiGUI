@@ -1,7 +1,7 @@
 print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 3.5"
+local versionString = "VERSION 3.5.1"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -89,11 +89,13 @@ FR_options.CanvasSize = UDim2.new(0, 0,50, 0)
 layout:Clone().Parent = FR_options
 
 local stroke = Instance.new("UIStroke")
-stroke.Thickness = 0.005
+stroke.Thickness = 0.003
+stroke.Color = Color3.fromRGB(255,255,255)
 stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 stroke.LineJoinMode = Enum.LineJoinMode.Round
 stroke.StrokeSizingMode = Enum.StrokeSizingMode.ScaledSize
 stroke.BorderStrokePosition = Enum.BorderStrokePosition.Outer
+stroke.Parent = MainFrame
 
 local KGM = Instance.new("TextLabel")
 KGM.Text = "K"
@@ -1892,6 +1894,26 @@ task.spawn(function() --main update loop
 							end
 						end
 					end
+				end
+			end
+			if options.DisableBloodhook then
+				local QTE = Client.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("QTE")
+				local nosferatu = workspace:FindFirstChild('Players'):FindFirstChild("Killers"):FindFirstChild("Nosferatu")
+				if QTE and not QTE:GetAttribute("Blocked") and nosferatu then
+					QTE:SetAttribute("Blocked",true)
+					task.spawn(function()
+						local wall = Instance.new("Part")
+						Client.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(Client.Character:FindFirstChild("HumanoidRootPart").Position,nosferatu:FindFirstChild("HumanoidRootPart").Position)
+						wall.Size = Vector3.new(7.5,7.5,1.35)
+						wall.Transparency = 0.75
+						wall.Color = Color3.fromRGB(255,255,255)
+						wall.Anchored = true
+						wall.CFrame = Client.Character:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0,0,-2)
+						wall.CFrame = CFrame.lookAt(wall.Position,nosferatu:FindFirstChild("HumanoidRootPart").Position)
+						wall.Parent = workspace
+						repeat wait() until not QTE or not QTE.Parent
+						wall:Destroy()
+					end)
 				end
 			end
 			
