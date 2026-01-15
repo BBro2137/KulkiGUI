@@ -673,7 +673,7 @@ task.spawn(function()
 								end
 								if HRP:GetAttribute("TokenCollect") then repeat wait() until not HRP:GetAttribute("TokenCollect") end
 								if PollenPercentage >0.95 or not canRunUpdateLoop then break end
-								if not HRP:GetAttribute("ToolCD") or tick()-HRP:GetAttribute("ToolCD")>=0.25 then
+								if not HRP:GetAttribute("ToolCD") or tick()-HRP:GetAttribute("ToolCD")>=0.75 then
 									for i=0,2,1 do game.ReplicatedStorage:WaitForChild("Events"):WaitForChild("ToolCollect"):FireServer() end
 									HRP:SetAttribute("ToolCD",tick())
 								end
