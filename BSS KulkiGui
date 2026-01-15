@@ -1,0 +1,730 @@
+print("loading kulki GUI :BSS......")
+
+local fieldData = {
+	["Sunflower"] = {
+		["Position"] = Vector3.new(-214, 2.25, 178),
+		["FlowerFindName"] = "FP1",
+	},
+	["Dandellion"] = {
+		["Position"] = Vector3.new(-42, 2.25, 222),
+		["FlowerFindName"] = "FP2"
+	},
+	["Mushroom"] = {
+		["Position"] = Vector3.new(-78, 2.2, 118),
+		["FlowerFindName"] = "FP3",
+	},
+	["BlueFlower"] = {
+		["Position"] = Vector3.new(170, 2.38, 98),
+		["FlowerFindName"] = "FP4",
+	},
+	["Clover"] = {
+		["Position"] = Vector3.new(162, 31.85, 198),
+		["FlowerFindName"] = "FP5",
+	},
+	
+	["Spider"] = {
+		["Position"] = Vector3.new(-46, 18.37, -10),
+		["FlowerFindName"] = "FP6",
+	},
+	["Strawberry"] = {
+		["Position"] = Vector3.new(-174, 18.38, -6),
+		["FlowerFindName"] = "FP7",
+	},
+	["Bamboo"] = {
+		["Position"] = Vector3.new(130, 18.42, -26),
+		["FlowerFindName"] = "FP8",
+	},
+	
+	["Pineapple"] = {
+		["Position"] = Vector3.new(258, 66.37, -206),
+		["FlowerFindName"] = "FP9",
+	},
+	["Stump"] = {
+		["Position"] = Vector3.new(426.26, 86.46, -178.04),
+		["FlowerFindName"] = "FP16",
+	},
+	
+	["Cactus"] = {
+		["Position"] = Vector3.new(-182, 66.25, -106),
+		["FlowerFindName"] = "FP10",
+	},
+	["Pumpkin"] = {
+		["Position"] = Vector3.new(-194, 66.25, -186),
+		["FlowerFindName"] = "FP11",
+	},
+	["PineTree"] = {
+		["Position"] = Vector3.new(-330, 66.25, -178),
+		["FlowerFindName"] = "FP12",
+	},
+	["Rose"] = {
+		["Position"] = Vector3.new(-342, 18.30, 114),
+		["FlowerFindName"] = "FP13",
+	},
+	
+	["MountainTop"] = {
+		["Position"] = Vector3.new(74, 174.25, -170),
+		["FlowerFindName"] = "FP12",
+	},
+}
+
+local RunService = game:GetService("RunService")
+local versionString = "VERSION 0.1"
+local SavedCommunicator:BindableEvent = nil
+if RunService:IsStudio() then
+	repeat wait() until game:IsLoaded()
+	game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	task.wait()
+end
+if game:FindFirstChild("GameNetworkingDebugger") then
+	if game:GetService("RunService"):IsStudio() then
+		task.wait(9999999999999)
+		game.Players.LocalPlayer:Kick("yielding ended.")
+	end
+	if game.Players.LocalPlayer.PlayerGui:FindFirstChild("kulkivsElliot") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator") then
+		game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator"):Fire()
+		task.wait(0.2)
+	end
+	if game.Players.LocalPlayer.PlayerGui:FindFirstChild("kulkivsElliot") then
+		game.Players.LocalPlayer.PlayerGui:FindFirstChild("kulkiIvsElliot"):Destroy()
+	end
+	if game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator") then
+		SavedCommunicator = game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator")
+		SavedCommunicator:Fire()
+	end
+else
+	local SavedData = Instance.new("Configuration")
+	local Communicator = Instance.new("BindableEvent")
+	local hard = Instance.new("BoolValue")
+	hard.Name = "HARD"
+	hard.Value = false
+	Communicator.Name = "Communicator"
+	SavedCommunicator = Communicator
+	Communicator.Parent = SavedData
+	SavedData.Name = "GameNetworkingDebugger" -- shhhhh, its a disguise.
+	SavedData.Parent = game	
+end
+local Client = game.Players.LocalPlayer
+local UIS =  game:GetService("UserInputService")
+local HTTPService = game:GetService("HttpService")
+local RBXGeneral:TextChannel = game:GetService("TextChatService"):WaitForChild("TextChannels"):WaitForChild("RBXGeneral")
+
+local mouse = Client:GetMouse()
+local mouseIsBeingHeld = false
+
+--very cool ui part
+
+local sGUI = Instance.new("ScreenGui")
+sGUI.ResetOnSpawn = false
+local MainFrame = Instance.new("Frame")
+MainFrame.AnchorPoint = Vector2.new(0.5,0.5)
+MainFrame.Parent = sGUI
+MainFrame.Position = UDim2.new(0.5, 0,0.5, 0)
+MainFrame.Size = UDim2.new(0.753, 0,0.688, 0)
+MainFrame.BackgroundTransparency = 0.05
+MainFrame.BorderSizePixel = 0
+MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+local UIdrag = Instance.new("UIDragDetector")
+UIdrag.Parent = MainFrame
+local corner = Instance.new("UICorner") corner.CornerRadius = UDim.new(0.02,0) corner.Parent = MainFrame
+sGUI.Name = "kulkivsElliot"
+
+local FR_tabs = Instance.new("Frame")
+FR_tabs.Parent = MainFrame
+FR_tabs.Position = UDim2.new(0, 0,0.037, 0)
+FR_tabs.Size = UDim2.new(0.189, 0,0.963, 0)
+FR_tabs.BackgroundTransparency = 1
+FR_tabs.Parent = MainFrame
+FR_tabs.BorderSizePixel = 0
+local layout = Instance.new("UIListLayout")
+layout.Wraps = true
+layout.FillDirection = Enum.FillDirection.Horizontal
+layout.Parent = FR_tabs
+local line = Instance.new("Frame")
+line.BorderSizePixel = 0
+line.BackgroundColor3 = Color3.fromRGB(15,15,15)
+line.Size = UDim2.new(0.013, 0,1, 0)
+line.Position = UDim2.new(0.188, 0,0, 0)
+line.Parent = MainFrame
+local FR_options = Instance.new("ScrollingFrame")
+FR_options.Position = UDim2.new(0.201, 0,0.184, 0)
+FR_options.BackgroundTransparency = 1
+FR_options.Size = UDim2.new(0.799, 0,0.814, 0)
+FR_options:AddTag("Tab")
+FR_options.ScrollBarThickness = 12
+FR_options.ScrollBarImageTransparency = 0.5
+FR_options.CanvasSize = UDim2.new(0, 0,50, 0)
+layout:Clone().Parent = FR_options
+
+local stroke = Instance.new("UIStroke")
+stroke.Thickness = 0.003
+stroke.Color = Color3.fromRGB(255,255,255)
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+stroke.LineJoinMode = Enum.LineJoinMode.Round
+stroke.StrokeSizingMode = Enum.StrokeSizingMode.ScaledSize
+stroke.BorderStrokePosition = Enum.BorderStrokePosition.Outer
+stroke.Parent = MainFrame
+
+local KGM = Instance.new("TextLabel")
+KGM.Text = "K"
+KGM.TextTransparency = 0.5
+KGM.TextColor3 = Color3.fromRGB(255,255,255)
+KGM.BackgroundColor3 = Color3.fromRGB(0,0,0)
+KGM.BackgroundTransparency = 0.5
+KGM.TextScaled = true
+KGM.Font = Enum.Font.SourceSansItalic
+UIdrag:Clone().Parent = KGM
+KGM.Visible = false
+local hitbox = Instance.new("TextButton")
+hitbox.Size = UDim2.new(0.5, 0,0.5, 0)
+hitbox.AnchorPoint = Vector2.new(0.5,0.5)
+hitbox.Position = UDim2.new(0.5, 0,0.5, 0)
+hitbox.BackgroundTransparency = 1
+hitbox.Text = ""
+hitbox.Parent = KGM
+hitbox.MouseButton1Click:Connect(function()
+	KGM.Visible = false
+	MainFrame.Visible = true
+end)
+KGM.Parent = sGUI
+KGM.Position = UDim2.new(0.465, 0,0.193, 0)
+KGM.Size = UDim2.new(0.071, 0,0.126, 0)
+
+local disableKulkiGUI = Instance.new("TextButton")
+disableKulkiGUI.Size = UDim2.new(0.054, 0,0.105, 0)
+disableKulkiGUI.Position = UDim2.new(0.949, 0,0.01, 0)
+disableKulkiGUI.Text = "X"
+disableKulkiGUI.BackgroundColor3 = Color3.fromRGB(223, 223, 223)
+disableKulkiGUI.TextColor3 = Color3.fromRGB(255,0,0)
+disableKulkiGUI.TextScaled = true
+local minimizeKulkiGui = disableKulkiGUI:Clone()
+minimizeKulkiGui.Position = UDim2.new(0.856, 0,0.01, 0)
+minimizeKulkiGui.Text = "-"
+minimizeKulkiGui.TextColor3 = Color3.fromRGB(0,0,0)
+
+minimizeKulkiGui.Parent = MainFrame
+disableKulkiGUI.Parent = MainFrame
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(0.797, 0,0.129, 0)
+title.Position = UDim2.new(0.201, 0,0.01, 0)
+title.Text = "Kulki GUI"
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.BackgroundTransparency = 1
+title.TextScaled = true
+title.Font = Enum.Font.SourceSans
+title.Parent = MainFrame
+local subtitle = title:Clone()
+subtitle.Text = versionString
+subtitle.Size = UDim2.new(0.799, 0,0.045, 0)
+subtitle.Position = UDim2.new(0.201, 0,0.139, 0)
+subtitle.Parent = MainFrame
+subtitle.Font = Enum.Font.SourceSansBold
+
+local LagButton = Instance.new("TextButton")
+LagButton.Visible = false
+LagButton.Position = UDim2.new(1, 0,0.5, 0)
+LagButton.AnchorPoint = Vector2.new(1,0)
+LagButton.Size = UDim2.new(0.083, 0,0.15, 0)
+Instance.new("UIAspectRatioConstraint").Parent = LagButton
+LagButton.Text = "LAG SERVER"
+LagButton.BackgroundColor3 = Color3.fromRGB(255,0,0)
+LagButton.TextColor3 = Color3.fromRGB(0,0,0)
+LagButton.TextScaled = true
+Instance.new("UIDragDetector").Parent = LagButton
+local LBH = hitbox:Clone()
+LBH.Parent = LagButton
+LagButton.Parent = sGUI
+
+local InputTypeFrame = Instance.new("Frame")
+local ITF_input = Instance.new("TextBox")
+local ITF_text = Instance.new("TextLabel")
+
+InputTypeFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+InputTypeFrame.Size = UDim2.new(1, 0,0.003, 0)
+
+ITF_text.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+ITF_text.Size = UDim2.new(0.878, 0,1, 0)
+ITF_text.Text = "<nil>:"
+ITF_text.Parent = InputTypeFrame
+ITF_text.TextScaled = true
+
+ITF_input.Size = UDim2.new(0.113, 0,1, 0)
+ITF_input.Position = UDim2.new(0.878, 0,0, 0)
+ITF_input.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+ITF_input.Text = ""
+ITF_input.PlaceholderText = "Input an"
+ITF_input.Parent = InputTypeFrame
+ITF_input.TextScaled = true
+
+local KulkiGuiDebug = Instance.new("Frame")
+local KG_DEBUG_title = Instance.new("TextLabel")
+local KG_DEBUG_OptionScroll = Instance.new("ScrollingFrame")
+local KG_DEBUG_ListLayout = Instance.new("UIListLayout")
+UIdrag:Clone().Parent = KulkiGuiDebug
+
+KG_DEBUG_title.Text = "DEBUG"
+KG_DEBUG_title.TextScaled = true
+KG_DEBUG_title.BackgroundTransparency = 0.7
+KG_DEBUG_title.BackgroundColor3 = Color3.fromRGB(255,255,255)
+KG_DEBUG_title.Size = UDim2.new(1, 0,0.057, 0)
+KG_DEBUG_title.Parent = KulkiGuiDebug
+
+KG_DEBUG_OptionScroll.Size = UDim2.new(1, 0,0.911, 0)
+KG_DEBUG_OptionScroll.Position = UDim2.new(0, 0,0.089, 0)
+KG_DEBUG_OptionScroll.BackgroundTransparency = 1
+KG_DEBUG_OptionScroll.CanvasSize = UDim2.new(0, 0,10, 0)
+KG_DEBUG_OptionScroll.ScrollBarThickness = 5
+KG_DEBUG_OptionScroll.Parent = KulkiGuiDebug
+KG_DEBUG_ListLayout.Wraps = true
+KG_DEBUG_ListLayout.Padding = UDim.new(0.001, 0)
+KG_DEBUG_ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+KG_DEBUG_ListLayout.FillDirection = Enum.FillDirection.Vertical
+KG_DEBUG_ListLayout.Parent = KG_DEBUG_OptionScroll
+
+KulkiGuiDebug.Visible = false
+KulkiGuiDebug.BackgroundTransparency = 0.5
+KulkiGuiDebug.BackgroundColor3 = Color3.fromRGB(255,255,255)
+KulkiGuiDebug.Size = UDim2.new(0.169, 0,0.49, 0)
+KulkiGuiDebug.Position = UDim2.new(0, 0,0.089, 0)
+KulkiGuiDebug.Parent = sGUI
+
+--actual kulki gui code below
+
+
+minimizeKulkiGui.MouseButton1Click:Connect(function()
+	KGM.Visible = true
+	MainFrame.Visible = false
+end)
+
+local canQuit = false
+local VIM = game:GetService("VirtualInputManager")
+local function keyPress(key) --key has to be enum!
+	VIM:SendKeyEvent(true,key,false,game)
+	task.wait(0.005)
+	VIM:SendKeyEvent(false,key,false,game)
+end
+local function keyHold(key,tim) --key has to be enum!
+	VIM:SendKeyEvent(true,key,false,game)
+	task.wait(tim)
+	VIM:SendKeyEvent(false,key,false,game)
+end
+local function keyHoldRelease(key) --key has to be enum!
+	VIM:SendKeyEvent(false,key,false,game)
+end
+--keyHold(Enum.KeyCode.LeftShift,5)
+
+local HackedModules = {}
+local HMDS_Success,HMDS_Error = pcall(function()
+	
+end)
+if HMDS_Error then
+	warn("failed to access forsaken modules!!! most likely because your executor doesnt support the require function properly")
+	subtitle.Text = versionString .. " (LITE EDITION)"
+end
+
+local function WTDE()
+	while true do end
+end
+
+local canRunUpdateLoop = true
+local tempDisable = false
+local options = {
+	["Macro"] = false,
+	["SelectedField"] = "Dandellion",
+}
+
+if isfile and readfile and isfile("KulkiGuiBSSOptions.txt") then
+	local JSONOptions = HTTPService:JSONDecode(readfile("KulkiGuiBSSOptions.txt"))
+	if JSONOptions then
+		for index,status in JSONOptions do
+			if options[index] == nil then continue end
+			options[index] = status
+		end
+	end
+end
+
+local function sayInChat(text:string)
+	RBXGeneral:SendAsync(text)
+end
+
+local function createOption(displayed:string,OptionType:string,OptionIndex:string,ForTab:string,default:string,FunctionToggle:boolean,Func,onlyOnMap:string,arg1:any)
+	local realbtt = nil
+
+	if not default then default = options[OptionIndex] end
+	local function can()
+		if onlyOnMap then
+			if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetAttribute("MapName") == onlyOnMap then
+				return true
+			else
+				return false
+			end
+		else
+			return true
+		end
+	end
+	if OptionType:lower() == "toggle" then
+		local btt = Instance.new("TextButton")
+		if default == nil or default == false then
+			default = "OFF"
+		elseif default == true then
+			default = "ON"
+		end
+		btt.Text = displayed .. " (" .. tostring(default) .. ")"
+		btt.MouseButton1Click:Connect(function()
+			if can() == true then
+				if FunctionToggle == true then
+					options[OptionIndex] = not options[OptionIndex]
+				end
+				local to = " (ON)"
+				if options[OptionIndex] == false then
+					to = " (OFF)"
+				end
+				if Func then
+					Func(arg1)
+				end
+				btt.Text = displayed .. to				
+			end
+		end)
+		realbtt = btt
+	elseif OptionType:lower() == "use" then
+		local btt = Instance.new("TextButton")
+		btt.Text = displayed
+		btt.MouseButton1Click:Connect(function()
+			if can() == true then
+				if Func then
+					Func(arg1)
+				end				
+			end
+		end)
+		realbtt = btt
+	elseif OptionType:lower() == "inputnumber" then
+		local frame = InputTypeFrame:Clone()
+		local input = frame:FindFirstChildWhichIsA("TextBox")
+		local text = frame:FindFirstChildWhichIsA("TextLabel")
+		input.Text = tostring(options[OptionIndex])
+		input.PlaceholderText = "Input an number"
+		text.Text = displayed
+		input.FocusLost:Connect(function(enterPressed,IObject)
+			if not enterPressed or not tonumber(input.Text) or tonumber(input.Text) ~= math.floor(tonumber(input.Text)) then
+				input.Text = ""
+			else
+				options[OptionIndex] = tonumber(input.Text)
+			end
+		end)
+		frame.Parent = MainFrame:FindFirstChild(ForTab)
+	elseif OptionType:lower() == "inputtext" then
+		local frame = InputTypeFrame:Clone()
+		local input = frame:FindFirstChildWhichIsA("TextBox")
+		local text = frame:FindFirstChildWhichIsA("TextLabel")
+		input.Text = tostring(options[OptionIndex])
+		input.PlaceholderText = "Input text"
+		text.Text = displayed
+		input.FocusLost:Connect(function(enterPressed,IObject)
+			if not enterPressed or not tostring(input.Text) then
+				input.Text = ""
+			else
+				options[OptionIndex] = tostring(input.Text)
+			end
+		end)
+		frame.Parent = MainFrame:FindFirstChild(ForTab)
+	end
+	if realbtt then
+		realbtt.TextScaled = true
+		realbtt.Size = UDim2.new(1, 0,0.003, 0)
+		realbtt.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+		realbtt.Parent = MainFrame:FindFirstChild(ForTab)
+	end
+	return realbtt
+end
+
+local function addTabToUI(layoutOrder:number,Background:Color3,text:string,SetsTo:string)
+	local btt = Instance.new("TextButton")
+	btt.LayoutOrder = layoutOrder
+	btt.Size = UDim2.new(0.496, 0,0.184, 0)
+	btt.BackgroundColor3 = Background
+	btt.Text = text
+	btt.Parent = FR_tabs
+	btt.TextScaled = true
+	local tab = FR_options:Clone()
+	tab.Parent = MainFrame
+	tab.Name = SetsTo
+	btt.MouseButton1Click:Connect(function()
+		for i,tob in MainFrame:GetChildren() do
+			if tob:HasTag("Tab") then
+				tob.Visible = false
+			end
+		end
+		tab.Visible = true
+	end)
+	return {["Button"]=btt,["Tab"]=tab}
+end
+local function FULLSTOP()
+	canQuit = true
+
+	if writefile then
+		local JSONOptions = HTTPService:JSONEncode(options)
+
+		writefile("KulkiGuiBSSOptions.txt",JSONOptions)
+	end
+
+	canRunUpdateLoop = false
+	sGUI:Destroy()
+end
+disableKulkiGUI.MouseButton1Click:Connect(function()
+	FULLSTOP()
+end)
+
+--setup
+local alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/"
+local base = {}
+
+for i = 0, 63 do
+	base[i] = alphabet:sub(i+1,i+1)
+	base[alphabet:sub(i+1,i+1)] = i
+end
+
+local S1 = {}  --B64 Character 1-2 for ASCII character 1-2
+local S2 = {}  --B64 Character 3-4 for ASCII character 2-3
+local S3 = {}  --ASCII Character 1 for B64 characters 1-2
+local S4 = {}  --ASCII Character 2 for B64 characters 2-3
+local S5 = {}  --ASCII Character 3 for B64 characters 3-4
+
+
+local C1 = 0
+local C2 = 0
+local C3 = 0
+
+for C1 = 0, 255 do
+	for C2 = 0, 255 do
+		local Sum = C3 * 65536 + C2 * 256 + C1
+
+		local B1 = base[ bit32.extract(Sum, 0,6) ]
+		local B2 = base[ bit32.extract(Sum, 6,6) ]
+
+		S1[string.char(C1, C2)] = B1 .. B2
+		S3[B1 .. B2] = string.char(C1)
+	end
+end
+
+for C2 = 0, 255 do
+	for C3 = 0, 255 do
+		local Sum = C3 * 65536 + C2 * 256 + C1
+
+		local B3 = base[ bit32.extract(Sum,12,6) ]
+		local B4 = base[ bit32.extract(Sum,18,6) ]
+
+		S2[string.char(C2, C3)] = B3 .. B4
+		S5[B3 .. B4] = string.char(C3)
+	end
+end
+
+for C1 = 0, 192, 64 do
+	for C2 = 0, 255 do
+		for C3 = 0, 3 do
+			local Sum = C3 * 65536 + C2 * 256 + C1
+
+			local B2 = base[ bit32.extract(Sum, 6,6) ]
+			local B3 = base[ bit32.extract(Sum,12,6) ]
+
+			S4[B2 .. B3] = string.char(C2)
+		end
+	end
+end
+
+
+local function Encode(Data : string) : string
+	if Data == 0 then return "" end --Empty string
+
+	local padding = -#Data % 3
+	Data ..= string.rep("\0", padding) --Add padding
+
+	local resault = table.create(#Data/3*2+1, "    ")
+	resault[1] = base[padding] --The first entry to hold how much padding there is
+
+	local index = 2
+	for i = 1, #Data, 3 do
+		--Get the B64 characters for ascii characters
+		resault[index  ] = S1[Data:sub(i,  i+1)]
+		resault[index+1] = S2[Data:sub(i+1,i+2)]
+		index += 2
+	end
+
+	return table.concat(resault,"")
+end
+
+local function Decode(Data : string) : string
+	if Data == "E" or Data == "" then return "" end --Indicator of empty data
+
+	local padding = base[Data:sub(1,1)] --How many characters are to remove from the end
+	local resault = table.create((#Data-1)/4*3, "   ")
+
+	local index = 1
+	for i = 2, #Data, 4 do --Start at second character
+		--Get the ascii characters for B64 characters
+		resault[index  ] = S3[Data:sub(i,  i+1)]
+		resault[index+1] = S4[Data:sub(i+1,i+2)]
+		resault[index+2] = S5[Data:sub(i+2,i+3)]
+		index += 3
+	end
+
+	local concatted = table.concat(resault)
+	return concatted:sub(1, #concatted-padding) --remove last characters
+end
+
+--end
+
+local StringGen = {}
+StringGen.Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+StringGen.SpecialCharacters = "1234567890!@#$%^&*()~`-_=+[{]}\|;:,<.>/?"
+
+
+function StringGen.Generate(Length:number,IncludeSpecialCharacters:boolean):string
+	if not IncludeSpecialCharacters then IncludeSpecialCharacters=true end
+	assert(typeof(Length)=="number","The Provided string generation length isnt a number!")
+	Length = math.round(Length)
+
+	local generated = ""
+	for _=1,Length do
+		local char = ""
+		if math.random(1,2)==1 or not IncludeSpecialCharacters then
+			char = string.split(StringGen.Alphabet,"")[math.random(1,#StringGen.Alphabet)]
+		else
+			char = string.split(StringGen.SpecialCharacters,"")[math.random(1,#StringGen.SpecialCharacters)]
+		end
+		generated..=char
+	end
+	return generated
+end
+
+local CustomAttributes = {
+	["AttributesIndex"] = {}
+}
+
+function CustomAttributes.AddAttribute(Object:Instance,Attribute:string,Value:any)
+	if not CustomAttributes.AttributesIndex[Attribute] then
+		CustomAttributes.AttributesIndex[Attribute] = StringGen.Generate(6+os.date("!*t").month,true)
+	end
+	Object:SetAttribute(CustomAttributes.AttributesIndex[Attribute],Value)
+end
+function CustomAttributes.GetAttribute(Object:Instance,Attribute:string):any
+	return Object:GetAttribute(CustomAttributes.AttributesIndex[Attribute])
+end
+
+
+if RunService:IsStudio() then
+	addTabToUI(1,Color3.fromRGB(255,255,255),"Tests","Tests")
+	addTabToUI(2,Color3.fromRGB(255,255,255),"Misc","Misc")
+	createOption("TEST 01","toggle","UnUsedValue","Tests",nil,true)
+	createOption("USE TEST","use",nil,"Tests",nil,nil,nil)
+	createOption("NUMBER INPUT TEST","InputNumber","UnUsedValue2","Tests",nil,nil,nil)
+	createOption("TEXT INPUT TEST","InputText","UnUsedValue3","Tests",nil,nil,nil)
+	sGUI.Parent = Client.PlayerGui
+	assert(false," rest of kulki gui code cannot run in studio!")
+end
+local function isMakingHoney():boolean
+	local beesWithHoneyLine = 0
+	for _,bee:BasePart in workspace.Bees:GetChildren() do
+		if bee:FindFirstChild("Attachment") and bee:FindFirstChild("Attachment"):FindFirstChild("HoneyBeam") and bee:FindFirstChild("Attachment").Attachment1:IsDescendantOf(Client.Character) then
+			beesWithHoneyLine+=1
+		end
+	end
+	if beesWithHoneyLine>0 then return true else return false end
+end
+local Hive = nil
+
+task.spawn(function()
+	while canRunUpdateLoop do
+		local su,err = pcall(function()
+			local HRP:BasePart = nil
+			if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+				HRP = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+			end
+			if game.Players.LocalPlayer:FindFirstChild("Honeycomb") and game.Players.LocalPlayer:FindFirstChild("Honeycomb").Value then
+				Hive = game.Players.LocalPlayer:FindFirstChild("Honeycomb").Value
+			end
+			
+			if options.Macro and HRP and fieldData[options.SelectedField] and Hive and not HRP:GetAttribute("HoneyMaking") then
+				task.spawn(function()
+					local Pollen = Client:FindFirstChild("CoreStats"):FindFirstChild("Pollen").Value
+					local PollenCapacity = Client:FindFirstChild("CoreStats"):FindFirstChild("Capacity").Value
+					local PollenPercentage = Client:FindFirstChild("CoreStats"):FindFirstChild("Pollen").Value/Client:FindFirstChild("CoreStats"):FindFirstChild("Capacity").Value
+					
+					if PollenPercentage<=0.95 then
+						if not HRP:GetAttribute("TokenCollect") then
+							if not HRP:GetAttribute("LastTokenCollect") or tick()-HRP:GetAttribute("LastTokenCollect")>=1.1 then
+								HRP:SetAttribute("TokenCollect",true)
+								for _,coin:BasePart in workspace.Collectibles:GetChildren() do
+									if coin:IsA("BasePart") and (game.Players.LocalPlayer.Character.HumanoidRootPart.Position-coin.Position).Magnitude<=35 then
+										HRP.CFrame = coin.CFrame
+										task.wait(0.65)
+									end
+								end
+								HRP:SetAttribute("LastTokenCollect",tick())
+								HRP:SetAttribute("TokenCollect",false)
+							end
+						end
+						if not HRP:GetAttribute("PollenFieldRotation") then
+							HRP:SetAttribute("PollenFieldRotation",true)
+							for _,flower in pairs(workspace.Flowers:GetChildren()) do
+								PollenPercentage = Client:FindFirstChild("CoreStats"):FindFirstChild("Pollen").Value/Client:FindFirstChild("CoreStats"):FindFirstChild("Capacity").Value
+								if flower.Name:find(fieldData[options.SelectedField].FlowerFindName) and (fieldData[options.SelectedField].Position-flower.Position).Magnitude < 75 and math.random(1,2)==1 then 
+									HRP.CFrame = flower.CFrame 
+									wait() 
+								end
+								if HRP:GetAttribute("TokenCollect") then repeat wait() until not HRP:GetAttribute("TokenCollect") end
+								if PollenPercentage >0.95 or not canRunUpdateLoop then break end
+								if not HRP:GetAttribute("ToolCD") or tick()-HRP:GetAttribute("ToolCD")>=0.25 then
+									for i=0,2,1 do game.ReplicatedStorage:WaitForChild("Events"):WaitForChild("ToolCollect"):FireServer() end
+									HRP:SetAttribute("ToolCD",tick())
+								end
+								
+							end
+							HRP:SetAttribute("PollenFieldRotation",false)
+						end
+					elseif not HRP:GetAttribute("HoneyMaking") then
+						print("Started honey making")
+						
+						local StartingPollen = Pollen
+						local Started = tick()
+						HRP:SetAttribute("HoneyMaking",true)
+						HRP.CFrame = Hive.SpawnPos.Value
+						task.wait(0.75)
+						game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("PlayerHiveCommand"):FireServer(unpack({"ToggleHoneyMaking"}))
+
+						repeat 
+							wait(0.5)
+							HRP.CFrame = Hive.SpawnPos.Value
+							Pollen = Client:FindFirstChild("CoreStats"):FindFirstChild("Pollen").Value 
+							if tick()-Started>=3.5 and StartingPollen == Pollen then
+								game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("PlayerHiveCommand"):FireServer(unpack({"ToggleHoneyMaking"}))
+								print("retry honey making")
+								Started = tick()
+							end
+						until Pollen<=0 and not isMakingHoney() or not canRunUpdateLoop or not options.Macro
+						HRP:SetAttribute("HoneyMaking",false)
+						print("Ended honey making")
+					end
+				end)
+			end
+		end)
+		task.wait()
+	end
+end)
+
+addTabToUI(1,Color3.fromRGB(255,255,255),"Main","Main")
+
+createOption("Macro","toggle","Macro","Main",nil,true)
+createOption("SelectedField","InputText","SelectedField","Main",nil,true)
+
+
+
+
+for i,tab in MainFrame:GetChildren() do
+	if tab:HasTag("Tab") and tab:IsA("ScrollingFrame") then
+		tab.CanvasSize = UDim2.new(0, 0,50, 0)
+		tab.Visible = false
+	end
+end
+
+print("loaded kulki GUI!")
+sGUI.Parent = game:GetService("CoreGui")
