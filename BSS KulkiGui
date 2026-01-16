@@ -68,7 +68,7 @@ local fieldData = {
 }
 
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 0.1"
+local versionString = "VERSION 0.2"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -621,7 +621,8 @@ if RunService:IsStudio() then
 	sGUI.Parent = Client.PlayerGui
 	assert(false," rest of kulki gui code cannot run in studio!")
 end
-local function isMakingHoney():boolean
+local function isMacroMakingHoney():boolean
+	if not canRunUpdateLoop or not options.Macro then return false end
 	local beesWithHoneyLine = 0
 	for _,bee:BasePart in workspace.Bees:GetChildren() do
 		if bee:FindFirstChild("Attachment") and bee:FindFirstChild("Attachment"):FindFirstChild("HoneyBeam") and bee:FindFirstChild("Attachment").Attachment1:IsDescendantOf(Client.Character) then
@@ -700,7 +701,7 @@ task.spawn(function()
 								print("retry honey making")
 								Started = tick()
 							end
-						until Pollen<=0 and not isMakingHoney() or not canRunUpdateLoop or not options.Macro
+						until Pollen<=0 and not isMacroMakingHoney()
 						HRP:SetAttribute("HoneyMaking",false)
 						print("Ended honey making")
 					end
