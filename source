@@ -1,7 +1,7 @@
 print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 4"
+local versionString = "VERSION 4.1"
 local SavedCommunicator = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -281,7 +281,6 @@ local options = {
 	--["SNK"] = false,
 	--["SIOC"] = false,
 	["ShowChat"] = false,
-	["Easy1x4Popups"] = false,
 	["AssetLoadReplacement"] = false,
 	["OO7n7tpPrediction"] = false,
 	["AnchoredLockOn"] = false,
@@ -318,6 +317,7 @@ local options = {
 	["FullVoidRushControl"] = false,
 	
 	
+	["PrintErrors"] = false,
 	["STT_ChangeC00lGUIToKulkiGUI"] = false,
 	["KulkiGuiDebug"] = false,
 }
@@ -924,9 +924,9 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").ChildAdded:Connect(func
 			hitbox.CanQuery = false
 			hitbox.Size = Vector3.new(hitbox.Size.X,hitbox.Size.Y-3,hitbox.Size.Z+1000)
 			hitbox.CFrame = hitbox.CFrame + hitbox.CFrame.LookVector*500
-			hitbox.Parent = workspace
-			task.wait(4.5)
-			hitbox:Destroy()			
+			hitbox.Name = "PRojectilePrediction"
+			hitbox.Parent = coolkid
+			game.Debris:AddItem(hitbox,13.5)
 		end
 	elseif coolkid:IsA("Model") and coolkid.Name:lower() == "swords" and canRunUpdateLoop == true then --entaglement
 		if options.AutoDodge1x == true then
@@ -1377,12 +1377,15 @@ game.Players.PlayerRemoving:Connect(function(plr,exitReason)
 	end
 end)
 Client.PlayerGui:WaitForChild("TemporaryUI").ChildAdded:Connect(function(child)
-	if options.Easy1x4Popups == true and child.Name == "1x1x1x1Popup" and canRunUpdateLoop == true then
+	if options.AntiEntaglement == true and child.Name == "1x1x1x1Popup" and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") and canRunUpdateLoop == true then
 		child.ImageTransparency = 0.9
 		child.BackgroundTransparency = 0.9
-		child.Size = UDim2.new(1,0,1,0)
-		child.Position = UDim2.new(0.5,0,0.5,0)
-		child.BackgroundColor3 = Color3.fromRGB(255,0,0)
+		task.spawn(function()
+			for x=1,30,1 do
+				task.wait()
+				Client.Character:FindFirstChild("HumanoidRootPart").AssemblyLinearVelocity = Vector3.new(0,0,0)
+			end
+		end)
 	end
 end)
 task.spawn(function()
@@ -1688,16 +1691,6 @@ task.spawn(function() --main update loop
 			end
 			if options.ShowChat == true then
 				game:GetService("TextChatService"):FindFirstChildWhichIsA("ChatWindowConfiguration").Enabled = true
-			end
-			if options.AntiEntaglement==true then
-				if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("SpeedMultipliers") and game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI") and game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("1x1x1x1Popup") then
-					if game.Players.LocalPlayer.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("SlowedStatus") then game.Players.LocalPlayer.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("SlowedStatus"):Destroy() end
-					for i,f in game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):GetChildren() do
-						if f.Name == "1x1x1x1Popup" then
-							f:Destroy()
-						end
-					end
-				end
 			end
 			if options.AutoGen == true then
 				--print("0")
@@ -2059,7 +2052,7 @@ task.spawn(function() --main update loop
 				end
 			end
 		end)
-		if err then
+		if err and options.PrintErrors then
 			warn("OH MY GOOOOOOOD!!!!, WADAFAK!!!!! , " .. tostring(err))
 		end
 	end
@@ -2253,12 +2246,11 @@ createOption("INF ZOOM","toggle","infZ","Visual",nil,true)
 createOption("AIM AT KILLER","toggle","AAK","GeneralCheats",nil,true) --aim at killer
 createOption("AIM AT SURVIVOR","toggle","AAS","GeneralCheats",nil,true) --aim at survivor
 
-createOption("EASY 1x4 POP-UPS","toggle","Easy1x4Popups","GeneralCheats",nil,true)
 createOption("MASS INFECTION AUTO DODGE","toggle","AutoDodge1x","GeneralCheats",nil,true)
 createOption("JOHN DOE SPIKE NO-CLIP","toggle","SpikeNoclip","GeneralCheats",nil,true)
 createOption("AUTO ITEM PICKUP","toggle","AutoItemPickup","GeneralCheats",nil,true)
 createOption("Auto Eat Pizza","toggle","AutoEatPizza","GeneralCheats",nil,true)
-createOption("ANTI ENTAGLEMENT","toggle","AntiEntaglement","GeneralCheats",nil,true)
+createOption("ANTI ENTAGLEMENT PULL","toggle","AntiEntaglement","GeneralCheats",nil,true)
 createOption("NO HALLUCINATIONS","toggle","NoHallucinations","GeneralCheats",nil,true)
 createOption("NEVER GET M1 PARRIED","toggle","NeverGetM1Parried","GeneralCheats",nil,true)
 createOption("UNIVERSAL KILLER WALLS","toggle","UniversalKillerWalls","GeneralCheats",nil,true)
@@ -2322,7 +2314,8 @@ end
 
 --settings
 createOption("CHANGE C00lGUI INTO KULKIGUI","toggle","STT_ChangeC00lGUIToKulkiGUI","Settings",nil,true)
-createOption("DEBUG MENU","toggle","KulkiGuiDebug","Settings",nil,true)
+createOption("DEBUG MENU (dev thing, you should have this disabled)","toggle","KulkiGuiDebug","Settings",nil,true)
+createOption("PRINT ERRORS (dev thing, you should have this disabled)","toggle","PrintErrors","Settings",nil,true)
 
 --custom skins
 --createCustomSkin("JohnDoe","GasharpoonJohnDoe","Hard spoon") --works
@@ -2354,3 +2347,4 @@ sGUI.Parent = game:GetService("CoreGui")
 --rbxassetid://112809109188560 --jason
 
 --loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source?nocache='..tick())())
+
