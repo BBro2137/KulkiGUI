@@ -1,8 +1,7 @@
 print("loading kulki GUI ai......")
 
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 1.3"
-local DEBUG_VERSION = "18!11"
+local versionString = "VERSION 1.4.5"
 local SavedCommunicator:BindableEvent = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
@@ -37,7 +36,7 @@ else
 	SavedData.Name = "GameNetworkingDebuggerV2" -- shhhhh, its a disguise.
 	SavedData.Parent = game	
 end
-warn("Kulki gui AI Version: " .. DEBUG_VERSION)
+warn("Kulki gui AI Version: " .. versionString)
 local MovementPoints = {
 	["HorrorHotel"] = {
 		Vector3.new(-241.1602325439453, 5465.06591796875, -320.12744140625),
@@ -821,19 +820,20 @@ local function setSprintingTo(value:boolean)
 		end		
 	end
 end
-local function useAbility(ability:string)
+local function useAbility(bufferFS:buffer)
 	--thx sigma spy for fixing this
 	local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 	-- Remote
-	local RemoteEvent = ReplicatedStorage.Modules.Network.RemoteEvent -- RemoteEvent 
+	local RemoteEvent = ReplicatedStorage.Modules.Network.Network.RemoteEvent -- RemoteEvent 
 
 	RemoteEvent:FireServer(
 		"UseActorAbility",
 		{
-			buffer.fromstring("\"" .. ability .. "\"") --[[buffer: 0x975653beb1a23db4]]
+			bufferFS
 		}
-	)end
+	)
+end
 local function IsAbilityOnCooldown(Ability:string)
 	local abContainer = Client.PlayerGui:WaitForChild("MainUI"):WaitForChild("AbilityContainer")
 	if abContainer:FindFirstChild(Ability) and tonumber(abContainer:FindFirstChild(Ability).CooldownTime) == nil then
@@ -1031,6 +1031,7 @@ local function GeneratorFixCooldown(Cooldown:number)
 	end)
 end
 
+
 task.spawn(function() --main update loop
 	while true do
 		task.wait()
@@ -1047,6 +1048,13 @@ task.spawn(function() --main update loop
 					end
 				end
 				local UserHRP:Part = Client.Character:FindFirstChild("HumanoidRootPart")
+				local KillerHRP:Part = workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren()[1]:FindFirstChild("HumanoidRootPart")
+				if not KillerHRP then
+					if AIState then
+						AIState.Text = "No Killer"
+					end
+					return nil
+				end
 				local readOnlyValues = {
 					["Stamina"] = ForsakenModules.Systems.Sprinting.Stamina,
 					["IsSprinting"] = ForsakenModules.Systems.Sprinting.IsSprinting
@@ -1055,12 +1063,12 @@ task.spawn(function() --main update loop
 					["Sprint"] = false,
 					["GoalChosen"] = false,
 				}
-				if readOnlyValues.Stamina>10 and ForsakenModules.Systems.Sprinting.CanSprint == true and Data.RegeningStamina == false then
+				if readOnlyValues.Stamina>3 and ForsakenModules.Systems.Sprinting.CanSprint == true and Data.RegeningStamina == false then
 					FINAL.Sprint = true
 				else
 					FINAL.Sprint = false
 				end
-				if readOnlyValues.Stamina < 13 and Data.RegeningStamina == false then
+				if readOnlyValues.Stamina <=13 and Data.RegeningStamina == false then
 					Data.RegeningStamina = true
 					task.spawn(function()
 						task.wait(0.7)
@@ -1107,14 +1115,14 @@ task.spawn(function() --main update loop
 							if can == true then
 								if Client.Character.Name == "Slasher" then
 									if Abilities.General.M1 then
-										useAbility("Slash")
+										useAbility(buffer.fromstring("\3\5\0\0\0Slash"))
 									elseif Abilities.Slasher.GashingWound == true and Data.Target:FindFirstChildWhichIsA("Humanoid").Health > 27 then
-										useAbility("GashingWound")
+										useAbility(buffer.fromstring("\3\12\0\0\0GashingWound"))
 									else
 										if Data.Target.Name ~= "Builderman" and Data.Target.Name ~= "Taph" and Data.Target.Name ~= "Elliot" then
-											useAbility("Behead")
+											useAbility(buffer.fromstring("\3\6\0\0\0Behead"))
 										end
-										useAbility("Slash")										
+										useAbility(buffer.fromstring("\3\5\0\0\0Slash"))								
 									end
 								elseif Client.Character.Name == "1x1x1x1" then
 									if Abilities.General.M1 then
@@ -1147,8 +1155,19 @@ task.spawn(function() --main update loop
 							["ThrowPizza"] = false,
 						}
 					}
-					local KillerHRP:Part = workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren()[1]:FindFirstChild("HumanoidRootPart")
 					
+					for _,tempUI:Instance in game:GetService("Players").LocalPlayer.PlayerGui.TemporaryUI:GetChildren() do
+						if tempUI.Name == "1x1x1x1Popup" then
+							if not tempUI:GetAttribute("Spawned_KGUI") then
+								tempUI:SetAttribute("Spawned_KGUI",tick())
+							end
+							if tick()-tempUI:GetAttribute("Spawned_KGUI")>=0.55 then
+								for _,v in pairs(getconnections(tempUI.MouseButton1Click)) do
+									v:Fire()
+								end	
+							end
+						end
+					end
 					
 					if Client.Character.Name == "Elliot" then
 						if Data.SurvivorState == "Idle" or Data.SurvivorState == "GeneratorFind" then
@@ -1222,6 +1241,22 @@ task.spawn(function() --main update loop
 						end
 					end
 					if Data.SurvivorState == "GeneratorFix" and Data.GoingForGenerator and Data.GoingForGenerator.Parent then
+						if Client.PlayerGui:FindFirstChild("PuzzleUI") then
+							local PuzzleUI = Client.PlayerGui:FindFirstChild("PuzzleUI")
+							if PuzzleUI:FindFirstChild("Container") and PuzzleUI:FindFirstChild("Container"):FindFirstChild("GridHolder") and PuzzleUI:FindFirstChild("Container"):FindFirstChild("GridHolder"):FindFirstChild("Grid") then
+								local Grid = PuzzleUI:FindFirstChild("Container"):FindFirstChild("GridHolder"):FindFirstChild("Grid")
+								for _,space in Grid:GetChildren() do
+									if space:FindFirstChild("Circle") then
+										local Circle:Frame = space:FindFirstChild("Circle")
+										
+										Circle.BackgroundColor3 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+										if Circle:FindFirstChild("Number") then
+											Circle:FindFirstChild("Number").Text = tostring(math.random(66,68))
+										end
+									end
+								end
+							end
+						end
 						if not Data.GoingForGenerator:GetAttribute("CD") then
 							Data.GoingForGenerator.Remotes.RE:FireServer()
 							GeneratorFixCooldown(math.random(390,510)/100)
@@ -1257,6 +1292,9 @@ task.spawn(function() --main update loop
 							Data.Goal = BestPoint.Point 
 						end
 					end
+					if Data.SurvivorState == "RunFromKiller" and Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("FixingGenerator") then
+						Client.Character:FindFirstChild("SpeedMultipliers"):FindFirstChild("FixingGenerator"):Destroy()
+					end
 				end
 				
 				if workspace.CurrentCamera and Data.Goal then
@@ -1278,10 +1316,18 @@ task.spawn(function() --main update loop
 				
 			elseif poth and poth._status and poth._status ~= "Idle" then
 				poth:Stop()
+				if AIState then
+					AIState.Text = "Off"
+				end
+				ResetData()
 			end
 		end)
 		if err then
+			if AIState then
+				AIState.Text = "Error"
+			end
 			warn("OH MY GOOOOOOOD!!!!, WADAFAK!!!!! , " .. tostring(err))
+			ResetData()
 		end
 	end
 end)
