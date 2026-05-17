@@ -39,7 +39,7 @@ A:the obvious answer is yes, the same answer applies to every executor and every
 > 
 > this is made for educational purposes only so dont actually exploit will ya?
 >
-> i personally have stopped using this back in june so things might be broken/unstable
+> i personally have stopped using this back in june 2025 so things might be broken/unstable
 
 
 "you're so done i just got wallhacks" - said everybody after executing kulki gui
