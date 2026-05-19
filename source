@@ -1,40 +1,41 @@
 print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 4.1"
+local versionString = "VERSION 4.1.1"
+local CachedDataFolder:Folder = game:GetService("CoreGui"):FindFirstChild("KGUI_"..versionString.."_DATA")
+
 local SavedCommunicator = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
 	game.Players.LocalPlayer:WaitForChild("PlayerGui")
 	task.wait()
 end
-if game:FindFirstChild("GameNetworkingDebugger") then
+
+if CachedDataFolder then
 	if game:GetService("RunService"):IsStudio() then
 		task.wait(9999999999999)
 		game.Players.LocalPlayer:Kick("yielding ended.")
 	end
-	if game.Players.LocalPlayer.PlayerGui:FindFirstChild("kulkivsElliot") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator") then
-		game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator"):Fire()
+	if game.Players.LocalPlayer.PlayerGui:FindFirstChild("kulkivsElliot") and CachedDataFolder:FindFirstChild("Communicator") then
+		CachedDataFolder:FindFirstChild("Communicator"):Fire()
 		task.wait(0.2)
 	end
 	if game.Players.LocalPlayer.PlayerGui:FindFirstChild("kulkivsElliot") then
 		game.Players.LocalPlayer.PlayerGui:FindFirstChild("kulkivsElliot"):Destroy()
 	end
-	if game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator") then
-		SavedCommunicator = game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("Communicator")
+	if CachedDataFolder:FindFirstChild("Communicator") then
+		SavedCommunicator = CachedDataFolder:FindFirstChild("Communicator")
 		SavedCommunicator:Fire()
 	end
 else
 	local SavedData = Instance.new("Configuration")
 	local Communicator = Instance.new("BindableEvent")
-	local hard = Instance.new("BoolValue")
-	hard.Name = "HARD"
-	hard.Value = false
+	
 	Communicator.Name = "Communicator"
 	SavedCommunicator = Communicator
 	Communicator.Parent = SavedData
-	SavedData.Name = "GameNetworkingDebugger" -- shhhhh, its a disguise.
-	SavedData.Parent = game	
+	SavedData.Name = "KGUI_" .. versionString .. "_DATA"
+	SavedData.Parent = game:GetService("CoreGui")
 end
 local Client = game.Players.LocalPlayer
 local UIS =  game:GetService("UserInputService")
@@ -49,6 +50,7 @@ local mouseIsBeingHeld = false
 local sGUI = Instance.new("ScreenGui")
 sGUI.ResetOnSpawn = false
 local MainFrame = Instance.new("Frame")
+MainFrame.ClipsDescendants = true
 MainFrame.AnchorPoint = Vector2.new(0.5,0.5)
 MainFrame.Parent = sGUI
 MainFrame.Position = UDim2.new(0.5, 0,0.5, 0)
@@ -2235,7 +2237,7 @@ createOption("SURVIVOR ESP","toggle","SurvivorESP","Visual",nil,true)
 createOption("BUILDINGS ESP","toggle","BuildingsESP","Visual",nil,true)
 createOption("KILLER ESP","toggle","KillerESP","Visual",nil,true)
 createOption("ITEM ESP","toggle","ItemESP","Visual",nil,true)
-createOption("MOVE PREDICTOR","toggle","MovePredictor","Visual",nil,true)
+createOption("MASS INFECTION PREDICTOR","toggle","MovePredictor","Visual",nil,true)
 createOption("007n7 TP PREDICTION","toggle","OO7n7tpPrediction","Visual",nil,true)
 createOption("MINIONS ESP","toggle","showMinions","Visual",nil,true)
 createOption("SHOW CHAT","toggle","ShowChat","Visual",nil,true)
@@ -2320,10 +2322,6 @@ createOption("PRINT ERRORS (dev thing, you should have this disabled)","toggle",
 --custom skins
 --createCustomSkin("JohnDoe","GasharpoonJohnDoe","Hard spoon") --works
 
-if game:FindFirstChild("GameNetworkingDebugger") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD") and game:FindFirstChild("GameNetworkingDebugger"):FindFirstChild("HARD").Value == true then
-	FULLSTOP()
-end
-
 
 for i,tab in MainFrame:GetChildren() do
 	if tab:HasTag("Tab") and tab:IsA("ScrollingFrame") then
@@ -2334,17 +2332,3 @@ end
 
 print("loaded kulki GUI!")
 sGUI.Parent = game:GetService("CoreGui")
-
-
---https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source
---loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
-
---m1 sound id's
-
---rbxassetid://101199185291628 --1x
---rbxassetid://140242176732868 --john doe
---rbxassetid://102228729296384 --coolkid
---rbxassetid://112809109188560 --jason
-
---loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source?nocache='..tick())())
-
