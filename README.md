@@ -1,5 +1,5 @@
 # The *CRAZY*  Non-Obfuscated and *Keyless* [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) exploit
-### dont exploit, its for educational purposes only.
+### dont use cheats/exploits, its for educational purposes only.
 
 ```
  loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
