@@ -1,7 +1,7 @@
 # The *CRAZY*  Non-Obfuscated and *Keyless* [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) exploit
 ### dont use cheats/exploits, its for educational purposes only.
 
-```
+```lua
  loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
 ```
 > paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .lua file (the source code) and copy paste it into your executor 
