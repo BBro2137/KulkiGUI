@@ -1,12 +1,16 @@
 # The *CRAZY*  Open source [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) exploit
-> dont exploit, its for educational purposes only.
->
-> loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
->
+### dont exploit, its for educational purposes only.
+
+```
+ loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
+```
+> paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .lua file (the source code) and copy paste it into your executor 
+
+
 
 
 > [!NOTE]
-> the only executors this was used and confirmed to be working on (that doesnt mean they bypass the new anticheat) were:
+> the only executors this was used and confirmed to be working on (that doesnt mean they bypass the roblox anticheat) were:
 >
 >[Delta](https://deltaexploits.gg) ,
 >[Velocity](https://realvelocity.xyz/)
