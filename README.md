@@ -41,7 +41,7 @@ A:the obvious answer is yes, the same answer applies to every executor and every
 > it is your fault for using exploits if you get banned
 >
 > 
-> this is made for educational purposes only so dont actually exploit will ya?
+> depending on how you use the script you will get banned earlier or later. there is no guarantee that you will never be banned from Roblox OR Forsaken but if you dont use a lot of options your chances of staying under the radar are fairly nice
 
 
 "you're so done i just got wallhacks" - said everybody after executing kulki gui
