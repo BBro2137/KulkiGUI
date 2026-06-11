@@ -1,4 +1,4 @@
-# The *CRAZY*  Open source [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) exploit
+# The *CRAZY*  Non-Obfuscated and *Keyless* [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) exploit
 ### dont exploit, its for educational purposes only.
 
 ```
