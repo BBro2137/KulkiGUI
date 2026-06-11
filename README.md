@@ -45,8 +45,3 @@ A:the obvious answer is yes, the same answer applies to every executor and every
 
 
 "you're so done i just got wallhacks" - said everybody after executing kulki gui
-
-
-
-(if you are fucking braindead deaf and blind and for some reason you dont get the name kulki gui it comes from coolkid's cool gui you absolute wall of concrete eater)
-
