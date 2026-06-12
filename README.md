@@ -33,6 +33,8 @@ A:the obvious answer is yes, the same answer applies to every executor and every
 > using sneaky buffs option inside "Game Exploits" tab gives you an advantage but its so slight that its not noticeable by most players but still makes you "better" at the game, thats why its called sneaky i recommend using this option if youre gonna be using kulki gui and trying to not get banned.
 > 
 > also using every single option in this script doesnt help you with hiding your exploits
+>
+> **NEVER trust ANYONE** if youre gonna record your game enable the anonymous option (inside the misc tab)! the forsaken dev team has no mercy and giving them good proof of you exploiting is a death sentence.
 
 > [!CAUTION]
 > you are using this under your own resposibility
