@@ -32,7 +32,7 @@ A:the obvious answer is yes, the same answer applies to every executor and every
 > 
 > also using every single option in this script doesnt help you with hiding your exploits
 >
-> **NEVER trust ANYONE** if youre gonna record your game enable the anonymous option (inside the misc tab)! the forsaken dev team has no mercy and giving them good proof of you exploiting is a death sentence.
+> **NEVER trust ANYONE** if youre gonna record your game enable the anonymous option (inside the misc tab)! the forsaken dev team has no mercy and if someone sends them your recording of you exploiting youre gonna get the death sentence.
 
 > [!CAUTION]
 > you are using this under your own resposibility
