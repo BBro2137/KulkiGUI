@@ -30,7 +30,7 @@ A:the obvious answer is yes, the same answer applies to every executor and every
 > [!TIP]
 > kulki gui was originally designed for stealth exploiting but i dont really care now, thats the same reason for all the options to help you hide
 > 
-> using sneaky buffs option inside "Game Exploits" section makes your stamina slightly better but so slightly so it helps you but is almost un-noticeable
+> using sneaky buffs option inside "Game Exploits" tab gives you an advantage but its so slight that its not noticeable by most players but still makes you "better" at the game, thats why its called sneaky i recommend using this option if youre gonna be using kulki gui and trying to not get banned.
 > 
 > also using every single option in this script doesnt help you with hiding your exploits
 
