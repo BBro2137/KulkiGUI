@@ -1,7 +1,7 @@
 print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 4.1.4"
+local versionString = "VERSION 4.1.5"
 local StartedKulkiGuiTick = tick()
 local CachedDataFolder:Folder = game:GetService("CoreGui"):FindFirstChild("KGUI_"..versionString.."_DATA")
 
@@ -35,8 +35,9 @@ else
 	Communicator.Name = "Communicator"
 	SavedCommunicator = Communicator
 	Communicator.Parent = SavedData
-	SavedData.Name = "KGUI_" .. versionString .. "_DATA"
+	SavedData.Name = "KGUI_"..versionString.."_DATA"
 	SavedData.Parent = game:GetService("CoreGui")
+	CachedDataFolder = SavedData
 end
 local Client = game.Players.LocalPlayer
 local UIS =  game:GetService("UserInputService")
@@ -342,6 +343,7 @@ local options = {
 	["FullVoidRushControl"] = false,
 	["Anonymous"] = false,
 	["TrickAnywhere"] = false,
+	["Guest666AutoBloodCollect"] = false,
 	
 	
 	["PrintErrors"] = false,
@@ -1992,6 +1994,13 @@ task.spawn(function() --main update loop
 			else
 				TricksWall.CFrame = CFrame.new(69,1337,420)
 			end
+			if options.Guest666AutoBloodCollect and workspace:FindFirstChild("Map") and workspace.Map:FindFirstChild(Client.Name.."BloodOrbContainer") and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") then
+				for i,bloodOrb:MeshPart in workspace.Map:FindFirstChild(Client.Name.."BloodOrbContainer"):GetChildren() do
+					if bloodOrb.Name == "BloodOrb" then
+						bloodOrb.CFrame = Client.Character:FindFirstChild("HumanoidRootPart").CFrame
+					end
+				end
+			end
 
 
 			
@@ -2209,6 +2218,7 @@ createOption("AUTO NOSFERATU BLOODHOOK (Sneaky, enable normal auto nos-bloodhook
 createOption("AUTO NOSFERATU BLOODHOOK (really fast reaction time, recommended to be used sneaky auto-nos bloodhook)","toggle","AutoNosferatuBloodhook","GeneralCheats",nil,true)
 createOption("NOSFERATU BLOODHOOK MISS CHANCE PERCENTAGE (requires the normal auto nos-bloodhook to work, min:1 max:100)","InputNumber","BloodhookMissChance","GeneralCheats",nil,true)
 createOption("FULL VOID RUSH CONTROL","toggle","FullVoidRushControl","GeneralCheats",nil,true)
+createOption("GUEST 666 AUTO BLOOD ORB COLLECT","toggle","Guest666AutoBloodCollect","GeneralCheats",nil,true)
 
 --warning config buttons
 createOption("ALEK JOIN WARNING","toggle","AlekWarning","WARNS",true,true)
