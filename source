@@ -1,15 +1,17 @@
 print("loading kulki GUI......")
 
 local RunService = game:GetService("RunService")
-local versionString = "VERSION 4.1.5"
+local versionString = "VERSION 4.2.0"
 local StartedKulkiGuiTick = tick()
-local CachedDataFolder:Folder = game:GetService("CoreGui"):FindFirstChild("KGUI_"..versionString.."_DATA")
+local CachedDataFolder:Folder = nil
 
 local SavedCommunicator = nil
 if RunService:IsStudio() then
 	repeat wait() until game:IsLoaded()
 	game.Players.LocalPlayer:WaitForChild("PlayerGui")
 	task.wait()
+else
+	CachedDataFolder = game:GetService("CoreGui"):FindFirstChild("KGUI_"..versionString.."_DATA")
 end
 
 if CachedDataFolder then
@@ -225,7 +227,35 @@ KulkiGuiDebug.Size = UDim2.new(0.169, 0,0.49, 0)
 KulkiGuiDebug.Position = UDim2.new(0, 0,0.089, 0)
 KulkiGuiDebug.Parent = sGUI
 
+local OptionToolTipBox = Instance.new("Frame")
+local OptionToolTipText = Instance.new("TextLabel")
+OptionToolTipBox.BackgroundColor3 = Color3.fromRGB(255,255,255)
+OptionToolTipBox.BackgroundTransparency = 0
+OptionToolTipBox.ZIndex = 100
+OptionToolTipBox.Visible = false
+OptionToolTipBox.AnchorPoint = Vector2.new(0.5,0)
+
+OptionToolTipText.Text = "WE love kulki gui!"
+OptionToolTipText.BackgroundTransparency = 1
+OptionToolTipText.TextColor3 = Color3.fromRGB(0,0,0)
+OptionToolTipText.Size = UDim2.new(1,0,1,0)
+OptionToolTipText.TextScaled = false
+OptionToolTipText.TextSize = 23
+OptionToolTipText.ZIndex = 101
+OptionToolTipText.Parent = OptionToolTipBox
+
+OptionToolTipBox.Parent = sGUI
+
 --actual kulki gui code below
+
+local ZeroPositionPart = Instance.new("Part")
+ZeroPositionPart.Anchored = true
+ZeroPositionPart.Transparency = 1
+ZeroPositionPart.Parent = CachedDataFolder
+ZeroPositionPart.CFrame = CFrame.new(0,0,0)
+ZeroPositionPart.CanCollide = false
+ZeroPositionPart.CanQuery = false
+ZeroPositionPart.CanTouch = false
 
 local TricksWall = Instance.new("Part")
 TricksWall.Size = Vector3.new(15,15,0.5)
@@ -344,11 +374,52 @@ local options = {
 	["Anonymous"] = false,
 	["TrickAnywhere"] = false,
 	["Guest666AutoBloodCollect"] = false,
+	["GlobalESPMode"] = "Shaders",
+	["ESPTracers"] = false,
 	
 	
 	["PrintErrors"] = false,
 	["STT_ChangeC00lGUIToKulkiGUI"] = false,
 	["KulkiGuiDebug"] = false,
+	["OptionToolTipTextSize"] = 15,
+	["EnableOptionToolTips"] = true,
+	["LockOptionToolTipsX"] = true,
+}
+
+local OptionToolTips = {
+	["NO FOG"] = "Disables Fog",
+	["NO BLUR"] = "Disables All Post Processing Blur Effects",
+	["PRINT ERRORS"] = "Prints the Kulki GUI frame Loop errors, (debugger thing, you should have this disabled if youre a normal user)",
+	["OPTION TOOLTIP TEXT SIZE"] = "The size of the text that appears when hovering over some options, Minimum Size:1 Maximum Size:100 (15 is the default size)",
+	["ENABLE OPTION TOOLTIPS"] = "Its the white box with text that youre reading RIGHT NOW. heavily recommended to have this turned on.)",
+	["ADAPTIVE FAST GENS"] = "Changes the speed of Fast Auto Gen depending on how many survivors are doing the gen",
+	["ANTI-COLOR CORRECTION"] = "Disables ALL Post Processing Color Correction Effects, for example the purple and dark effect you get after getting hit with a subspace tripmine. BUT this also includes some things like the lobby colors",
+	["MASS INFECTION AUTO DODGE"] = "Whenever a mass infection is heading in your direction you will teleport upwards for some time until the mass infection is not dangerous",
+	['AUTO GENERATOR'] = "Completes Generators Automatically",
+	["NO HALLUCINATIONS"] = "Attempts to disable Nolis Hallucinations",
+	["Walkspeed Override Instant Hit"] = "Whenever you use Walkspeed override you will teleport to the nearest survivor which means it will insta hit them.",
+	["Obviously Fake Generators"] = "Applies a purple highlight to noli's fake generators that isnt visible trough walls",
+	["SHOW CHAT"] = "makes the Roblox chat ALWAYS Visible",
+	["ANONYMOUS"] = "hides your username from EVERYWHERE to make it safe to record or screenshot (turns you into John Forsaken) this doesnt disable your avatar neither does it disable your avatar thumbnails.",
+	["Auto Eat Pizza"] = "Whenever a pizza is close it will teleport to you so its automatically eaten, no it cant teleport even if its far away because of forsaken anticheat so its just gonna be desynced :P",
+	['X-RAY'] = "insanely useless option, makes everything slightly transparent, its only here because it was made a long time ago and i dont see why id remove it, i dont think it even works",
+	["DISABLE NOSFERATU BLOODHOOK"] = "Whenever you get hit by nosferatu's bloodhook you will be locked in place which means its gonna be sort of disabled",
+	["INFINITE ZOOM"] = "Makes your camera zoom out have no limits",
+	["NO FALL SLOWNESS"] = "with this on the fall slowness is disabled, useless tooltip but whatever",
+	["DISABLE TAPH's TRIPWIRE"] = "Makes taph's tripwires not work on you",
+	["SKATING TRICKS ANYWHERE"] = "when youre veeronica you can trick off air, no need for walls or anything solid",
+	["FULL VOID RUSH CONTROL"] = "Gives you full control of the turning on void rush, it also makes void rush faster",
+	["AUTO SNEAKY NOSFERATU BLOODHOOK (enable normal auto nos-bloodhook to work)"] = "makes the auto nosferatu bloodhook sneakier, (makes it look humanly possible)",
+	["AUTO NOSFERATU BLOODHOOK"] = "makes nosferatu's bloodhook minigame complete itself at insane speeds, HEAVILY RECOMMENDED to be used with auto sneaky nos bloodhook",
+	["UNIVERSAL KILLER WALLS"] = "makes the red walls that killers can go trough also work for survivors (only you)",
+	["NO STUN"] = "DISABLES ALL STUNS for example mass infection windup, youre gonna get caught cheating very fast",
+	["007n7 TP PREDICTION"] = "places text on where an 7n7 is gonna teleport and how long it will take for them to tp",
+	["NEVER GET M1 PARRIED"] = "if theres a blocking guest nearby AND youre currently using your M1 attack youre gonna get teleported away until its safe to attack the guest again.",
+	["NO HIDDEN STATS"] = "Disables the [Hidden] text if someone makes their statistics hidden. now you can see everyones stats like its still early 2025!",
+	["CHANGE C00lGUI INTO KULKIGUI"] = "Makes Coolkids C00lGUI and n7n's C00lGUI turn into a black and white version with custom text",
+	["LOCK OPTION TOOLTIPS IN THE MIDDLE"] = "Makes the Option Tooltip box have a locked X position in the middle of the screen.",
+	["GLOBAL ESP MODE:"] = "Changes the way ESP Looks. Options: Shaders,HumanoidBoxes",
+	["ESP TRACERS"] = "Gives you tracers to every player thats being highlighted",
 }
 
 if isfile and readfile and isfile("KulkiGuiOptions.txt") then
@@ -377,7 +448,23 @@ local function sayInChat(text)
 	RBXGeneral:SendAsync(text)
 end
 
-local function createOption(displayed,OptionType,OptionIndex,ForTab,default,FunctionToggle,Func,onlyOnMap,arg1)
+export type InputTypeConfig = {
+	Min:number,
+	Max:number,
+	AllowedStrings:{string}
+}
+
+local function IsInArray(array:{},value:any):boolean
+	for index,v in array do
+		if v == value then
+			return true
+		end
+	end
+	return false
+end
+
+local HoveringOverTTOption = nil
+local function createOption(displayed,OptionType,OptionIndex,ForTab,default,FunctionToggle,Func,onlyOnMap,arg1,InputTypeConfig:InputTypeConfig)
 	local realbtt = nil
 	
 	if not default then default = options[OptionIndex] end
@@ -392,6 +479,7 @@ local function createOption(displayed,OptionType,OptionIndex,ForTab,default,Func
 			return true
 		end
 	end
+	local TTHitbox:Frame = nil
 	if OptionType:lower() == "toggle" then
 		local btt = Instance.new("TextButton")
 		if default == nil or default == false then
@@ -435,13 +523,18 @@ local function createOption(displayed,OptionType,OptionIndex,ForTab,default,Func
 		input.PlaceholderText = "Input an number"
 		text.Text = displayed
 		input.FocusLost:Connect(function(enterPressed,IObject)
-			if not enterPressed or not tonumber(input.Text) or tonumber(input.Text) ~= math.floor(tonumber(input.Text)) then
+			local InBounds = true
+			if InputTypeConfig and InputTypeConfig.Max and InputTypeConfig.Min and tonumber(input.Text) and math.clamp(tonumber(input.Text),InputTypeConfig.Min,InputTypeConfig.Max) ~= tonumber(input.Text) then
+				InBounds = false
+			end
+			if not enterPressed or not tonumber(input.Text) or tonumber(input.Text) ~= math.floor(tonumber(input.Text)) or not InBounds then
 				input.Text = ""
 			else
 				options[OptionIndex] = tonumber(input.Text)
 			end
 		end)
 		frame.Parent = MainFrame:FindFirstChild(ForTab)
+		TTHitbox = frame
 	elseif OptionType:lower() == "inputtext" then
 		local frame = InputTypeFrame:Clone()
 		local input = frame:FindFirstChildWhichIsA("TextBox")
@@ -450,19 +543,38 @@ local function createOption(displayed,OptionType,OptionIndex,ForTab,default,Func
 		input.PlaceholderText = "Input text"
 		text.Text = displayed
 		input.FocusLost:Connect(function(enterPressed,IObject)
-			if not enterPressed or not tostring(input.Text) then
+			local Allowed = true
+			if InputTypeConfig and InputTypeConfig.AllowedStrings and not IsInArray(InputTypeConfig.AllowedStrings,input.Text) then
+				Allowed = false
+			end
+			
+			if not enterPressed or not tostring(input.Text) or not Allowed then
 				input.Text = ""
 			else
 				options[OptionIndex] = tostring(input.Text)
 			end
 		end)
 		frame.Parent = MainFrame:FindFirstChild(ForTab)
+		TTHitbox = frame
 	end
 	if realbtt then
 		realbtt.TextScaled = true
 		realbtt.Size = UDim2.new(1, 0,0.003, 0)
 		realbtt.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
 		realbtt.Parent = MainFrame:FindFirstChild(ForTab)
+		TTHitbox = realbtt
+	end
+	if TTHitbox then
+		if OptionToolTips[displayed] then
+			TTHitbox.Name = displayed
+			TTHitbox.MouseEnter:Connect(function(x,y)
+				HoveringOverTTOption = TTHitbox
+				TTHitbox.MouseLeave:Wait()
+				HoveringOverTTOption = nil
+			end)
+		end
+	else
+		warn("Created option with no avaible hitbox? (OPTION_DISPLAY: "..tostring(displayed)..")")
 	end
 	return realbtt
 end
@@ -546,11 +658,12 @@ end
 
 if RunService:IsStudio() then
 	addTabToUI(1,Color3.fromRGB(255,255,255),"Tests","Tests")
-	addTabToUI(2,Color3.fromRGB(255,255,255),"Misc","Misc")
+	addTabToUI(2,Color3.fromRGB(0, 55, 255),"Second Menu","SecondMenu")
 	createOption("TEST 01","toggle","UnUsedValue","Tests",nil,true)
 	createOption("USE TEST","use",nil,"Tests",nil,nil,nil)
 	createOption("NUMBER INPUT TEST","InputNumber","UnUsedValue2","Tests",nil,nil,nil)
 	createOption("TEXT INPUT TEST","InputText","UnUsedValue3","Tests",nil,nil,nil)
+	
 	sGUI.Parent = Client.PlayerGui
 	assert(false," rest of kulki gui code cannot run in studio!")
 end
@@ -603,7 +716,11 @@ local function stayFunc(thing)
 end
 
 local ESPFolder = Instance.new("Folder")
+local TracerFolder = Instance.new("Folder")
 ESPFolder.Parent = CachedDataFolder
+ESPFolder.Name = StringGen.Generate(16,true)
+TracerFolder.Name = StringGen.Generate(32,true)
+TracerFolder.Parent = workspace
 
 local function AddESP(AddFor:Model|BasePart,OutlineColor,FillColor,OutlineTransparency,FillTransparency,DepthMode:Enum.HighlightDepthMode)
 	if not DepthMode then DepthMode = Enum.HighlightDepthMode.AlwaysOnTop end
@@ -612,14 +729,31 @@ local function AddESP(AddFor:Model|BasePart,OutlineColor,FillColor,OutlineTransp
 	if not AddFor then return end
 	if not OutlineTransparency then OutlineTransparency = 0 end
 	if not FillTransparency then FillTransparency = 0 end
+	local Highlight = nil
 	
-	local Highlight = Instance.new("Highlight")
-	Highlight.DepthMode = DepthMode
-	Highlight.Adornee = AddFor
-	Highlight.OutlineColor = OutlineColor
-	Highlight.FillColor = FillColor
-	Highlight.OutlineTransparency = OutlineTransparency
-	Highlight.FillTransparency = FillTransparency
+	if options.GlobalESPMode == "Shaders" then
+		Highlight = Instance.new("Highlight")
+		Highlight.DepthMode = DepthMode
+		Highlight.Adornee = AddFor
+		Highlight.OutlineColor = OutlineColor
+		Highlight.FillColor = FillColor
+		Highlight.OutlineTransparency = OutlineTransparency
+		Highlight.FillTransparency = FillTransparency
+	end
+	
+	if options.ESPTracers and AddFor:FindFirstChild("Head") and AddFor:FindFirstChild("HumanoidRootPart") and AddFor:FindFirstChildWhichIsA("Humanoid") and AddFor:FindFirstChildWhichIsA("Humanoid").Health>0 then
+		local Tracer = Instance.new("BoxHandleAdornment")
+		local OwnerValue = Instance.new("ObjectValue")
+		OwnerValue.Value = AddFor
+		OwnerValue.Parent = Tracer
+		Tracer.AlwaysOnTop = true
+		Tracer.Shading = Enum.AdornShading.XRay
+		Tracer.Color3 = FillColor
+		Tracer.Name = StringGen.Generate(5,true)
+		Tracer.Adornee = ZeroPositionPart
+		Tracer.Parent = TracerFolder
+	end
+	
 	Highlight.Name = AddFor.Name
 	Highlight.Parent = ESPFolder
 	return Highlight
@@ -738,8 +872,22 @@ local function FULLSTOP()
 	table.clear(CustomSkins)
 	limiter = nil
 	
-	ESPFolder:ClearAllChildren()
-	ESPFolder = nil
+	if TracerFolder then
+		TracerFolder:ClearAllChildren()
+		TracerFolder:Destroy()
+		TracerFolder = nil
+	end
+	
+	if ZeroPositionPart then
+		ZeroPositionPart:Destroy()
+		ZeroPositionPart =nil
+	end
+	
+	if ESPFolder then
+		ESPFolder:ClearAllChildren()
+		ESPFolder:Destroy()
+		ESPFolder = nil
+	end
 end
 
 local function sl(message,chatter)
@@ -1429,19 +1577,56 @@ local ViewingPlayerData = nil
 local LastESPCleanup = tick()
 local LastVeeronicaTrick = 0
 
-task.spawn(function() --main update loop
+
+
+task.spawn(function() --main update loo
 	while true do
 		task.wait()
 		if canRunUpdateLoop == false then
 			break
 		end
+		
 		local su,err = nil
 		su,err = pcall(function()
-			if options.HardMode == true and Client.PlayerGui:FindFirstChild("RoundTimer"):FindFirstChild("Main") then
-				Client.PlayerGui:FindFirstChild("RoundTimer"):FindFirstChild("Main").Visible = false
+			
+			if HoveringOverTTOption and OptionToolTips[HoveringOverTTOption.Name] then
+				if options.LockOptionToolTipsX then
+					OptionToolTipBox.AnchorPoint = Vector2.new(0.5,0)
+					OptionToolTipBox.Position = UDim2.new(0.5,0,0,mouse.Y)
+				else
+					OptionToolTipBox.AnchorPoint = Vector2.new(0,0)
+					OptionToolTipBox.Position = UDim2.new(0,mouse.X,0,mouse.Y)
+				end
+				
+				
+				OptionToolTipText.Text = OptionToolTips[HoveringOverTTOption.Name]
+				OptionToolTipText.TextSize = options.OptionToolTipTextSize
+				
+				OptionToolTipBox.Size = UDim2.new(0,OptionToolTipText.TextBounds.X,0,OptionToolTipText.TextBounds.Y) 
+				
+				OptionToolTipBox.Visible = true
+			else
+				OptionToolTipBox.Visible = false
+			end
+			local ClientHRP:Part = if Client.Character then Client.Character:FindFirstChild("HumanoidRootPart") else nil
+			
+			if options.ESPTracers and TracerFolder then
+				for i,tracer:BoxHandleAdornment in TracerFolder:GetChildren() do
+					local OwnerValue = tracer:FindFirstChildWhichIsA("ObjectValue")
+					if OwnerValue and OwnerValue.Value.Parent and OwnerValue.Value:FindFirstChild("Head") and OwnerValue.Value:FindFirstChild("HumanoidRootPart") and OwnerValue.Value:FindFirstChildWhichIsA("Humanoid") and OwnerValue.Value:FindFirstChildWhichIsA("Humanoid").Health>0 then
+						if ClientHRP then --if stacking BUT i dont want to delete tracers just because the user doesnt have an hrp
+							local TargetHRP:Part = OwnerValue.Value:FindFirstChild("HumanoidRootPart")
+							local Direction = (ClientHRP.Position-TargetHRP.Position)
+							tracer.Size = Vector3.new(1,1,Direction.Magnitude)
+							tracer.CFrame = CFrame.lookAt(ClientHRP.Position,TargetHRP.Position)
+							tracer.CFrame *= CFrame.new(0,0,-Direction.Magnitude/2)
+						end
+					else
+						tracer:Destroy()
+					end
+				end
 			end
 			
-			local ClientHRP:Part = if Client.Character then Client.Character:FindFirstChild("HumanoidRootPart") else nil
 
 			for _,characterType:Folder in workspace:FindFirstChild("Players"):GetChildren() do
 				for i,character in characterType:GetChildren() do
@@ -2041,9 +2226,17 @@ task.spawn(function() --main update loop
 				KulkiGuiDebug.Visible = false
 			end
 			
+			if ESPFolder then
+				for i,espVal in ESPFolder:GetChildren() do
+					if espVal:IsA("Highlight") and not espVal.Adornee or not espVal.Adornee.Parent then
+						espVal:Destroy()
+					end
+				end
+			end
 			if tick()-LastESPCleanup>5 then
 				LastESPCleanup = tick()
 				ESPFolder:ClearAllChildren()
+				TracerFolder:ClearAllChildren()
 			end
 		end)
 		if err and options.PrintErrors then
@@ -2179,9 +2372,9 @@ addTabToUI(1,Color3.fromRGB(255,255,255),"General Cheats","GeneralCheats")
 addTabToUI(2,Color3.fromRGB(255,255,255),"Visual","Visual")
 addTabToUI(3,Color3.fromRGB(255,255,255),"Generator Cheats","GenCheats")
 addTabToUI(4,Color3.fromRGB(255,255,255),"Misc","Misc")
-addTabToUI(5,Color3.fromRGB(255,255,255),"Special Sentry Locations","SSL")
+--addTabToUI(5,Color3.fromRGB(255,255,255),"Special Sentry Locations","SSL")
 addTabToUI(6,Color3.fromRGB(199, 118, 25),"Warnings","WARNS")
-addTabToUI(7,Color3.fromRGB(0, 242, 255),"Custom Skins","CSkins")
+--addTabToUI(7,Color3.fromRGB(0, 242, 255),"Custom Skins","CSkins")
 addTabToUI(666,Color3.fromRGB(255, 0, 0),"Game Exploits","Exploits")
 addTabToUI(1337,Color3.fromRGB(107, 107, 107),"Script Settings","Settings")
 
@@ -2199,12 +2392,14 @@ createOption("MASS INFECTION PREDICTOR","toggle","MovePredictor","Visual",nil,tr
 createOption("007n7 TP PREDICTION","toggle","OO7n7tpPrediction","Visual",nil,true)
 createOption("MINIONS ESP","toggle","showMinions","Visual",nil,true)
 createOption("SHOW CHAT","toggle","ShowChat","Visual",nil,true)
-createOption("INF ZOOM","toggle","infZ","Visual",nil,true)
+createOption("INFINITE ZOOM","toggle","infZ","Visual",nil,true)
+createOption("ESP TRACERS","toggle","ESPTracers","Visual",nil,true)
+
 
 --GeneralCheats
 
-createOption("AIM AT KILLER","toggle","AAK","GeneralCheats",nil,true) --aim at killer
-createOption("AIM AT SURVIVOR","toggle","AAS","GeneralCheats",nil,true) --aim at survivor
+createOption("AIM AT KILLER","toggle","AAK","GeneralCheats",nil,true)
+createOption("AIM AT SURVIVOR","toggle","AAS","GeneralCheats",nil,true)
 
 createOption("MASS INFECTION AUTO DODGE","toggle","AutoDodge1x","GeneralCheats",nil,true)
 createOption("JOHN DOE SPIKE NO-CLIP","toggle","SpikeNoclip","GeneralCheats",nil,true)
@@ -2214,19 +2409,19 @@ createOption("ANTI ENTAGLEMENT PULL","toggle","AntiEntaglement","GeneralCheats",
 createOption("NO HALLUCINATIONS","toggle","NoHallucinations","GeneralCheats",nil,true)
 createOption("NEVER GET M1 PARRIED","toggle","NeverGetM1Parried","GeneralCheats",nil,true)
 createOption("UNIVERSAL KILLER WALLS","toggle","UniversalKillerWalls","GeneralCheats",nil,true)
-createOption("AUTO NOSFERATU BLOODHOOK (Sneaky, enable normal auto nos-bloodhook to work)","toggle","SneakyAutoNosferatuBloodhook","GeneralCheats",nil,true)
-createOption("AUTO NOSFERATU BLOODHOOK (really fast reaction time, recommended to be used sneaky auto-nos bloodhook)","toggle","AutoNosferatuBloodhook","GeneralCheats",nil,true)
+createOption("AUTO SNEAKY NOSFERATU BLOODHOOK (enable normal auto nos-bloodhook to work)","toggle","SneakyAutoNosferatuBloodhook","GeneralCheats",nil,true)
+createOption("AUTO NOSFERATU BLOODHOOK","toggle","AutoNosferatuBloodhook","GeneralCheats",nil,true)
 createOption("NOSFERATU BLOODHOOK MISS CHANCE PERCENTAGE (requires the normal auto nos-bloodhook to work, min:1 max:100)","InputNumber","BloodhookMissChance","GeneralCheats",nil,true)
 createOption("FULL VOID RUSH CONTROL","toggle","FullVoidRushControl","GeneralCheats",nil,true)
 createOption("GUEST 666 AUTO BLOOD ORB COLLECT","toggle","Guest666AutoBloodCollect","GeneralCheats",nil,true)
 
 --warning config buttons
-createOption("ALEK JOIN WARNING","toggle","AlekWarning","WARNS",true,true)
+--createOption("ALEK JOIN WARNING","toggle","AlekWarning","WARNS",true,true)
 
 --generator cheats
 createOption("FAST GENERATORS (USE AT YOUR OWN RISK,works only if auto-gen is on,recommended to be used with adaptive gens)","toggle","FastGen","GenCheats",nil,true)
 createOption("AUTO GENERATOR","toggle","AutoGen","GenCheats",nil,true)
-createOption("ADAPTIVE FAST GENS(works only if Fast Gens is on and is recomenned to be used with it.)","toggle","AdaptiveFastGen","GenCheats",nil,true)
+createOption("ADAPTIVE FAST GENS","toggle","AdaptiveFastGen","GenCheats",nil,true)
 createOption("Obviously Fake Generators","toggle","ObviouslyFakeGenerators","GenCheats",nil,true)
 createOption("GENERATOR ESP","toggle","GeneratorESP","GenCheats",nil,true)
 
@@ -2238,15 +2433,13 @@ createOption("NO FALL SLOWNESS","toggle","NoFallSlowness","Exploits",nil,true)
 createOption("DISABLE TAPH's TRIPWIRE","toggle","AntiTripwire","Exploits",nil,true)
 createOption("DISABLE NOSFERATU BLOODHOOK","toggle","DisableBloodhook","Exploits",nil,true)
 createOption("SKATING TRICKS ANYWHERE","toggle","TrickAnywhere","Exploits",nil,true)
-
-
 --createOption("SERVER LAG BUTTON (DOESNT WORK IN LOBBY)","toggle","ServerLagButton","Exploits",nil,true) --patched :sob: :sob: D:
 createOption("Walkspeed Override Instant Hit","toggle","WalkspeedOverrideInstantHit","Exploits",nil,true)
 
 --misc
 createOption("X-RAY","toggle","XRay","Misc",nil,true)
 createOption("NO HIDDEN STATS","toggle","NOHIDDEN","Misc",nil,true)
-createOption("ANONYMOUS (hides your username from EVERYWHERE to make it safe to record/ss)","toggle","Anonymous","Misc",nil,true)
+createOption("ANONYMOUS","toggle","Anonymous","Misc",nil,true)
 --fun
 --[[createOption("HMODE","HARD MODE",HModeF,"HardMode",true,"otheroptions")
 createOption("GETNG666VIS","GET NOLI+GUEST666 (VISUAL)",getNoliGuest666,"UnUsedValue",false,"otheroptions")
@@ -2255,7 +2448,7 @@ createOption("SWITCHLOCKED","SWITCH LOCKED TO UNLOCKED CHARACTERS (needed to get
 createOption("BD","BECOME DUMMY (VISUAL)",TurnIntoDummyF,"UnUsedValue",false,"otheroptions")]]
 
 -- sentry locations
-if false then --deleted temporarly
+if false then -- its insanely fucking old, glass houses and cool carnival got a rework since this was added
 	createOption("BRANDON_WORKS big castle","use",nil,"SSL",nil,nil,placeOpSentry,"BrandonWorks",CFrame.new(-245.934052, 107.264511, -1459.52075, -0.210328937, 0.0334703773, -0.977057695, 9.31322575e-09, 0.999413788, 0.0342362151, 0.977630854, 0.00720085111, -0.210205674))
 	createOption("BRANDON_WORKS killer spawn small wood wall","use",nil,"SSL",nil,nil,placeOpSentry,"BrandonWorks",CFrame.new(-448.160217, 83.9325256, -1277.98096, 0.997020423, -1.02201059e-09, -0.0771378353, 2.19752527e-09, 1, 1.51542618e-08, 0.0771378353, -1.52786228e-08, 0.997020423))
 	createOption("YORICKS_PLACE graveyard","use",nil,"SSL",nil,nil,placeOpSentry,"YoricksRestingPlace",CFrame.new(229.808914, 56.4740601, -2069.83765, 0.116056263, -8.43870041e-09, -0.993242681, 3.20870122e-08, 1, -4.74687578e-09, 0.993242681, -3.13192814e-08, 0.116056263))
@@ -2278,7 +2471,12 @@ end
 --settings
 createOption("CHANGE C00lGUI INTO KULKIGUI","toggle","STT_ChangeC00lGUIToKulkiGUI","Settings",nil,true)
 createOption("DEBUG MENU (dev thing, you should have this disabled)","toggle","KulkiGuiDebug","Settings",nil,true)
-createOption("PRINT ERRORS (dev thing, you should have this disabled)","toggle","PrintErrors","Settings",nil,true)
+createOption("PRINT ERRORS ","toggle","PrintErrors","Settings",nil,true)
+createOption("OPTION TOOLTIP TEXT SIZE","InputNumber","OptionToolTipTextSize","Settings",nil,true,nil,nil,nil,{Min=1,Max=100})
+createOption("ENABLE OPTION TOOLTIPS","toggle","EnableOptionToolTips","Settings",nil,true)
+createOption("LOCK OPTION TOOLTIPS IN THE MIDDLE","toggle","LockOptionToolTipsX","Settings",nil,true)
+--createOption("GLOBAL ESP MODE:","InputText","GlobalESPMode","Settings",nil,true)
+
 
 --custom skins
 --createCustomSkin("JohnDoe","GasharpoonJohnDoe","Hard spoon") --works
