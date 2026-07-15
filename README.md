@@ -10,10 +10,11 @@
 
 
 > [!NOTE]
-> the only executors this was used and confirmed to be working on (that doesnt mean they bypass the roblox anticheat) were:
+> the only executors this was used and confirmed to be working on were:
 >
 >[Delta](https://deltaexploits.gg) ,
 >[Velocity](https://realvelocity.xyz/)
+> [Madium](https://getmadium.net/)
 >
 > 
 > executors that are known to trigger the lite version of kulki gui are: (potentially outdated idk)
