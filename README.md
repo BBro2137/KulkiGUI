@@ -13,7 +13,7 @@
 > the only executors this was used and confirmed to be working on were:
 >
 >[Delta](https://deltaexploits.gg) ,
->[Velocity](https://realvelocity.xyz/)
+>[Velocity](https://realvelocity.xyz/),
 > [Madium](https://getmadium.net/)
 >
 > 
