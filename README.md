@@ -1,4 +1,4 @@
-# The *CRAZY*  Non-Obfuscated and *Keyless* [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) exploit
+# The *CRAZY* and **Keyless** [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) exploit
 ### dont use cheats/exploits, its for educational purposes only.
 
 ```lua
@@ -12,20 +12,26 @@
 > [!NOTE]
 > the only executors this was used and confirmed to be working on were:
 >
->[Delta](https://deltaexploits.gg) ,
->[Velocity](https://realvelocity.xyz/),
-> [Madium](https://getmadium.net/)
+>[Delta](https://deltaexploits.gg) (Last Tested:2025)
+>
+>[Velocity](https://realvelocity.xyz/) (Last Tested:June of 2026)
+>
+> [Madium](https://getmadium.net/) (Last Tested:July of 2026)
+>
+> [Real](https://projectreal.gg/) (Last Tested:July 17 2026)
 >
 > 
-> executors that are known to trigger the lite version of kulki gui are: (potentially outdated idk)
+> executors that are known to trigger the lite version of kulki gui are:
 > 
-> [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor) ,
+> [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor) (Last Tested:July of 2026)
 
-
-Q: can i get banned
-
-
-A:the obvious answer is yes, the same answer applies to every executor and every script for them.
+# some stuff you might need to know
+- if the executor YOURE using does not appear on [this site](https://weao.xyz/) it might mean that its not safe for use or that its just not confirmed to be safe yet, if the executor youre using appears on this site and is marked with red then it means its not updated and wont work with any script.
+-  if your executor has a really low SUNC rate (70 or below) it might not work with kulki gui due to missing functions such as:
+   - getconnections() (majority of the script works without this)
+   - fireproximityprompt() (majority of the script works without this)
+   - require() (you wont be able to use stamina hacks without this function)
+   - writefile() , readfile() and isfile() (missing any of these functions will disable saving for your settings)
 
 
 > [!TIP]
