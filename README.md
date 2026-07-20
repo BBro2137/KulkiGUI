@@ -32,6 +32,7 @@
    - fireproximityprompt() (majority of the script works without this)
    - require() (you wont be able to use stamina hacks without this function)
    - writefile() , readfile() and isfile() (missing any of these functions will disable saving for your settings)
+   - mouse1click() (auto azure minigame will error and thus not work)
 
 
 > [!TIP]
