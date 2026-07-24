@@ -18,7 +18,7 @@
 >
 > [Madium](https://getmadium.net/) (Last Tested:July of 2026)
 >
-> [Real](https://projectreal.gg/) (Last Tested:July 20 2026)
+> [Real](https://projectreal.gg/) (Last Tested:July 24 2026)
 >
 > 
 > executors that are known to trigger the lite version of kulki gui are:
