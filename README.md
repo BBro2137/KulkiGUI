@@ -12,13 +12,13 @@
 > [!NOTE]
 > the only executors this was used and confirmed to be working on were:
 >
->[Delta](https://deltaexploits.gg) (Last Tested:2025)
+>[Delta](https://deltaexploits.gg) (Last Tested:2025, probably outdated due to the nonexistent testing on mobile since 2026)
 >
 >[Velocity](https://realvelocity.xyz/) (Last Tested:June of 2026)
 >
 > [Madium](https://getmadium.net/) (Last Tested:July of 2026)
 >
-> [Real](https://projectreal.gg/) (Last Tested:July 24 2026)
+> [Real](https://projectreal.gg/) (Last Tested:July 27 2026)
 >
 > 
 > executors that are known to trigger the lite version of kulki gui AND most likely will crash kulki gui are:
