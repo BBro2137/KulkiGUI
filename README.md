@@ -33,6 +33,9 @@
    - require() (you wont be able to use stamina hacks without this function)
    - writefile() , readfile() and isfile() (missing any of these functions will disable saving for your settings)
    - mouse1click() (auto azure minigame will error and thus not work)
+   - hookfunction() (if your executor misses this function is it really an executor or just "get banned fast on roblox" type of thing?)
+   - restorefunction() (this fixes some bugs after kulki gui is ran or disabled)
+   - request() (this is needed for the blacklist, trying to avoid the blacklist WILL get you terminated on roblox ;D)
 
 
 > [!TIP]
