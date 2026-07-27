@@ -4,7 +4,7 @@
 ```lua
  loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
 ```
-> paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .lua file (the source code) and copy paste it into your executor 
+> paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .lua file (the obfuscated code) with any text editor (like windows built-in notepad) and paste it into your executor 
 
 
 
@@ -26,7 +26,7 @@
 > [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor) (Last Tested:July of 2026)
 
 # some stuff you might need to know
-- if the executor YOURE using does not appear on [this site](https://weao.xyz/) or [the other one](https://pulsery.gg/) it might mean that its not safe for use or that its just not confirmed to be safe yet, if the executor youre using appears on this site and is marked with red then it means its not updated and wont work with any script.
+- if the executor YOURE using does not appear on [this site](https://weao.xyz/) or [the other one](https://pulsery.gg/) or [that one](https://https://voxlis.net/) it might mean that its not safe for use or that its just not confirmed to be safe yet, if the executor youre using appears on this site and is marked with red then it means its not updated and wont work with any script.
 -  if your executor has a really low SUNC rate (70 or below) it might not work with kulki gui due to missing functions such as:
    - getconnections() (majority of the script works without this)
    - fireproximityprompt() (majority of the script works without this)
