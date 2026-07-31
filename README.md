@@ -18,7 +18,7 @@
 >
 > [Madium](https://getmadium.net/) (Last Tested:July of 2026)
 >
-> [Real](https://projectreal.gg/) (Last Tested:July 27 2026)
+> [Real](https://projectreal.gg/) (Last Tested:July 31 2026)
 >
 > 
 > executors that are known to trigger the lite version of kulki gui AND most likely will crash kulki gui are:
@@ -27,15 +27,7 @@
 
 # some stuff you might need to know
 - if the executor YOURE using does not appear on [this site](https://weao.xyz/) or [the other one](https://pulsery.gg/) or [that one](https://voxlis.net/) it might mean that its not safe for use or that its just not confirmed to be safe yet, if the executor youre using appears on [this site](https://weao.xyz/) and is marked with red then it means its not updated and wont work with any script.
--  if your executor has a really low sUNC rate (70 or below) it might not work with kulki gui due to missing functions such as:
-   - getconnections() (majority of the script works without this)
-   - fireproximityprompt() (majority of the script works without this)
-   - require() (you wont be able to use stamina hacks without this function)
-   - writefile() , readfile() and isfile() (missing any of these functions will disable saving for your settings)
-   - mouse1click() (auto azure minigame will error and thus not work)
-   - hookfunction() (if your executor misses this function is it really an executor or just "get banned fast on roblox" type of thing?)
-   - restorefunction() (this fixes some bugs after kulki gui is ran or disabled)
-   - request() (this is needed for the blacklist, trying to avoid the blacklist WILL get your account terminated or temporarily banned on roblox ;D)
+-  if your executor has a really low sUNC rate (70 or below) it might not work with kulki gui due to missing functions.
 
 
 > [!TIP]
