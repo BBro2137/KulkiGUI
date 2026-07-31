@@ -23,11 +23,12 @@
 > 
 > executors that are known to trigger the lite version of kulki gui AND most likely will crash kulki gui are:
 > 
-> [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor) (Last Tested:July of 2026)
+> [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor, preety sure xeno will totally crash kulki gui on execution :c)
 
 # some stuff you might need to know
 - if the executor YOURE using does not appear on [this site](https://weao.xyz/) or [the other one](https://pulsery.gg/) or [that one](https://voxlis.net/) it might mean that its not safe for use or that its just not confirmed to be safe yet, if the executor youre using appears on [this site](https://weao.xyz/) and is marked with red then it means its not updated and wont work with any script.
 -  if your executor has a really low sUNC rate (70 or below) it might not work with kulki gui due to missing functions.
+-  **forsaken has a complete lack of client sided anti-cheat** meaning making game-breaking exploits is quite easy
 
 
 > [!TIP]
