@@ -21,7 +21,7 @@
 > [Real](https://projectreal.gg/) (Last Tested:July 31 2026)
 >
 > 
-> executors that are known to trigger the lite version of kulki gui AND most likely will crash kulki gui are:
+> executors that are known to trigger the lite version of kulki gui AND those who are most likely will crash kulki gui are:
 > 
 > [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor, preety sure xeno will totally crash kulki gui on execution :c)
 
