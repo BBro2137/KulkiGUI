@@ -18,7 +18,7 @@
 >
 > [Madium](https://getmadium.net/) (Last Tested:July of 2026)
 >
-> [Real](https://projectreal.gg/) (Last Tested:July 31 2026)
+> [Real](https://projectreal.gg/) (Last Tested:August 1 2026)
 >
 > 
 > executors that are known to trigger the lite version of kulki gui AND those who are most likely will crash kulki gui are:
