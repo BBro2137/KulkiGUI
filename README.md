@@ -13,7 +13,7 @@
 > the only executors that kulki gui officialy supports are:
 >
 >
->[Velocity](https://realvelocity.xyz/) (Last Tested:June of 2026)
+> [Velocity](https://realvelocity.xyz/) (Last Tested:June of 2026)
 >
 > [Madium](https://getmadium.net/) (Last Tested:July of 2026, most likely crashes on v5.0.0)
 >
@@ -24,10 +24,20 @@
 > 
 > [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor, preety sure xeno will totally crash kulki gui on execution :c)
 
-# some stuff you might need to know
+>[!CAUTION]
+> if you ever get blacklisted then your access to kulki gui is forbidden, attempting to bypass the blacklist will lead to **TERRIBLE CONSEQUENCES**
+> 
+> *you have been warned.*
+> 
+> getting blacklisted can be done by extreme tampering with the script such as code modifications or too much save file editing. it can also be done by suspicious activity that would mean you are trying to do something forbidden with the script.
+>
+> just use kulki gui in public servers to *"educate"* (because kulki gui is for *educational* purposes ;D) and you wont get blacklisted
+
+# some other stuff you might need to know
 - if the executor YOURE using does not appear on [this site](https://weao.xyz/) or [the other one](https://pulsery.gg/) or [that one](https://voxlis.net/) it might mean that its not safe for use or that its just not confirmed to be safe yet, if the executor youre using appears on [this site](https://weao.xyz/) and is marked with red then it means its not updated and wont work with any script.
 -  if your executor has a really low sUNC rate (70 or below) it might not work with kulki gui due to missing functions.
 -  **forsaken has a complete lack of client sided anti-cheat** meaning getting away with exploiting is quite easy
+-  i personally dont use this script and only add features and fix bugs in a private server, <ins>i rarerly play test it</ins>  :P
 
 
 > [!TIP]
@@ -38,7 +48,7 @@
 > **NEVER trust ANYONE** if youre gonna record your game enable the anonymous option (inside the misc tab)! the forsaken dev team has no mercy and if someone sends them your recording of you exploiting youre gonna get the death sentence.
 
 > [!CAUTION]
-> you are using this under your own resposibility
+> you are using this under your own responsibility
 >
 > 
 > it is your fault for using exploits if you get banned
