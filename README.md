@@ -15,7 +15,7 @@
 >
 > [Velocity](https://realvelocity.xyz/) (Last Tested:June of 2026)
 >
-> [Madium](https://getmadium.net/) (Last Tested:July of 2026, most likely crashes on v5.0.0)
+> [Madium (V1)](https://getmadium.net/) (Last Tested:July of 2026, most likely crashes on v5.0.0)
 >
 > [Real](https://projectreal.gg/) (Last Tested:August 2 2026, on version v5.0.0)
 >
