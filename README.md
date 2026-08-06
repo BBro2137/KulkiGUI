@@ -45,16 +45,7 @@
 > 
 > also using every single option in this script doesnt help you with hiding your exploits
 >
-> **NEVER trust ANYONE** if youre gonna record your game enable the anonymous option (inside the misc tab)! the forsaken dev team has no mercy and if someone sends them your recording of you exploiting youre gonna get the death sentence.
-
-> [!CAUTION]
-> you are using this under your own responsibility
->
-> 
-> it is your fault for using exploits if you get banned
->
-> 
-> depending on how you use the script you will get banned earlier or later. there is no guarantee that you will never be banned from Roblox OR Forsaken but if you dont use a lot of options your chances of staying under the radar are fairly nice
+> **NEVER trust ANYONE** if youre gonna record your game. enable the anonymous option (inside the misc tab)! the forsaken dev team has NO MERCY and if someone sends them your recording of you exploiting youre gonna get the death sentence.
 
 
 "you're so done i just got wallhacks" - said everybody after executing kulki gui
