@@ -43,7 +43,7 @@
 > [!TIP]
 > using sneaky buffs option inside "Game Exploits" tab gives you an advantage but its so slight that its not noticeable by most players but still makes you "better" at the game, thats why its called sneaky i recommend using this option if youre gonna be using kulki gui and trying to not get banned.
 > 
-> also using every single option in this script doesnt help you with hiding your exploits
+> hiding while using infinite stamina is **extremely hard** and will most likely still raise suspicion by other players. so **DO NOT use infinite stamina when you are trying to hide!**
 >
 > **NEVER trust ANYONE** if youre gonna record your game. enable the anonymous option (inside the misc tab)! the forsaken dev team has NO MERCY and if someone sends them your recording of you exploiting youre gonna get the death sentence.
 
