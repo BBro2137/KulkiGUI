@@ -23,6 +23,7 @@
 > executors that are probably to trigger the lite version of kulki gui **OR** those who are most likely will crash kulki gui are:
 > 
 > [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor, preety sure xeno will totally crash kulki gui on execution :c)
+> 
 > [Wave](https://getwave.gg/) (DOESNT WORK AT ALL: the crypt library is really weird which means it will always trigger the "not safe" error on execution)
 
 >[!CAUTION]
