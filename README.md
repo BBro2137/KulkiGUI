@@ -27,6 +27,8 @@
 > [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor, preety sure xeno will totally crash kulki gui on execution :c)
 > 
 > [Wave](https://getwave.gg/) (DOESNT WORK AT ALL: the crypt library is really weird which means it will always trigger the "not safe" error on execution)
+>
+> [Solara](https://getsolara.dev/) (xeno's twin brother which means its probably broken aswell)
 
 >[!CAUTION]
 > if you ever get blacklisted then your access to kulki gui is forbidden, attempting to bypass the blacklist will lead to **TERRIBLE CONSEQUENCES**
