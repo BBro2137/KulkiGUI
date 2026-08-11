@@ -15,7 +15,7 @@
 > 
 > working:
 >
-> [Velocity](https://realvelocity.xyz/) (Last Tested:June of 2026)
+> [Velocity](https://realvelocity.xyz/) (Last Tested:June of 2026, not tested for versions v5 or newer)
 >
 > [Madium (V2)](https://getmadium.net/) (Last Tested:August 5 2026, most likely crashes on v5.0.0)
 >
