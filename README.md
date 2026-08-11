@@ -19,16 +19,16 @@
 >
 > [Madium (V2)](https://getmadium.net/) (Last Tested:August 5 2026, most likely crashes on v5.0.0)
 >
-> [Real](https://projectreal.gg/) (Last Tested:August 2 2026, on version v5.0.0)
+> [Real](https://projectreal.gg/) (Last Tested:August 11 2026, on version v5.1.0)
 >
 > 
 > ### executors that are probably to trigger the lite version of kulki gui **OR** those who are most likely will crash kulki gui are:
 > 
-> [Xeno](https://www.xeno.onl) (require() function doesnt work on this executor, preety sure xeno will totally crash kulki gui on execution :c)
+> [Xeno](https://www.xeno.onl) require() function doesnt work on this executor, preety sure xeno will totally crash kulki gui on execution :c
 > 
-> [Wave](https://getwave.gg/) (DOESNT WORK AT ALL: the crypt library is really weird which means it will always trigger the "not safe" error on execution)
+> [Wave](https://getwave.gg/) DOESNT WORK AT ALL: the crypt library is really weird which means it will always trigger the "not safe" error on execution (it is very much possible to add support for wave but who actually uses wave?)
 >
-> [Solara](https://getsolara.dev/) (xeno's twin brother which means its broken aswell)
+> [Solara](https://getsolara.dev/) xeno's twin brother which means its broken aswell
 
 >[!CAUTION]
 > if you ever get blacklisted then your access to kulki gui is forbidden, attempting to bypass the blacklist will lead to **TERRIBLE CONSEQUENCES**
