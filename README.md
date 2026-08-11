@@ -36,11 +36,11 @@
 > just use kulki gui in public servers to *"educate"* (because kulki gui is for *educational* purposes ;D) and you wont get blacklisted
 
 # some other stuff you might need to know
+- if you got kicked and got an "not safe" message: DO NOT have ANY OTHER scripts executed and have just kulki gui enabled, this is just to make the blacklist system harder to bypass. if you didnt execute anything else and just get blacklist errors its most likely your executor just failing check the supported executors list!
 - if the executor YOURE using does not appear on [this site](https://weao.xyz/) or [the other one](https://pulsery.gg/) or [that one](https://voxlis.net/) it might mean that its not safe for use or that its just not confirmed to be safe yet, if the executor youre using appears on [this site](https://weao.xyz/) and is marked with red then it means its not updated and wont work with any script.
 -  if your executor has a really low sUNC rate (70 or below) it might not work with kulki gui due to missing functions.
 -  **forsaken has a complete lack of client sided anti-cheat** meaning getting away with exploiting is quite easy
 -  i personally dont use this script and only add features and fix bugs in a private server, <ins>i rarerly play test it</ins>  :P
-
 
 > [!TIP]
 > using sneaky buffs option inside "Game Exploits" tab gives you an advantage but its so slight that its not noticeable by most players but still makes you "better" at the game, thats why its called sneaky i recommend using this option if youre gonna be using kulki gui and trying to not get banned.
