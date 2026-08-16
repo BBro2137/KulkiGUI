@@ -21,6 +21,7 @@
 >
 > [Real](https://projectreal.gg/) (Last Tested:August 11 2026, on version v5.1.0)
 >
+> [Volt](https://voltbz.net/) (Last Tested: August 16 2026, on version v5.1.1)
 > 
 > ### executors that are probably to trigger the lite version of kulki gui **OR** those who are most likely will crash kulki gui are:
 > 
