@@ -91,5 +91,7 @@
 <details>
 <summary>i found a bug/security vulnerability or have a feature request!</summary>
 
-> you can create a "github issue" on this repository.
+> feel free to create an "issue" on this repository
+
+> dont create joke issues.
 </details>
