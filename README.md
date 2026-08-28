@@ -4,8 +4,9 @@
 ```lua
  loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
 ```
-> paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .lua file (the obfuscated code) with any text editor (like windows built-in notepad) and paste it into your executor 
+> paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .lua file (the obfuscated code) with any text editor (like windows built-in notepad) and paste it into your executor
 
+"you're so done i just got wallhacks" - said everybody after executing kulki gui
 
 
 
@@ -38,6 +39,8 @@
 <summary>is this script detected?</summary>
  
 > from what ive seen forsaken has a complete lack of client anti-cheat which means its not possible to get detected.
+
+> BUT forsaken does have a server-side anticheat which MIGHT catch you using stuff such as infinite bloxy cola, but the inf cola option does try to hide itself with just lowering the cola speed time.
 </details>
 
 <details>
@@ -51,7 +54,42 @@
 </details>
 
 
+<details>
+<summary>do you use the script yourself?</summary>
+ 
+> i dont, i only update it
 
+> last time i used this script in a public server was mid 2025, i dont need to use this script since im not ass at the game ;D
 
+> but that also means the script has really bad testing before updates :c
+</details>
 
-"you're so done i just got wallhacks" - said everybody after executing kulki gui
+<details>
+<summary>why is this script free?</summary>
+
+> because its a passion project, not a source of money
+
+> i did see other free keyless scripts for forsaken and they werent the best so it was crazy to find out that kulki gui is js like that (no glaze)
+
+> the most popular other keyless script that i found was ["forsaken plus"](https://rscripts.net/script/forsaken-plus-invincibleautogen-and-more-ZruY) and it doesnt have many cheats/features compared to kulki gui 
+</details>
+
+<details>
+<summary>how old is this?</summary>
+
+> the oldest version of kulki gui was created on april 6th, with only survivor and killer esp.
+</details>
+
+<details>
+<summary>the script says im blacklisted, what do i do?</summary>
+
+> well youre blacklisted which means you did something to/with this script that i didnt like and decided to blacklist you from it
+
+> you are NOT ALLOWED to attempt to bypass the blacklist. if you will attempt though then you will have to face terrible consequences
+</details>
+
+<details>
+<summary>hi im steve</summary>
+
+> thanks for being steve
+</details>
