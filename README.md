@@ -1,4 +1,4 @@
-# The *CRAZY* and **Keyless** [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) exploit
+# The *CRAZY* and **Keyless** [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) script
 ### dont use cheats/exploits, its for educational purposes only.
 
 ```lua
