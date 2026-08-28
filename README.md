@@ -1,16 +1,15 @@
 # The *CRAZY* [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) script
 - 60+ features![^1]
 - over a year of development!
-- and its all keyless! completely free!
 - 3 UI styles if you dont like the default one![^2]
 - 0 AI Usage.[^3]
-  
+- and its all keyless! completely free!
 ```luau
  loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
 ```
 > paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .lua file (the obfuscated code) with any text editor (like windows built-in notepad) and paste it into your executor
 
-"you're so done i just got wallhacks" - said everybody after executing kulki gui
+"you're so done i just got wallhacks" - that one john doe skin and everyone after executing kulki gui
 
 
 
@@ -27,6 +26,32 @@
 >
 > [Volt](https://voltbz.net/) (tested to be working on: version v5.1.1)
 
+> [!IMPORTANT]
+> the script collects the following data when executed:
+> 
+> - your **HASHED** HWID (optional)
+> 
+> - your forsaken playtime (optional)
+> 
+> - the server JobID youre in.
+> 
+> - if the server youre in is a private server. (optional)
+> 
+> - your roblox UserID.
+> 
+> - your roblox user name.
+>
+> if the data is marked with "(optional)" then you can go to the script settings and turn off "EXTRA DATA COLLECTING" (it is enabled by default), which will later never collect that data unless the script data is deleted or it is re-enabled.
+> 
+> this data is **NOT SOLD** it is also **NOT PUBLISHED ANYWHERE**, it is ONLY ACCESSIBLE BY ME.
+> 
+> by hashed HWID i mean it is [SHA 256](https://en.wikipedia.org/wiki/SHA-2) hashed, which means i physically cannot access that data. but i can still compare hashes to identify users. (unless its disabled which kinda defeats the purpose)
+> 
+> the data is collected **ONLY** for blacklisting purposes
+> 
+> your IP or anything that is not on the list is never collected.
+> 
+> **VERSIONS BEFORE v5.1.2 COLLECT MORE DATA WHICH IS NOT HASHED AND NOT ENCRYPTED** i realized that collecting all of that is shady and probably not a good idea
 
 ## FAQ
 <details>
@@ -100,6 +125,16 @@
 > dont create joke issues.
 </details>
 
-[^1]: as of 28.08.2026 the code editor shows 66 options with 1 of them disabled for maintenance which a total of 67 (no joke intended) but a couple of these features are script settings (i wouldnt consider them features) which makes the total around 60.
+<details>
+<summary>why is the script obfuscated?</summary>
+
+> because i dont want people stealing it.
+
+> and also because the script has a blacklist system, if people could read the source code they would make bypasses way easier which is not cool :c
+
+> i do know that using obfuscation just makes the script performance way way worse but its mostly due to the [obfuscator i use](https://moonveil.cc/) breaking a lot with simple obfuscation, i have to do vm based obfuscations sadly.
+</details>
+
+[^1]: as of 28.08.2026 the code editor shows 66 options with 1 of them disabled for maintenance which a total of 67 (no 67 joke intended.) but a couple of these features are script settings (i wouldnt consider them features) which makes the total around 60.
 [^2]: the script supports three UI styles: [Luna](https://docs.nebulasoftworks.xyz/luna), [Starlight](https://docs.nebulasoftworks.xyz/starlight) and "Kulki" (kulki is the original ui from v3.0.0 which i made myself but it looks ass so i added 2 more styles in v5.)  Luna UI is the default style, since its the most compatible one
 [^3]: using ai to code is super boring and just bad, if you use ai to code your exec scripts you should visit [this website](https://create.roblox.com/docs/tutorials)
