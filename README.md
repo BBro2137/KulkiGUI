@@ -11,47 +11,47 @@
 
 > [!NOTE]
 > ## Executor Compability
-> if your executor is NOT on this list then dont complain that something doesnt work, or works really weird and not as intended. i have not checked any other executors for if they work with kulki gui
+> if your executor is not on this list or that it wasnt tested for your version it might just not work at all. so dont complain about my script "not working" when its just your executor
 > 
-> working:
 >
-> [Velocity](https://realvelocity.xyz/) (Last Tested:June of 2026, not tested for versions v5 or newer)
+> [Velocity](https://realvelocity.xyz/) (tested to be working on: v4.x.x)
 >
-> [Madium (V2)](https://getmadium.net/) (Last Tested:August 5 2026, most likely crashes on v5.0.0)
+> [Madium (V2)](https://getmadium.net/) (tested to be working on: v4.x.x)
 >
-> [Real](https://projectreal.gg/) (Last Tested:August 11 2026, on version v5.1.0)
+> [Real](https://projectreal.gg/) (tested to be working on: version v5.1.0)
 >
-> [Volt](https://voltbz.net/) (Last Tested: August 16 2026, on version v5.1.1)
-> 
-> ### executors that are probably to trigger the lite version of kulki gui **OR** those who are most likely will crash kulki gui are:
-> 
-> [Xeno](https://www.xeno.onl) require() function doesnt work on this executor, preety sure xeno will totally crash kulki gui on execution :c
-> 
-> [Wave](https://getwave.gg/) DOESNT WORK AT ALL: the crypt library is really weird which means it will always trigger the "not safe" error on execution (it is very much possible to add support for wave but who actually uses wave?)
->
-> [Solara](https://getsolara.dev/) xeno's twin brother which means its broken aswell
+> [Volt](https://voltbz.net/) (tested to be working on: version v5.1.1)
 
->[!CAUTION]
-> if you ever get blacklisted then your access to kulki gui is forbidden, attempting to bypass the blacklist will lead to **TERRIBLE CONSEQUENCES**
-> 
-> *you have been warned.*
-> 
-> getting blacklisted can be done by extreme tampering with the script such as code modifications or too much save file editing. it can also be done by suspicious activity that would mean you are trying to do something forbidden with the script.
->
-> just use kulki gui in public servers to *"educate"* (because kulki gui is for *educational* purposes ;D) and you wont get blacklisted
 
-# some other stuff you might need to know
-- if you got kicked and got an "not safe" message: DO NOT have ANY OTHER scripts executed and have just kulki gui enabled, this is just to make the blacklist system harder to bypass. if you didnt execute anything else and just get blacklist errors its most likely your executor just failing check the supported executors list!
-- if the executor YOURE using does not appear on [this site](https://weao.xyz/) or [the other one](https://pulsery.gg/) or [that one](https://voxlis.net/) it might mean that its not safe for use or that its just not confirmed to be safe yet, if the executor youre using appears on [this site](https://weao.xyz/) and is marked with red then it means its not updated and wont work with any script.
--  **forsaken has a complete lack of client sided anti-cheat** meaning getting away with exploiting is quite easy
--  i personally dont use this script and only add features and fix bugs in a private server, <ins>i rarerly play test it</ins>  :P
+## FAQ
+<details>
+<summary>the script kicked me and said "Not Safe" what do i do?</summary>
+ 
+> the "not safe" error exists to protect the blacklist and the script. it can be triggered by having another script running that kulki gui thinks is suspicious.
 
-> [!TIP]
-> using sneaky buffs option inside "Game Exploits" tab gives you an advantage but its so slight that its not noticeable by most players but still makes you "better" at the game, thats why its called sneaky i recommend using this option if youre gonna be using kulki gui and trying to not get banned.
-> 
-> hiding while using infinite stamina is **extremely hard** and will most likely still raise suspicion by other players. so **DO NOT use infinite stamina when you are trying to hide!**
->
-> **NEVER trust ANYONE** if youre gonna record your game. enable the anonymous option (inside the misc tab)! the forsaken dev team has NO MERCY and if someone sends them your recording of you exploiting youre gonna get the death sentence.
+> if rejoining doesnt fix it then its most likely your executor being just not being supported,
+
+> you can also check your auto-execute folder for any scripts and just disable them since they can also trigger this
+</details>
+
+<details>
+<summary>is this script detected?</summary>
+ 
+> from what ive seen forsaken has a complete lack of client anti-cheat which means its not possible to get detected.
+</details>
+
+<details>
+<summary>can i get banned for using this script?</summary>
+ 
+> the short answer is yes.
+ 
+> you can get banned on roblox depending on your executor (you dont need to run kulki gui for roblox to have a chance on finding you, you only need to inject your executor to potentially get detected and banned later)
+ 
+> you can get banned on forsaken if someone records you doing something suspicious such as infinite stamina or most other obvious options, but if you only use ESP & sneaky buffs then you PROBABLY wont get banned by the forsaken mods.
+</details>
+
+
+
 
 
 "you're so done i just got wallhacks" - said everybody after executing kulki gui
