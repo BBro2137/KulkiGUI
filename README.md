@@ -1,7 +1,11 @@
-# The *CRAZY* and **Keyless** [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) script
-### dont use cheats/exploits, its for educational purposes only.
-
-```lua
+# The *CRAZY* [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) script
+- 60+ features![^1]
+- over a year of development!
+- and its all keyless! completely free!
+- 3 UI styles if you dont like the default one![^2]
+- 0 AI Usage.[^3]
+  
+```luau
  loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
 ```
 > paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .lua file (the obfuscated code) with any text editor (like windows built-in notepad) and paste it into your executor
@@ -95,3 +99,7 @@
 
 > dont create joke issues.
 </details>
+
+[^1]: as of 28.08.2026 the code editor shows 66 options with 1 of them disabled for maintenance which a total of 67 (no joke intended) but a couple of these features are script settings (i wouldnt consider them features) which makes the total around 60.
+[^2]: the script supports three UI styles: [Luna](https://docs.nebulasoftworks.xyz/luna), [Starlight](https://docs.nebulasoftworks.xyz/starlight) and "Kulki" (kulki is the original ui from v3.0.0 which i made myself but it looks ass so i added 2 more styles in v5.)  Luna UI is the default style, since its the most compatible one
+[^3]: using ai to code is super boring and just bad, if you use ai to code your exec scripts you should visit [this website](https://create.roblox.com/docs/tutorials)
