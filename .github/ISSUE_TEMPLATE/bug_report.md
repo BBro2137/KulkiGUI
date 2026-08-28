@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 title: script is bugged
-labels: ''
+labels: general bug
 assignees: ''
 type: Bug
 
