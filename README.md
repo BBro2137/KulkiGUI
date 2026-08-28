@@ -155,8 +155,8 @@
 - [ ] make the script fully public and publish it onto script sites
 - [ ] add more detections to KAC
 - [ ] add more "ESPs" to the drawing ESP type
-- [ ] remove herobrine 
+- [ ] remove herobrine
 
-[^1]: as of 28.08.2026 the code editor shows 66 options with 1 of them disabled for maintenance which a total of 67 (no 67 joke intended.) but a couple of these features are script settings (i wouldnt consider them features) which makes the total around 60.
+[^1]: as of 28.08.2026 the code editor shows 66 options with 1 of them disabled for maintenance so its a total of 67 (no 67 joke intended.) but a couple of these features are script settings (i wouldnt consider them features) which makes the total around 60.
 [^2]: the script supports three UI styles: [Luna](https://docs.nebulasoftworks.xyz/luna), [Starlight](https://docs.nebulasoftworks.xyz/starlight) and "Kulki" (kulki is the original ui from v3.0.0 which i made myself but it looks ass so i added 2 more styles in v5.)  Luna UI is the default style, since its the most compatible one
 [^3]: using ai to code is super boring and just bad, if you use ai to code your exec scripts you should visit [this website](https://create.roblox.com/docs/tutorials)
