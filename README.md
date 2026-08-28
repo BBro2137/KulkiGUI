@@ -89,7 +89,7 @@
 </details>
 
 <details>
-<summary>hi im steve</summary>
+<summary>i found a bug/security vulnerability or have a feature request!</summary>
 
-> thanks for being steve
+> you can create a "github issue" on this repository.
 </details>
