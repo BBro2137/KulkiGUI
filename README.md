@@ -33,17 +33,17 @@
 > 
 > - your forsaken playtime (optional)
 > 
-> - the server JobID youre in.
+> - the server JobID youre in. (optional)
+>
+> - your executor name and version.
 > 
 > - if the server youre in is a private server. (optional)
 > 
-> - your roblox UserID.
-> 
-> - your roblox user name.
+> - your roblox UserID and user name
 >
 > if the data is marked with "(optional)" then you can go to the script settings and turn off "EXTRA DATA COLLECTING" (it is enabled by default), which will later never collect that data unless the script data is deleted or it is re-enabled.
 > 
-> this data is **NOT SOLD** it is also **NOT PUBLISHED ANYWHERE**, it is ONLY ACCESSIBLE BY ME.
+> this data is **NOT SOLD** it is also **NOT PUBLISHED ANYWHERE**, it is ONLY ACCESSIBLE BY ME (me means MY discord account).
 > 
 > by hashed HWID i mean it is [SHA 256](https://en.wikipedia.org/wiki/SHA-2) hashed, which means i physically cannot access that data. but i can still compare hashes to identify users. (unless its disabled which kinda defeats the purpose)
 > 
@@ -51,7 +51,7 @@
 > 
 > your IP or anything that is not on the list is never collected.
 > 
-> **VERSIONS BEFORE v5.1.2 COLLECT MORE DATA WHICH IS NOT HASHED AND NOT ENCRYPTED** i realized that collecting all of that is shady and probably not a good idea
+> **VERSIONS BEFORE v5.1.2 COLLECT MORE DATA WHICH IS NOT HASHED AND NOT ENCRYPTED** i realized that collecting all of that is shady and not trust worthy
 
 ## FAQ
 <details>
@@ -133,6 +133,21 @@
 > and also because the script has a blacklist system, if people could read the source code they would make bypasses way easier which is not cool :c
 
 > i do know that using obfuscation just makes the script performance way way worse but its mostly due to the [obfuscator i use](https://moonveil.cc/) breaking a lot with simple obfuscation, i have to do vm based obfuscations sadly.
+</details>
+
+<details>
+<summary>does this work on xeno/solara?</summary>
+ 
+> no, because both of them dont support basic functions such as hookfunction() and require() due to them "external executors"
+</details>
+
+<details>
+<summary>what executors are NOT supported?</summary>
+
+> from what ive tested the broken ones are:
+> - xeno
+> - solara
+> - wave (wave's crypt library is doing some shenanigans idfk)
 </details>
 
 [^1]: as of 28.08.2026 the code editor shows 66 options with 1 of them disabled for maintenance which a total of 67 (no 67 joke intended.) but a couple of these features are script settings (i wouldnt consider them features) which makes the total around 60.
