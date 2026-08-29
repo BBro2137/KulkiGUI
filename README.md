@@ -125,7 +125,7 @@
 
 > and also because the script has a blacklist system, if people could read the source code they would make bypasses way easier which is not cool :c
 
-> i do know that using obfuscation just makes the script performance way way worse but its mostly due to the [obfuscator i use](https://moonveil.cc/) breaking a lot with simple obfuscation, i have to do vm based obfuscations sadly.
+> i do know that using obfuscation just makes the script performance way way worse but you gotta deal with it
 </details>
 
 <details>
