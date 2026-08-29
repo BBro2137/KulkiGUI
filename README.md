@@ -3,7 +3,7 @@
 - over a year of development![^5]
 - 3 UI styles if you dont like the default one![^2]
 - 0 AI Usage.[^3]
-- our own anticheat for forsaken! [^4]
+- ~our own anticheat for forsaken! [^4]~ (disabled for maintenance D:)
 - and its all keyless! completely free!
 ```luau
  loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/KulkiGUI.luau'))()
