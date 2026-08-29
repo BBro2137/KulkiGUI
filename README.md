@@ -23,7 +23,7 @@
 >
 > [Madium (V2)](https://getmadium.net/) (tested to be working on: v4.x.x)
 >
-> [Real](https://projectreal.gg/) (tested to be working on: version v5.1.0)
+> [Real](https://projectreal.gg/) (tested to be working on: version v5.1.2)
 >
 > [Volt](https://voltbz.net/) (tested to be working on: version v5.1.1)
 
