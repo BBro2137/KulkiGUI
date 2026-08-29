@@ -45,11 +45,9 @@
 > 
 > this data is **NOT SOLD** it is also **NOT PUBLISHED ANYWHERE**, it is ONLY USED FOR INSIGHTS ON THE AVERAGE KULKI GUI USER.
 > 
-> the data is collected **ONLY** for blacklisting purposes
-> 
 > your IP or anything that is not on the list is never collected.
 > 
-> **VERSIONS BEFORE v5.1.2 COLLECT MORE DATA WHICH IS NOT HASHED NOR ENCRYPTED AND IT CANNOT BE TURNED OFF ON THOSE VERSIONS** i realized that collecting all of that is shady and not trust worthy
+> **VERSIONS BEFORE v5.1.2 COLLECT MORE DATA WHICH IS NOT HASHED NOR ENCRYPTED AND IT CANNOT BE TURNED OFF ON THOSE VERSIONS** i realized that collecting all of that is shady and not trust worthy, so on v5.1.2 that problem is fixed
 
 # FAQ
 <details>
