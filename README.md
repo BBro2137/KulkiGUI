@@ -94,9 +94,6 @@
 
 > because its a passion project, not a source of money
 
-> i did see other free keyless scripts for forsaken and they werent the best so it was crazy to find out that kulki gui is js like that (no glaze)
-
-> the most popular other keyless script that i found was ["forsaken plus"](https://rscripts.net/script/forsaken-plus-invincibleautogen-and-more-ZruY) and it doesnt have many cheats/features compared to kulki gui 
 </details>
 
 <details>
