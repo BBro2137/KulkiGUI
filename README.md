@@ -138,7 +138,7 @@
 <details>
 <summary>is this malware?</summary>
 
-> kulki gui isnt malware. (the only way to prove that kulki gui isnt malware would be to make it not obfuscated. so im not gonna do that)
+> kulki gui isnt malware. (the only way to prove that kulki gui isnt malware would be to make it not obfuscated. so you have to trust my words)
 
 > most scripts cannot be malware even if they tried due to executors having good safety but this doesnt apply to stealer scripts for games like mm2 or blox fruits, forsaken CANT have a stealer script since theres no trading so youre safe
 
