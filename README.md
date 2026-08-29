@@ -1,6 +1,6 @@
 # The *CRAZY* [Forsaken](https://www.roblox.com/games/18687417158/Forsaken) script
 - 60+ features![^1]
-- over a year of development!
+- over a year of development![^5]
 - 3 UI styles if you dont like the default one![^2]
 - 0 AI Usage.[^3]
 - our own anticheat for forsaken! [^4]
@@ -162,3 +162,4 @@
 [^2]: the script supports three UI styles: [Luna](https://docs.nebulasoftworks.xyz/luna), [Starlight](https://docs.nebulasoftworks.xyz/starlight) and "Kulki" (kulki is the original ui from v3.0.0 which i made myself but it looks ass so i added 2 more styles in v5.)  Luna UI is the default style, since its the most compatible one
 [^3]: using ai to code is super boring and just bad, if you use ai to code your exec scripts you should visit [this website](https://create.roblox.com/docs/tutorials)
 [^4]: the script includes a feature called "Kulki AntiCheat" or "KAC" for short, its very experimental but so far it can guess stamina cheats with low false positives. it still needs to be improved
+[^5]: for most of this script's lifespan it has been a fully private script for me and a couple other people, it has only been released to the public on august of 2026.
