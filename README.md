@@ -6,7 +6,7 @@
 - our own anticheat for forsaken! [^4]
 - and its all keyless! completely free!
 ```luau
- loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/source'))()
+ loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/KulkiGUI.luau'))()
 ```
 > paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .lua file (the obfuscated code) with any text editor (like windows built-in notepad) and paste it into your executor
 
