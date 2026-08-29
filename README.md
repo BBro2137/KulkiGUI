@@ -134,6 +134,16 @@
 > no, because both of them dont support basic functions such as hookfunction() and require() due to them "external executors"
 </details>
 
+
+<details>
+<summary>is this malware?</summary>
+
+> kulki gui isnt malware. (the only way to prove that kulki gui isnt malware would be to make it not obfuscated. so im not gonna do that)
+
+> most scripts cannot be malware even if they tried due to executors having good safety but this doesnt apply to stealer scripts for games like mm2 or blox fruits, forsaken CANT have a stealer script since theres no trading so youre safe
+
+</details>
+
 <details>
 <summary>what executors are NOT supported?</summary>
 
