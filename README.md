@@ -30,7 +30,6 @@
 > [!IMPORTANT]
 > the script collects the following data when executed:
 > 
-> - your **HASHED** HWID (optional)
 > 
 > - your forsaken playtime (optional)
 > 
@@ -45,8 +44,6 @@
 > if the data is marked with "(optional)" then you can go to the script settings and turn off "EXTRA DATA COLLECTING" (it is enabled by default), which will later never collect that data unless the script data is deleted or it is re-enabled.
 > 
 > this data is **NOT SOLD** it is also **NOT PUBLISHED ANYWHERE**, it is ONLY ACCESSIBLE BY ME (me means MY discord account).
-> 
-> by hashed HWID i mean it is [SHA 256](https://en.wikipedia.org/wiki/SHA-2) hashed, which means i physically cannot access that data. but i can still compare hashes to identify users. (unless its disabled which kinda defeats the purpose)
 > 
 > the data is collected **ONLY** for blacklisting purposes
 > 
