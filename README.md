@@ -43,7 +43,7 @@
 >
 > if the data is marked with "(optional)" then you can go to the script settings and turn off "EXTRA DATA COLLECTING" (it is enabled by default), which will later never collect that data unless the script data is deleted or it is re-enabled.
 > 
-> this data is **NOT SOLD** it is also **NOT PUBLISHED ANYWHERE**, it is ONLY ACCESSIBLE BY ME (me means MY discord account).
+> this data is **NOT SOLD** it is also **NOT PUBLISHED ANYWHERE**, it is ONLY USED FOR INSIGHTS ON THE AVERAGE KULKI GUI USER.
 > 
 > the data is collected **ONLY** for blacklisting purposes
 > 
