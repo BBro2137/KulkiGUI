@@ -24,7 +24,7 @@ if you cannot use the script then please make a bug report on this github reposi
 >
 > [Madium (V2)](https://getmadium.net/) (tested to be working on: v4.x.x)
 >
-> [Real](https://projectreal.gg/) (tested to be working on: version v5.1.2)
+> [Real](https://projectreal.gg/) (tested to be working on: version v5.1.4)
 >
 > [Volt](https://voltbz.net/) (tested to be working on: version v5.1.1)
 
