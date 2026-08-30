@@ -155,7 +155,7 @@
 
 ## to do
 - [x] make the README.md look less ass
-- [ ] make the script fully public and publish it onto script sites
+- [x] make the script fully public and publish it onto script sites
 - [ ] add more detections to KAC
 - [ ] add more "ESPs" to the drawing ESP type
 - [ ] remove herobrine
