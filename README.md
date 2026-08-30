@@ -28,28 +28,6 @@ if you cannot use the script then please make a bug report on this github reposi
 >
 > [Volt](https://voltbz.net/) (tested to be working on: version v5.1.1)
 
-> [!IMPORTANT]
-> the script collects the following data when executed:
-> 
-> 
-> - your forsaken playtime (optional)
-> 
-> - the server JobID youre in. (optional)
->
-> - your executor name and version.
-> 
-> - if the server youre in is a private server. (optional)
-> 
-> - your roblox UserID and user name
->
-> if the data is marked with "(optional)" then you can go to the script settings and turn off "EXTRA DATA COLLECTING" (it is enabled by default), which will later never collect that data unless the script data is deleted or it is re-enabled.
-> 
-> this data is **NOT SOLD** it is also **NOT PUBLISHED ANYWHERE**, it is ONLY USED FOR INSIGHTS ON THE AVERAGE KULKI GUI USER.
-> 
-> your IP or anything that is not on the list is never collected.
-> 
-> **VERSIONS BEFORE v5.1.2 COLLECT MORE DATA WHICH IS NOT HASHED NOR ENCRYPTED AND IT CANNOT BE TURNED OFF ON THOSE VERSIONS** i realized that collecting all of that is shady and not trust worthy, so on v5.1.2 that problem is fixed
-
 # FAQ
 <details>
 <summary>the script kicked me and said "Not Safe" what do i do?</summary>
