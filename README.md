@@ -32,11 +32,7 @@ if you cannot use the script then please make a bug report on this github reposi
 <details>
 <summary>the script kicked me and said "Not Safe" what do i do?</summary>
  
-> the "not safe" error exists to protect the blacklist and the script. it can be triggered by having another script running that kulki gui thinks is suspicious.
-
-> if rejoining doesnt fix it then its most likely your executor being just not being supported,
-
-> you can also check your auto-execute folder for any scripts and just disable them since they can also trigger this
+> this error was fully fixed on v5.1.4 so just dont use versions older than that
 </details>
 
 <details>
@@ -82,15 +78,7 @@ if you cannot use the script then please make a bug report on this github reposi
 </details>
 
 <details>
-<summary>the script says im blacklisted, what do i do?</summary>
-
-> well youre blacklisted which means you did something to/with this script that i didnt like and decided to blacklist you from it
-
-> you are NOT ALLOWED to attempt to bypass the blacklist. if you will attempt though then you will have to face terrible consequences
-</details>
-
-<details>
-<summary>i found a bug/security vulnerability or have a feature request!</summary>
+<summary>i found a bug or have a feature request!</summary>
 
 > feel free to create an "issue" on this repository
 
