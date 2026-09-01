@@ -22,7 +22,7 @@ if you cannot use the script then please make a bug report on this github reposi
 >
 > [Velocity](https://realvelocity.xyz/) (tested to be working on: v4.x.x)
 >
-> [Madium (V2)](https://getmadium.net/) (tested to be working on: v4.x.x)
+> [Madium (V2)](https://getmadium.net/) (doesnt work in the newest versions, im trying to fix it asap)
 >
 > [Real](https://projectreal.gg/) (tested to be working on: version v5.1.4)
 >
