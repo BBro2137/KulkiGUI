@@ -20,9 +20,7 @@ if you cannot use the script then please make a bug report on this github reposi
 > if your executor is not on this list or that it wasnt tested for your version it might just not work at all. so dont complain about my script "not working" when its just your executor
 > 
 >
-> [Velocity](https://realvelocity.xyz/) (tested to be working on: v4.x.x)
->
-> [Madium (V2)](https://getmadium.net/) (doesnt work in the newest versions, im trying to fix it asap)
+> [Velocity](https://realvelocity.xyz/) (tested to be working on: v4.x.x NOT SURE IF IT WORKS NOW)
 >
 > [Real](https://projectreal.gg/) (tested to be working on: version v5.1.4)
 >
@@ -117,7 +115,9 @@ if you cannot use the script then please make a bug report on this github reposi
 > from what ive tested the broken ones are:
 > - xeno
 > - solara
-> - wave (wave's crypt library is doing some shenanigans idfk)
+> - wave (it used to not work but now it maybe works)
+> - Madium (im trying to fix this)
+> - Nexomia.win (the EXACT same problem as madium, nexomia is a madium paste fr?)
 </details>
 
 ## to do
