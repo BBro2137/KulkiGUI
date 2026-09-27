@@ -3,7 +3,7 @@
 - over a year of development![^5]
 - 3 UI styles if you dont like the default one![^2]
 - 0 AI Usage.[^3]
-- ~our own anticheat for forsaken! [^4]~ (disabled for maintenance D:)
+- ~our own anticheat for forsaken! [^4]~ (disabled for maintenance D: [^6])
 - and its all keyless! completely free!
 ```luau
  loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/KulkiGUI.luau'))()
@@ -133,3 +133,4 @@ if you cannot use the script then please make a bug report on this github reposi
 [^3]: using ai to code is super boring and just bad, if you use ai to code your exec scripts you should visit [this website](https://create.roblox.com/docs/tutorials)
 [^4]: the script includes a feature called "Kulki AntiCheat" or "KAC" for short, its very experimental but so far it can guess stamina cheats with low false positives. it still needs to be improved
 [^5]: for most of this script's lifespan it has been a fully private script for me and a couple other people, it has only been released to the public on august of 2026.
+[^6]: it might never return because i rely on animation tracks to get it to work which is super unreliable
