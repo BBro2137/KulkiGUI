@@ -16,11 +16,9 @@ if you cannot use the script then please make a bug report on this github reposi
 
 
 > [!NOTE]
-> ## Executor Compability
+> ## Executor Compatibility
 > if your executor is not on this list or that it wasnt tested for your version it might just not work at all. so dont complain about my script "not working" when its just your executor
 > 
->
-> [Velocity](https://realvelocity.xyz/) (tested to be working on: v4.x.x NOT SURE IF IT WORKS NOW)
 >
 > [Real](https://projectreal.gg/) (tested to be working on: version v5.1.4)
 >
