@@ -25,6 +25,8 @@ if you cannot use the script then please make a bug report on this github reposi
 > [Real](https://projectreal.gg/) (tested to be working on: version v5.1.4)
 >
 > [Volt](https://voltbz.net/) (tested to be working on: version v5.1.1)
+>
+> [Nexomia](https://nexomia.win) (tested to be working on: version v5.1.5)
 
 # FAQ
 <details>
@@ -116,8 +118,7 @@ if you cannot use the script then please make a bug report on this github reposi
 > - xeno
 > - solara
 > - wave (it used to not work but now it maybe works)
-> - Madium (im trying to fix this)
-> - Nexomia.win (the EXACT same problem as madium, nexomia is a madium paste fr?)
+> - Madium (it might be working im not sure, last time i checked it crashed and im not gonna bother getting trough work.ink just to use this ass paste)
 </details>
 
 ## to do
