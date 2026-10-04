@@ -117,6 +117,7 @@ if you cannot use the script then please make a bug report on this github reposi
 > - solara
 > - wave (it used to not work but now it maybe works)
 > - Madium (it might be working im not sure, last time i checked it crashed and im not gonna bother getting trough work.ink just to use this ass paste)
+> - Velocity (moonveil makes it crash bruv)
 </details>
 
 ## to do
