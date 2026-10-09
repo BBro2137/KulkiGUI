@@ -8,7 +8,7 @@
 ```luau
  loadstring(game:HttpGet('https://raw.githubusercontent.com/BBro2137/KulkiGUI/refs/heads/main/KulkiGUI.luau'))()
 ```
-> paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .lua file (the obfuscated code) with any text editor (like windows built-in notepad) and paste it into your executor
+> paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .luau file (the obfuscated code) with any text editor (like windows built-in notepad) and paste it into your executor
 
 "you're so done i just got wallhacks" - that one john doe skin and everyone after executing kulki gui
 if you cannot use the script then please make a bug report on this github repository!
