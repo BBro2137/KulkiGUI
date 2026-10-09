@@ -123,7 +123,8 @@ if you cannot use the script then please make a bug report on this github reposi
 ## to do
 - [x] make the README.md look less ass
 - [x] make the script fully public and publish it onto script sites
-- [ ] add more detections to KAC
+- [ ] get motivation to actually work on this again
+- [ ] ~add more detections to KAC~ bring back KAC
 - [ ] add more "ESPs" to the drawing ESP type
 - [ ] remove herobrine
 
