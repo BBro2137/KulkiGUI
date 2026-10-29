@@ -13,7 +13,12 @@
 "you're so done i just got wallhacks" - that one john doe skin and everyone after executing kulki gui
 if you cannot use the script then please make a bug report on this github repository!
 
-
+> [!WARNING]
+> THE SCRIPT WAS NOT UPDATED TO FORSAKEN 5.3.0+
+> 
+> THIS MEANS THAT SOME FEATURES MIGHT BE BROKEN!
+> 
+> im not sure whats broken since i didnt work on kulki gui at all for a month straight but im preety sure auto generator is broken
 
 > [!NOTE]
 > ## Executor Compatibility
