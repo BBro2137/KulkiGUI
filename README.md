@@ -19,6 +19,8 @@ if you cannot use the script then please make a bug report on this github reposi
 > THIS MEANS THAT SOME FEATURES MIGHT BE BROKEN!
 > 
 > after some quick tests i can confirm that the entire autogen is broken and fixing it will be really hard because of the new anti exploit measures
+>
+> (im working on a fix youll just have to wait.)
 
 > [!NOTE]
 > ## Executor Compatibility
