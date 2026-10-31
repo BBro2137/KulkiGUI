@@ -13,15 +13,6 @@
 "you're so done i just got wallhacks" - that one john doe skin and everyone after executing kulki gui
 if you cannot use the script then please make a bug report on this github repository!
 
-> [!WARNING]
-> THE SCRIPT WAS NOT UPDATED TO FORSAKEN 5.3.0+
-> 
-> THIS MEANS THAT SOME FEATURES MIGHT BE BROKEN!
-> 
-> after some quick tests i can confirm that the entire autogen is broken and fixing it will be really hard because of the new anti exploit measures
->
-> (im working on a fix youll just have to wait.)
-
 > [!NOTE]
 > ## Executor Compatibility
 > if your executor is not on this list or that it wasnt tested for your version it might just not work at all. so dont complain about my script "not working" when its just your executor
