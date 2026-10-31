@@ -27,7 +27,7 @@ if you cannot use the script then please make a bug report on this github reposi
 > if your executor is not on this list or that it wasnt tested for your version it might just not work at all. so dont complain about my script "not working" when its just your executor
 > 
 >
-> [Real](https://projectreal.gg/) (tested to be working on: version v5.1.6)
+> [Real](https://projectreal.gg/) (tested to be working on: version v5.2.0)
 >
 > [Volt](https://voltbz.net/) (tested to be working on: version v5.1.1)
 >
