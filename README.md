@@ -10,6 +10,10 @@
 ```
 > paste this into your executor of choice to load the newest version of kulki gui from the web OR download the latest kulki gui release and then open the .luau file (the obfuscated code) with any text editor (like windows built-in notepad) and paste it into your executor
 
+[![Reviewed on ScriptBlox](https://scriptblox.com/badge/Forsaken-Kulki-GUI-234585)](https://scriptblox.com/script/Forsaken-Kulki-GUI-234585)
+
+[Reviewed on robloxscripts.com](https://robloxscripts.com/script/kulki-gui-forsaken-script)
+
 "you're so done i just got wallhacks" - that one john doe skin and everyone after executing kulki gui
 if you cannot use the script then please make a bug report on this github repository!
 
