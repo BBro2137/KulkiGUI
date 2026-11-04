@@ -13,6 +13,7 @@
 [![Reviewed on ScriptBlox](https://scriptblox.com/badge/Forsaken-Kulki-GUI-234585)](https://scriptblox.com/script/Forsaken-Kulki-GUI-234585)
 
 [Reviewed on robloxscripts.com](https://robloxscripts.com/script/kulki-gui-forsaken-script)
+
 [not reviewed but uploaded on rscripts](https://rscripts.net/script/kulki-gui-infinite-stamina-auto-gen-esp-and-more-1vKl)
 
 "you're so done i just got wallhacks" - that one john doe skin and everyone after executing kulki gui
