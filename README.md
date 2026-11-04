@@ -13,6 +13,7 @@
 [![Reviewed on ScriptBlox](https://scriptblox.com/badge/Forsaken-Kulki-GUI-234585)](https://scriptblox.com/script/Forsaken-Kulki-GUI-234585)
 
 [Reviewed on robloxscripts.com](https://robloxscripts.com/script/kulki-gui-forsaken-script)
+[not reviewed but uploaded on rscripts](https://rscripts.net/script/kulki-gui-infinite-stamina-auto-gen-esp-and-more-1vKl)
 
 "you're so done i just got wallhacks" - that one john doe skin and everyone after executing kulki gui
 if you cannot use the script then please make a bug report on this github repository!
@@ -22,13 +23,13 @@ if you cannot use the script then please make a bug report on this github reposi
 > if your executor is not on this list or that it wasnt tested for your version it might just not work at all. so dont complain about my script "not working" when its just your executor
 > 
 >
-> [Real](https://projectreal.gg/) (tested to be working on: version v5.2.0)
+> [Real](https://projectreal.gg/) (confirmed to be working on: version v5.2.0)
 >
-> [Volt](https://voltbz.net/) (tested to be working on: version v5.1.1)
+> [Volt](https://voltbz.net/) (confirmed to be working on: version v5.2.1)
 >
-> [Nexomia](https://nexomia.win) (tested to be working on: version v5.1.5)
+> [Nexomia](https://nexomia.win) (confirmed to be working on: version v5.1.5)
 >
-> [Madium](https://getmadium.net) (tested to be working on: version v5.1.5)
+> [Madium](https://getmadium.net) (confirmed to be working on: version v5.1.5)
 
 # FAQ
 <details>
