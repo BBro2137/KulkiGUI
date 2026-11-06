@@ -12,7 +12,7 @@
 
 [![Reviewed on ScriptBlox](https://scriptblox.com/badge/Forsaken-Kulki-GUI-234585)](https://scriptblox.com/script/Forsaken-Kulki-GUI-234585)
 
-[![Static Badge](https://img.shields.io/badge/RScripts.net-not%20reviewed%20cus%20rscripts%20is%20lowk%20mid-red)](https://scriptblox.com/script/Forsaken-Kulki-GUI-234585)
+[![Static Badge](https://img.shields.io/badge/RScripts.net-not%20reviewed%20cus%20rscripts%20is%20lowk%20mid-red)](https://rscripts.net/script/kulki-gui-infinite-stamina-auto-gen-esp-and-more-1vKl)
 
 [![Static Badge](https://img.shields.io/badge/robloxscripts-reviewed%20by%20a%20person-yellow)](https://robloxscripts.com/script/kulki-gui-forsaken-script)
 
