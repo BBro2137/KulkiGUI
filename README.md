@@ -30,7 +30,11 @@ if you cannot use the script then please make a bug report on this github reposi
 >
 > [Nexomia](https://nexomia.win) (confirmed to be working on: version v5.1.5)
 >
-> [Madium](https://getmadium.net) (confirmed to be working on: version v5.2.1)
+> [Madium](https://getmadium.net) (confirmed to be working on: version v5.2.2)
+>
+> [Velocity](https://getvelocity.llc) (confirmed to be working on: version v5.2.2)
+>
+> [Delta (Android)](https://deltaexploits.gg) (confirmed to be working on: version v5.2.2)
 
 # FAQ
 <details>
@@ -122,7 +126,6 @@ if you cannot use the script then please make a bug report on this github reposi
 > - xeno
 > - solara
 > - wave (it used to not work but now it maybe works)
-> - Velocity (moonveil makes it crash bruv, velocity MIGHT work in v5.2.2)
 </details>
 
 [^1]: as of 28.08.2026 the code editor shows 66 options with 1 of them disabled for maintenance so its a total of 67 (no 67 joke intended.) but a couple of these features are script settings (i wouldnt consider them features) which makes the total around 60.
