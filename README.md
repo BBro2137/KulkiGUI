@@ -19,15 +19,6 @@
 "you're so done i just got wallhacks" - that one john doe skin and everyone after executing kulki gui
 if you cannot use the script then please make a bug report on this github repository!
 
-> [!WARNING]
-> [MoonVeil](https://moonveil.cc/) has gone FULLY paid, and because Kulki GUI **ISNT MAKING ANY MONEY** the development will *most likely* be **CEASED and the script WILL become PRIVATE**.
->
-> that is unless i find a reliable obfuscator which doesnt lag/break.
->
-> of course i can also go open-source but then id get my entire script skidded which isnt worth it
-> 
-> i still have 3 moonveil credits so there will be 3 updates and they will be bigger but take longer to make.
-
 
 
 > [!NOTE]
